@@ -1,0 +1,67 @@
+﻿<Window x:Class="TourPlanner.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TourPlanner.Views"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"  WindowState="Maximized"
+        Title="TourPlaner" Height="720" Width="1280">
+        <!--WindowStyle="None"--> 
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Tour Planer" FontSize="36" Grid.Row="0" TextAlignment="Center" TextWrapping="WrapWithOverflow" />
+
+        <Grid Grid.Row="1">
+            <TextBlock Text="Here Will Be The/A Menu" FontSize="16" TextAlignment="Center"/>
+        </Grid>
+        
+        <!-- SearchBar -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Search:" Grid.Column="0" FontSize="16"/>
+            <TextBox Grid.Column="1" FontSize="16" BorderBrush="{x:Null}"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="0 5 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Padding="4">
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="32" Width="auto">
+                        <TextBlock FontSize="24">Tours</TextBlock>
+                        
+                        <Button FontSize="16" Padding="0 -4 0 0" Width="26" Margin="12 6 4 0" ToolTip="Add Route" Background="#FF90CDF0" FontWeight="Bold">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="16"/>
+                                </Style>
+                            </Button.Resources>
+                            +
+                        </Button>
+                    </StackPanel>
+                </GroupBox.Header>
+
+                <local:TourListView x:Name="TourList" />
+            </GroupBox>
+
+            <GroupBox Grid.Column="1" Header="Tour Information" FontSize="24" Padding="4">
+                <local:TourInformationView x:Name="TourInformation" />
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
