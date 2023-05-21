@@ -17,8 +17,8 @@
             <TabItem Header="Tour Image" FontSize="16">
                 <TextBlock> Some Random Image </TextBlock>
             </TabItem>
-            <TabItem Header="Tour Logs" FontSize="16">
-                <TextBlock> Some Random Logs </TextBlock>
+            <TabItem Header="Tour Logs" FontSize="16" Padding="4">
+                <local:TourLogListView />
             </TabItem>
         </TabControl>
     </Grid>

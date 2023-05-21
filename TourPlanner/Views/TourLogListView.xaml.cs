@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TourPlanner.Views {
+namespace TourPlanner.Views
+{
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TourLogListView.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow() {
+    public partial class TourLogListView : UserControl
+    {
+        public TourLogListView()
+        {
             InitializeComponent();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e) {
-            Close();
         }
     }
 }
