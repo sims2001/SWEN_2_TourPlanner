@@ -10,7 +10,7 @@
              d:DesignHeight="700" d:DesignWidth="384">
              <!--d:DataContext="{d:DesignInstance Type=vmds:TourListViewModel}"-->
     <Grid>
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" ItemsSource="{Binding AllTours}" SelectedValue="{Binding Tour}">
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" ItemsSource="{Binding AllTours}" SelectedItem="{Binding CurrentTour}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -26,18 +26,18 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" FontFamily="Courier New" Text="{Binding Name}" TextWrapping="WrapWithOverflow" FontSize="18"/>
-                        <Button Grid.Column="1" FontSize="12" Width="22" Margin="8 0 8 0">
+                        <Button Grid.Column="1" FontSize="11" Height="28" Width="28" Margin="4 0 4 0" Command="{Binding EditTourCommand}">
                             <Button.Resources>
                                 <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="12"/>
+                                    <Setter Property="CornerRadius" Value="20"/>
                                 </Style>
                             </Button.Resources>
                             ✎
                         </Button>
-                        <Button Grid.Column="2" FontSize="12" Width="22" Margin="8 0 8 0">
+                        <Button Grid.Column="2" FontSize="11" Height="28" Width="28" Margin="4 0 4 0" Command="{Binding DeleteTourCommand}">
                             <Button.Resources>
                                 <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="12"/>
+                                    <Setter Property="CornerRadius" Value="20"/>
                                 </Style>
                             </Button.Resources>
                             🗑
