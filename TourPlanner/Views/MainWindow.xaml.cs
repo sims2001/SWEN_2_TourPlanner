@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TourPlanner.ViewModels;
 
 namespace TourPlanner.Views {
     /// <summary>
@@ -24,6 +25,13 @@ namespace TourPlanner.Views {
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) {
             Close();
+        }
+
+        private void TourListView_Loaded(object sender, RoutedEventArgs e) {
+            TourListViewModel tourListViewModel = new TourListViewModel();
+            tourListViewModel.GenerateTestTours();
+
+            TourListView.DataContext = tourListViewModel;
         }
     }
 }

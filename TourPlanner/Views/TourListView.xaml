@@ -5,21 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TourPlanner.Views"
              xmlns:views="clr-namespace:TourPlanner.Views"
+             xmlns:vmds="clr-namespace:TourPlanner.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="700" d:DesignWidth="384">
+             <!--d:DataContext="{d:DesignInstance Type=vmds:TourListViewModel}"-->
     <Grid>
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0">
-            <ListView.ItemTemplate>
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" ItemsSource="{Binding AllTours}" SelectedValue="{Binding Tour}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate >
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="8*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Titel" TextWrapping="WrapWithOverflow"/>
-                        <Button Grid.Column="1" FontSize="12" Width="20" Margin="4 0 4 0">
+                        <TextBlock Grid.Column="0" FontFamily="Courier New" Text="{Binding Name}" TextWrapping="WrapWithOverflow" FontSize="18"/>
+                        <Button Grid.Column="1" FontSize="12" Width="22" Margin="8 0 8 0">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="12"/>
@@ -27,7 +34,7 @@
                             </Button.Resources>
                             ✎
                         </Button>
-                        <Button Grid.Column="2" FontSize="12" Width="20" Margin="4 0 4 0">
+                        <Button Grid.Column="2" FontSize="12" Width="22" Margin="8 0 8 0">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="12"/>

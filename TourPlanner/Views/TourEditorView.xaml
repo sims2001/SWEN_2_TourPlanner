@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="TourPlanner.Views.TourEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TourPlanner.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Padding="10" Background="#FFEDB66B" FontWeight="Bold">CANCEL</Button>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            
+            
+            <GroupBox Header="Edit Tour" Grid.Column="0" Padding="5">
+                <Grid>
+                <Label Content="Tourname" />
+                    
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Import Tour" Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="5*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Row="0">
+                        <Label Content="Import Path:" FontSize="18" />
+                        <TextBox Margin="5" MaxLength="256" FontSize="18" FontFamily="Courier New"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <Button Padding="12" Margin="18 0 18 0">
+                        Import Tour
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

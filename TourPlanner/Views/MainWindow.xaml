@@ -71,7 +71,7 @@
                     </StackPanel>
                 </GroupBox.Header>
 
-                <local:TourListView x:Name="TourList" />
+                <local:TourListView x:Name="TourListView" Loaded = "TourListView_Loaded" />
             </GroupBox>
 
             <GroupBox Grid.Column="1" Header="Tour Information" FontSize="24" Padding="4">
