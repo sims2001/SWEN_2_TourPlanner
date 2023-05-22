@@ -11,7 +11,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Padding="10" Background="#FFEDB66B" FontWeight="Bold">CANCEL</Button>
+        <Button Grid.Row="0" Margin="20" Padding="10" Background="#FFEDB66B" FontWeight="Bold" Command="{Binding ToOverViewCommand}">CANCEL</Button>
         
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

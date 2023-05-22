@@ -4,12 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TourPlanner.Views"
+        xmlns:vms="clr-namespace:TourPlanner.ViewModels"
         mc:Ignorable="d"
         WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"  WindowState="Maximized"
         Title="TourPlaner" Height="720" Width="1280">
 
     <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type vms:TourOverViewModel}">
+                <local:TourOverView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vms:TourEditorViewModel}">
+                <local:TourEditorView />
+            </DataTemplate>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -33,7 +42,8 @@
             </Button>
         </Grid>
 
-        <local:TourOverView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>
-        <!--<local:TourEditorView Grid.Row="1" />-->
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
+        <!--<local:TourOverView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>-->
+        <!--<local:TourEditorView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>-->
     </Grid>
 </Window>

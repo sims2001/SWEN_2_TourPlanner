@@ -4,14 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TourPlanner.Stores;
 
 namespace TourPlanner.ViewModels {
     internal class MainWindowViewModel : ViewModelBase{
-        public ViewModelBase CurrentViewModel { get; }
-        public MainWindowViewModel() {
-            CurrentViewModel = new TourOverViewModel();
+        private readonly NavigationStore _navigationStore;
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+        public MainWindowViewModel(NavigationStore store) {
+            _navigationStore = store;
+
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
-        public ICommand ToEditorCommand { get; }
+
+        private void OnCurrentViewModelChanged() {
+            OnPropertyChanged(nameof(CurrentViewModel));
+        }
     }
 
 }

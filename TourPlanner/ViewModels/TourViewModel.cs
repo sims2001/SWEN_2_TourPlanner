@@ -16,8 +16,11 @@ namespace TourPlanner.ViewModels
 
         public string From => _tour.From;
         public string To => _tour.To;
+        public double Distance => _tour.Distance;
+        public string FormatedTime => _tour.FormatedTime;
 
-        
+        public string TransportType => _tour.TransportType.ToString();
+
         public TourViewModel(Tour tour) {
             _tour = tour;
         }

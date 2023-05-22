@@ -18,19 +18,37 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Margin="5 10 5 10" Text="{Binding CurrentTour.Name}" FontSize="28" FontWeight="Bold" TextAlignment="Center" Grid.Row="0"/>
-                    <TextBlock Margin="5 10 5 10" Text="{Binding CurrentTour.Description}" FontSize="16" TextAlignment="Justify" Grid.Row="1" TextWrapping="WrapWithOverflow" />
+                    <TextBlock FontFamily="Courier New" Margin="5 10 5 10" Text="{Binding CurrentTour.Description}" FontSize="16" TextAlignment="Justify" Grid.Row="1" TextWrapping="WrapWithOverflow" />
 
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5 10 5 10">
-                        <Label >From: </Label>
-                        <TextBlock Text="{Binding CurrentTour.From}" FontSize="16" TextAlignment="Justify" Grid.Row="1" TextWrapping="WrapWithOverflow" />
+                        <TextBlock FontFamily="Courier New" FontSize="16" Text="Start Location:        " />
+                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.From}" FontSize="16" TextWrapping="WrapWithOverflow" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5 10 5 10">
-                        <Label >To:</Label>
-                        <TextBlock Text="{Binding CurrentTour.To}" FontSize="16" TextAlignment="Justify" Grid.Row="1" TextWrapping="WrapWithOverflow" />
+                        <TextBlock FontFamily="Courier New" FontSize="16" Text="End Location:          " />
+                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.To}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="5 10 5 10">
+                        <TextBlock FontFamily="Courier New" FontSize="16" Text="Transportation Type:   " />
+                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.TransportType}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5 10 5 10">
+                        <TextBlock FontFamily="Courier New" FontSize="16" Text="Estimated Time:        " />
+                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.FormatedTime}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="5 10 5 10">
+                        <TextBlock FontFamily="Courier New" FontSize="16" Text="Distance:              " />
+                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.Distance}" FontSize="16" TextWrapping="WrapWithOverflow" />
                     </StackPanel>
                 </Grid>
             </TabItem>
