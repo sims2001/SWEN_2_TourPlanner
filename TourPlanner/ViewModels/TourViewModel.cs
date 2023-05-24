@@ -10,15 +10,15 @@ namespace TourPlanner.ViewModels
     class TourViewModel : ViewModelBase
     {
         private readonly Tour _tour;
-
+        public Guid Id => _tour.Id;
         public string Name => _tour.Name;
         public string? Description => _tour.Description;
-
         public string From => _tour.From;
         public string To => _tour.To;
         public double Distance => _tour.Distance;
         public string FormatedTime => _tour.FormatedTime;
 
+        public string PicturePath => _tour.PicturePath;
         public string TransportType => _tour.TransportType.ToString();
 
         public TourViewModel(Tour tour) {

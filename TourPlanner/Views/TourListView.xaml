@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:TourPlanner.Views"
              xmlns:views="clr-namespace:TourPlanner.Views"
              xmlns:vmds="clr-namespace:TourPlanner.ViewModels"
+             xmlns:cnvs="clr-namespace:TourPlanner.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="384">
              <!--d:DataContext="{d:DesignInstance Type=vmds:TourListViewModel}"-->

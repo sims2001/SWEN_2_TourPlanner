@@ -11,13 +11,15 @@ namespace TourPlanner.Commands
 {
     class NavigateCommand : CommandBase
     {
-        private readonly NavigationService _navigationService;
-        public NavigateCommand(NavigationService navigationService) { 
+        private readonly MyOwnNavigationService _navigationService;
+        private readonly string _whereTo;
+        public NavigateCommand(string wherTo, MyOwnNavigationService navigationService) { 
             _navigationService = navigationService;
+            _whereTo = wherTo;
         }
 
         public override void Execute(object? parameter) {
-            _navigationService.Navigate();
+            _navigationService.NavigateTo(_whereTo);
         }
     }
 }

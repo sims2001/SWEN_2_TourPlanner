@@ -16,25 +16,25 @@ namespace TourPlanner.ViewModels
     class TourEditorViewModel : ViewModelBase
     {
         private ObservableCollection<TransportType> _transportTypes;
-        private TransportType? _selectedTransportType;
-        private TourViewModel _tour;
+        private TransportType _selectedTransportType;
+        private TourViewModel? _tour;
+        private readonly MyOwnNavigationService _myOwnNavigationService;
 
-        public TourEditorViewModel(NavigationService overViewNavigationService) {
+        public TourEditorViewModel(TourManager tourManager, MyOwnNavigationService myOwnNavigationService) {
             _transportTypes = new ObservableCollection<TransportType>();
-
             foreach (var transportType in Enum.GetValues(typeof(TransportType)).Cast<TransportType>()) {
                 _transportTypes.Add(transportType);
             }
-            
             _selectedTransportType = _transportTypes.FirstOrDefault();
+            _myOwnNavigationService = myOwnNavigationService;
 
-            ToOverViewCommand = new NavigateCommand(overViewNavigationService);
-            SaveTourCommand = new SaveTourCommand();
+            ToOverViewCommand = new NavigateCommand("overview", _myOwnNavigationService);
+            SaveTourCommand = new SaveTourCommand(this, tourManager, _myOwnNavigationService);
         }
 
         public IEnumerable<TransportType> TransportTypes => _transportTypes;
 
-        public TransportType? SelectedTransportType {
+        public TransportType SelectedTransportType {
             get => _selectedTransportType;
             set {
                 _selectedTransportType = value;
@@ -79,6 +79,18 @@ namespace TourPlanner.ViewModels
             set {
                 _tourTo = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private bool _isLoading;
+
+        public bool IsLoading {
+            get { return _isLoading; } 
+            set {
+                if (_isLoading != value) { 
+                    _isLoading = value;
+                OnPropertyChanged();
+            }
             }
         }
 

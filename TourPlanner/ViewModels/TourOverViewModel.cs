@@ -19,14 +19,19 @@ namespace TourPlanner.ViewModels
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour;
         private ViewModelBase _model;
+        private readonly MyOwnNavigationService _myOwnNavigationService;
 
+        private TourManager _manager;
 
-        public TourOverViewModel(NavigationService editTourNavigationService) {
+        public TourOverViewModel(MyOwnNavigationService editTourNavigationService) { //, TourManager tourManager) {
             _allTours = new ObservableCollection<TourViewModel>();
+            //_manager = tourManager;
+            _myOwnNavigationService = editTourNavigationService;
+            //_allTours = 
             GenerateTestTours(3);
 
             _model = this;
-            NewTourCommand = new NavigateCommand(editTourNavigationService);
+            NewTourCommand = new NavigateCommand("toureditor", _myOwnNavigationService);
         }
 
         public IEnumerable<TourViewModel> AllTours => _allTours;

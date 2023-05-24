@@ -19,5 +19,6 @@ namespace TourPlanner.Services
         public void Navigate() {
             _navigationStore.CurrentViewModel = _viewModelFactory();
         }
+
     }
 }

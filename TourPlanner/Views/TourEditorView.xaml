@@ -36,16 +36,16 @@
                     </Grid.ColumnDefinitions>
                     
                     <Label Margin="0 10 0 0" Grid.Row="0" Grid.Column="0" Content="Tour Name" />
-                    <TextBox Margin="0 10 0 0" Grid.Row="0" Grid.Column="1" MaxLength="28" Text="{Binding TourName}" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="0" Grid.Column="1" MaxLength="28" Text="{Binding TourName, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="Tour Description" />
                     <TextBox Margin="0 10 0 0" Grid.Row="1" Grid.Column="1" Text="{Binding TourDescription}" />
 
                     <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="Tour Start:" />
-                    <TextBox Margin="0 10 0 0" Grid.Row="2" Grid.Column="1" Text="{Binding TourFrom}" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="2" Grid.Column="1" Text="{Binding TourFrom, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Margin="0 10 0 0" Grid.Row="3" Grid.Column="0" Content="Tour End:" />
-                    <TextBox Margin="0 10 0 0" Grid.Row="3" Grid.Column="1" Text="{Binding TourTo}" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="3" Grid.Column="1" Text="{Binding TourTo, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="Transport Type:" />
                     <ComboBox Margin="0 10 0 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding TransportTypes}" SelectedItem="{Binding SelectedTransportType}" />
