@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TourPlanner.Services;
 using TourPlanner.Stores;
 using TourPlanner.ViewModels;
 using TourPlanner.Views;
@@ -22,7 +23,7 @@ namespace TourPlanner {
         }
 
         protected override void OnStartup(StartupEventArgs e) {
-            _navigationStore.CurrentViewModel = new TourOverViewModel(_navigationStore, CreateEditorViewModel);
+            _navigationStore.CurrentViewModel = new TourOverViewModel(new NavigationService(_navigationStore, CreateEditorViewModel));
 
             MainWindow = new MainWindow() {
                 DataContext = new MainWindowViewModel(_navigationStore)
@@ -34,11 +35,11 @@ namespace TourPlanner {
         }
 
         private TourEditorViewModel CreateEditorViewModel() {
-            return new TourEditorViewModel(_navigationStore, CreateOverViewModel);
+            return new TourEditorViewModel(new NavigationService(_navigationStore, CreateOverViewModel));
         }
 
         private TourOverViewModel CreateOverViewModel() {
-            return new TourOverViewModel(_navigationStore, CreateEditorViewModel);
+            return new TourOverViewModel( new NavigationService(_navigationStore, CreateEditorViewModel));
         }
 
     }

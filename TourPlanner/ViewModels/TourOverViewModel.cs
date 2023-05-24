@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TourPlanner.Commands;
 using TourPlanner.Models;
+using TourPlanner.Services;
 using TourPlanner.Stores;
 
 namespace TourPlanner.ViewModels
@@ -19,12 +20,13 @@ namespace TourPlanner.ViewModels
         private TourViewModel? _currentTour;
         private ViewModelBase _model;
 
-        public TourOverViewModel(NavigationStore navigationStore, Func<ViewModelBase> createEditorViewModel) {
+
+        public TourOverViewModel(NavigationService editTourNavigationService) {
             _allTours = new ObservableCollection<TourViewModel>();
             GenerateTestTours(3);
 
             _model = this;
-            NewTourCommand = new NavigateCommand(navigationStore, createEditorViewModel);
+            NewTourCommand = new NavigateCommand(editTourNavigationService);
         }
 
         public IEnumerable<TourViewModel> AllTours => _allTours;

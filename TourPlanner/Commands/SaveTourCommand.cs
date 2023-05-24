@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TourPlanner.Commands
 {
-    class SaveRouteCommand : CommandBase
+    class SaveTourCommand : CommandBase
     {
         public override void Execute(object? parameter) {
-            throw new NotImplementedException();
+            
         }
     }
 }

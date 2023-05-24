@@ -22,8 +22,35 @@
             
             <GroupBox Header="Edit Tour" Grid.Column="0" Padding="5">
                 <Grid>
-                <Label Content="Tourname" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     
+                    <Label Margin="0 10 0 0" Grid.Row="0" Grid.Column="0" Content="Tour Name" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="0" Grid.Column="1" MaxLength="28" Text="{Binding TourName}" />
+
+                    <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="Tour Description" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="1" Grid.Column="1" Text="{Binding TourDescription}" />
+
+                    <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="Tour Start:" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="2" Grid.Column="1" Text="{Binding TourFrom}" />
+
+                    <Label Margin="0 10 0 0" Grid.Row="3" Grid.Column="0" Content="Tour End:" />
+                    <TextBox Margin="0 10 0 0" Grid.Row="3" Grid.Column="1" Text="{Binding TourTo}" />
+
+                    <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="Transport Type:" />
+                    <ComboBox Margin="0 10 0 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding TransportTypes}" SelectedItem="{Binding SelectedTransportType}" />
+
+                    <Button Content="Save Tour" Margin="20" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding SaveTourCommand}"/>
                 </Grid>
             </GroupBox>
             <GroupBox Header="Import Tour" Grid.Column="1">
