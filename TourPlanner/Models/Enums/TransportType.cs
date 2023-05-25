@@ -3,7 +3,7 @@
     public enum TransportType {
         Fastest,
         Shortest,
-        Pedetstrian,
+        Pedestrian,
         Multimodal,
         Bicycle
     }

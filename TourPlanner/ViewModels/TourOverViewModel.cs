@@ -23,15 +23,19 @@ namespace TourPlanner.ViewModels
 
         private TourManager _manager;
 
-        public TourOverViewModel(MyOwnNavigationService editTourNavigationService) { //, TourManager tourManager) {
+        public TourOverViewModel(TourManager tourManager, MyOwnNavigationService editTourNavigationService, NavigationStore store) { //, TourManager tourManager) {
             _allTours = new ObservableCollection<TourViewModel>();
-            //_manager = tourManager;
+            _manager = tourManager;
             _myOwnNavigationService = editTourNavigationService;
-            //_allTours = 
-            GenerateTestTours(3);
+
+            foreach(var t in _manager.GetAllTours()) {
+                _allTours.Add(new TourViewModel(t));
+            }
 
             _model = this;
             NewTourCommand = new NavigateCommand("toureditor", _myOwnNavigationService);
+            DeleteTourCommand = new DeleteTourCommand(_manager, _myOwnNavigationService);
+            EditTourCommand = new ToEditTourCommand(_manager, _myOwnNavigationService, store);
         }
 
         public IEnumerable<TourViewModel> AllTours => _allTours;

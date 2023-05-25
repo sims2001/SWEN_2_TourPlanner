@@ -15,18 +15,33 @@ namespace TourPlanner.ViewModels
 {
     class TourEditorViewModel : ViewModelBase
     {
+        private readonly MyOwnNavigationService _myOwnNavigationService;
         private ObservableCollection<TransportType> _transportTypes;
         private TransportType _selectedTransportType;
         private TourViewModel? _tour;
-        private readonly MyOwnNavigationService _myOwnNavigationService;
 
-        public TourEditorViewModel(TourManager tourManager, MyOwnNavigationService myOwnNavigationService) {
+        public TourViewModel? Tour {
+            get { return _tour; }
+        }
+
+        public TourEditorViewModel(TourManager tourManager, MyOwnNavigationService myOwnNavigationService, Guid? id = null) {
+            
+
+            //Initialize Transport Types
             _transportTypes = new ObservableCollection<TransportType>();
             foreach (var transportType in Enum.GetValues(typeof(TransportType)).Cast<TransportType>()) {
                 _transportTypes.Add(transportType);
             }
             _selectedTransportType = _transportTypes.FirstOrDefault();
             _myOwnNavigationService = myOwnNavigationService;
+
+            if(id.HasValue) {
+                _tour = new TourViewModel(tourManager.GetTour(id.Value));
+                _tourName = _tour.Name;
+                _tourDescription = _tour.Description;
+                _tourFrom = _tour.From;
+                _tourTo = _tour.To;
+            }
 
             ToOverViewCommand = new NavigateCommand("overview", _myOwnNavigationService);
             SaveTourCommand = new SaveTourCommand(this, tourManager, _myOwnNavigationService);
@@ -44,6 +59,7 @@ namespace TourPlanner.ViewModels
 
         public ICommand ToOverViewCommand { get; }
         public ICommand SaveTourCommand { get; }
+        public ICommand UpdateTourCommand { get; }
 
 
         private string? _tourName;
@@ -83,14 +99,11 @@ namespace TourPlanner.ViewModels
         }
 
         private bool _isLoading;
-
         public bool IsLoading {
             get { return _isLoading; } 
             set {
-                if (_isLoading != value) { 
-                    _isLoading = value;
+                _isLoading = value;
                 OnPropertyChanged();
-            }
             }
         }
 

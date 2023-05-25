@@ -27,7 +27,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" FontFamily="Courier New" Text="{Binding Name}" TextWrapping="WrapWithOverflow" FontSize="18"/>
-                        <Button Grid.Column="1" FontSize="11" Height="28" Width="28" Margin="4 0 4 0" Command="{Binding EditTourCommand}">
+                        <Button Grid.Column="1" FontSize="11" Height="28" Width="28" Margin="4 0 4 0" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.EditTourCommand}"  CommandParameter="{Binding Id}">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="20"/>
@@ -35,7 +35,7 @@
                             </Button.Resources>
                             ✎
                         </Button>
-                        <Button Grid.Column="2" FontSize="11" Height="28" Width="28" Margin="4 0 4 0" Command="{Binding DeleteTourCommand}">
+                        <Button Grid.Column="2" FontSize="11" Height="28" Width="28" Margin="4 0 4 0" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.DeleteTourCommand}" CommandParameter="{Binding Id}">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="20"/>

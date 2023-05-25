@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.Models;
+using TourPlanner.Stores;
 
 namespace TourPlanner.ViewModels
 {
     class TourViewModel : ViewModelBase
     {
         private readonly Tour _tour;
+        private readonly NavigationStore? _navigationStore;
         public Guid Id => _tour.Id;
         public string Name => _tour.Name;
         public string? Description => _tour.Description;
@@ -21,8 +23,9 @@ namespace TourPlanner.ViewModels
         public string PicturePath => _tour.PicturePath;
         public string TransportType => _tour.TransportType.ToString();
 
-        public TourViewModel(Tour tour) {
+        public TourViewModel(Tour tour, NavigationStore? store = null) {
             _tour = tour;
+            _navigationStore = store;
         }
 
     }

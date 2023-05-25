@@ -21,7 +21,6 @@ namespace TourPlanner {
         private readonly TourManager _tourManager;
         private readonly MyOwnNavigationService _myOwnNavigationService;
 
-        private readonly MyOwnNavigationService _myNavigationService;
         public App() {
             _navigationStore = new NavigationStore();
             _tourManager = new TourManager();
@@ -32,9 +31,12 @@ namespace TourPlanner {
             _myOwnNavigationService.RegisterRoute("overview", CreateOverViewModel);
             _myOwnNavigationService.RegisterRoute("toureditor", CreateEditorViewModel);
 
-            _navigationStore.CurrentViewModel = new TourOverViewModel(_myOwnNavigationService);
-            //_navigationStore.CurrentViewModel = new TourOverViewModel(new NavigationService(_navigationStore, CreateEditorViewModel));
+            _tourManager.AddTour( Tour.CreateExampleTour() );
+            _tourManager.AddTour( Tour.CreateExampleTour() );
+            _tourManager.AddTour( Tour.CreateExampleTour());
 
+            _navigationStore.CurrentViewModel = new TourOverViewModel(_tourManager, _myOwnNavigationService, _navigationStore);
+            
             MainWindow = new MainWindow() {
                 DataContext = new MainWindowViewModel(_navigationStore)
             };
@@ -48,8 +50,9 @@ namespace TourPlanner {
             return new TourEditorViewModel(_tourManager, _myOwnNavigationService);
         }
 
+
         private TourOverViewModel CreateOverViewModel() {
-            return new TourOverViewModel(_myOwnNavigationService);
+            return new TourOverViewModel(_tourManager, _myOwnNavigationService, _navigationStore);
         }
 
     }

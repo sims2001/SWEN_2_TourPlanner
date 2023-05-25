@@ -87,7 +87,11 @@ namespace TourPlanner.Models {
             string from = $"{Faker.Address.StreetAddress()}, {Faker.Address.City()}, {Faker.Address.Country()}"; 
             string to = $"{Faker.Address.StreetAddress()}, {Faker.Address.City()}, {Faker.Address.Country()}";
             TransportType trt = (TransportType) rnd.Next(0, System.Enum.GetNames(typeof(TransportType)).Length);
-            return new Tour { Id = new Guid(), Name = $"Example Tour {num}", Description = desc, From = from, To = to, TransportType = trt, Distance = rnd.NextDouble() * rnd.Next(5, 100), Time = rnd.Next(0, 5000), PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png" };
+            return new Tour { Id = Guid.NewGuid(), Name = $"Example Tour {num}", Description = desc, From = from, To = to, TransportType = trt, Distance = rnd.NextDouble() * rnd.Next(5, 100), Time = rnd.Next(0, 5000), PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png" };
+        }
+
+        public static Guid ToNotNullGuid(Guid? source) {
+            return source ?? Guid.Empty;
         }
     }
 }
