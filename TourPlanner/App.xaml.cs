@@ -31,9 +31,11 @@ namespace TourPlanner {
             _myOwnNavigationService.RegisterRoute("overview", CreateOverViewModel);
             _myOwnNavigationService.RegisterRoute("toureditor", CreateEditorViewModel);
 
-            _tourManager.AddTour( Tour.CreateExampleTour() );
-            _tourManager.AddTour( Tour.CreateExampleTour() );
-            _tourManager.AddTour( Tour.CreateExampleTour());
+            for (int i = 0; i < 1; i++) {
+                _tourManager.AddTour( Tour.CreateExampleTour() );
+                _tourManager.AddTour( Tour.CreateExampleTour() );
+                _tourManager.AddTour( Tour.CreateExampleTour() );
+            }
 
             _navigationStore.CurrentViewModel = new TourOverViewModel(_tourManager, _myOwnNavigationService, _navigationStore);
             

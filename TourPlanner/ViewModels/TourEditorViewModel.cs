@@ -41,10 +41,12 @@ namespace TourPlanner.ViewModels
                 _tourDescription = _tour.Description;
                 _tourFrom = _tour.From;
                 _tourTo = _tour.To;
+                _selectedTransportType = _tour.TransportType;
             }
 
             ToOverViewCommand = new NavigateCommand("overview", _myOwnNavigationService);
             SaveTourCommand = new SaveTourCommand(this, tourManager, _myOwnNavigationService);
+            UpdateTourCommand = new SaveEditedTourCommand(this, tourManager, _myOwnNavigationService);
         }
 
         public IEnumerable<TransportType> TransportTypes => _transportTypes;

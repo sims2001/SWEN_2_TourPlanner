@@ -19,9 +19,11 @@ namespace TourPlanner.ViewModels
         public string To => _tour.To;
         public double Distance => _tour.Distance;
         public string FormatedTime => _tour.FormatedTime;
-
+        public string FormatedAverageTime => _tour.FormatedAverageTime;
         public string PicturePath => _tour.PicturePath;
-        public string TransportType => _tour.TransportType.ToString();
+        public TransportType TransportType => _tour.TransportType;
+
+        public string ChildFriendly => _tour.ChildFriendly ? "This Tour is Child Friendly" : "This Tour is not Child Friendly";
 
         public TourViewModel(Tour tour, NavigationStore? store = null) {
             _tour = tour;

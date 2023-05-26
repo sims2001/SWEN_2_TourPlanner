@@ -61,8 +61,10 @@ namespace TourPlanner.Commands
                     TransportType = _tourEditorViewModel.SelectedTransportType,
                     Time = routeInfo.Time,
                     Distance = routeInfo.Distance,
-                    PicturePath = routeInfo.PicPath, //"C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png",
+                    PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png", //routeInfo.PicPath, //"C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png",
                 };
+
+                //_tourManager.AddTour(_tourEditorViewModel.TourFrom, _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType)
                 _tourManager.AddTour(NewTour);
 
                 _tourEditorViewModel.IsLoading = false;

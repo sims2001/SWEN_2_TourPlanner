@@ -18,7 +18,7 @@ namespace TourPlanner.Models {
         public string Transport { get; protected set; }
         public int Time { get; protected set; }
         public double Distance { get; protected set; }
-        public string PicPath { get; protected set; }
+        public string PicPath { get; protected set; } = string.Empty;
         public byte[]? mapArray { get; protected set; }
 
         public OnlineRoute(string from, string to, string tt) {
@@ -60,7 +60,7 @@ namespace TourPlanner.Models {
             Distance = route.Value<double>("distance");
             Time = route.Value<int>("time");
 
-            await setMap();
+            //await setMap();
         }
 
         private async Task setMap() {

@@ -16,45 +16,72 @@
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" Padding="4">
             <TabItem Header="Tour Information" FontSize="16">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Margin="5 10 5 10" Text="{Binding CurrentTour.Name}" FontSize="28" FontWeight="Bold" TextAlignment="Center" Grid.Row="0"/>
-                    <TextBlock FontFamily="Courier New" Margin="5 10 5 10" Text="{Binding CurrentTour.Description}" FontSize="16" TextAlignment="Justify" Grid.Row="1" TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="5 10 5 10" Text="{Binding CurrentTour.Name}" FontSize="28" FontWeight="Bold" TextAlignment="Center" Grid.Row="0" />
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5 10 5 10">
-                        <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Start Location:        " />
-                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.From}" FontSize="16" TextWrapping="WrapWithOverflow" />
-                    </StackPanel>
+                        <TextBlock FontFamily="Courier New" Margin="5 10 5 10" Text="{Binding CurrentTour.ChildFriendly}" FontSize="16" TextAlignment="Center" Grid.Row="1" TextWrapping="WrapWithOverflow" />
 
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5 10 5 10">
-                        <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="End Location:          " />
-                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.To}" FontSize="16" TextWrapping="WrapWithOverflow" />
-                    </StackPanel>
-                    
-                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="5 10 5 10">
-                        <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Transportation Type:   " />
-                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.TransportType}" FontSize="16" TextWrapping="WrapWithOverflow" />
-                    </StackPanel>
-                    
-                    <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5 10 5 10">
-                        <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Estimated Time:        " />
-                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.FormatedTime}" FontSize="16" TextWrapping="WrapWithOverflow" />
-                    </StackPanel>
 
-                    <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="5 10 5 10">
-                        <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Distance:              " />
-                        <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.Distance}" FontSize="16" TextWrapping="WrapWithOverflow" />
-                    </StackPanel>
-                </Grid>
+                        <TextBlock FontFamily="Courier New" Margin="5 10 5 10" Text="{Binding CurrentTour.Description}" FontSize="16" TextAlignment="Justify" Grid.Row="2" TextWrapping="WrapWithOverflow" />
+
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Start Location:        " />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.From}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="End Location:          " />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.To}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Transportation Type:   " />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.TransportType}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Estimated Time:        " />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.FormatedTime}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="7" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Distance:              " />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.Distance}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text=" km" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="8" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}" FontFamily="Courier New" FontSize="16" Text="Average Time:          " />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.FormatedAverageTime}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+
+                        <!--<StackPanel Grid.Row="8" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock TextAlignment="Center" FontFamily="Courier New" FontSize="16" Text="{Binding CurrentTour.ChildFriendly}"/>
+                        </StackPanel>-->
+                        <Grid Grid.Row="9" Margin="5 10 5 10" Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="5*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Margin="20" Padding="10">Generate Report</Button>
+                            <Button Grid.Column="1" Margin="20" Padding="10">Export Tour</Button>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Tour Image" FontSize="16">
                 <Image Source="{Binding CurrentTour.PicturePath}" Stretch="UniformToFill" />
