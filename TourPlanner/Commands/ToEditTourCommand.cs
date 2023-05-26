@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,12 @@ using TourPlanner.ViewModels;
 namespace TourPlanner.Commands {
     internal class ToEditTourCommand : CommandBase {
 
-        private readonly TourManager _tourManager;
+
         private readonly NavigationStore _navigationStore;
 
-        private readonly ParameterNavigationService<Guid, TourEditorViewModel> _parameterNavigationService;
-        public ToEditTourCommand(TourManager tourManager, ParameterNavigationService<Guid, TourEditorViewModel> navigationService){
-            _tourManager = tourManager;
-            _parameterNavigationService = navigationService;
+        private readonly IParameterNavigationService<Guid, TourEditorViewModel> _parameterNavigationService;
+        public ToEditTourCommand(IServiceProvider serviceProvider){
+            _parameterNavigationService = serviceProvider.GetService<IParameterNavigationService<Guid, TourEditorViewModel>>();
         }
 
         public override void Execute(object? parameter) {

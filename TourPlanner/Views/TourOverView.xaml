@@ -9,15 +9,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <TextBlock Text="Here Will Be The/A Menu" FontSize="16" TextAlignment="Center"/>
-        </Grid>
 
         <!-- SearchBar -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*"/>
@@ -26,7 +22,7 @@
             <TextBox Grid.Column="1" FontSize="16" BorderBrush="{x:Null}"/>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="0 5 0 0">
+        <Grid Grid.Row="1" Margin="0 5 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="7*" />

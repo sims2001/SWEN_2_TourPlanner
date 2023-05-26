@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.Exceptions;
 using TourPlanner.Models;
 using TourPlanner.Services;
@@ -17,10 +18,10 @@ namespace TourPlanner.Commands
         private readonly TourManager _tourManager;
         private readonly TourEditorViewModel _tourEditorViewModel;
         private readonly INavigationService<TourOverViewModel> _navigationService;
-        public SaveTourCommand(TourEditorViewModel tourEditorViewModel, TourManager tourManager, INavigationService<TourOverViewModel> myOwnNavigationService) {
+        public SaveTourCommand(TourEditorViewModel tourEditorViewModel, IServiceProvider serviceProvider) {
             _tourEditorViewModel = tourEditorViewModel;
-            _tourManager = tourManager;
-            _navigationService = myOwnNavigationService;
+            _tourManager = serviceProvider.GetService<TourManager>();
+            _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
 
             _tourEditorViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }

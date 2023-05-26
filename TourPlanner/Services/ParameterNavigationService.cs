@@ -7,7 +7,7 @@ using TourPlanner.Stores;
 using TourPlanner.ViewModels;
 
 namespace TourPlanner.Services {
-    internal class ParameterNavigationService<TParameter, TViewModel> where TViewModel : ViewModelBase 
+    internal class ParameterNavigationService<TParameter, TViewModel> : IParameterNavigationService<TParameter, TViewModel> where TViewModel : ViewModelBase 
     {
 
         private readonly NavigationStore _navigationStore;

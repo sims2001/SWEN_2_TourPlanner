@@ -21,8 +21,6 @@ namespace TourPlanner {
     /// </summary>
     public partial class App : Application {
 
-        private readonly NavigationStore _navigationStore;
-        private readonly TourManager _tourManager;
         private readonly TourPlannerDbContext _context;
         private readonly IServiceProvider _serviceProvider;
         public IConfiguration Configuration { get; private set; }
@@ -32,28 +30,38 @@ namespace TourPlanner {
 
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<TourManager>();
+            services.AddSingleton<OpenFileDialogService>();
 
             services.AddSingleton<MainWindowViewModel>();
+
+            services.AddTransient<INavigationService<TourOverViewModel>>(s => CreateOverViewNavigationService(s));
+            services.AddTransient<INavigationService<TourEditorViewModel>>(s => CreateEditorViewNavigationService(s));
+            //services.AddTransient<INavigationService<LogEditorViewModel>>(s => CreateLogEditorViewNavigationService(s));
+
+            services.AddTransient<IParameterNavigationService<Guid, TourEditorViewModel>>(s => CreateEditorParameterNavigationService(s));
+            //services.AddTransient<IParameterNavigationService<Guid, LogEditorViewModel>>(s => CreateLogEditorParameterNavigationService(s));
 
             services.AddSingleton<MainWindow>(s => new MainWindow() {
                 DataContext = s.GetRequiredService<MainWindowViewModel>()
             });
 
-            _serviceProvider = services.BuildServiceProvider();
             
             // var options = new DbContextOptionsBuilder().UseNpgsql("postgresql://localhost:5432");
             // _context = new TourPlannerDbContext( options. );
+
+            _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e) {
 
+            TourManager manager = _serviceProvider.GetRequiredService<TourManager>();
+            for (int i = 0; i < 1; i++) {
+                manager.AddTour( Tour.CreateExampleTour() );
+                manager.AddTour( Tour.CreateExampleTour() );
+                manager.AddTour( Tour.CreateExampleTour() );
+            }
 
-            INavigationService<TourOverViewModel> navigation = new NavigationService<TourOverViewModel>(
-                _serviceProvider.GetRequiredService<NavigationStore>(),
-                () => new TourOverViewModel(
-                    _serviceProvider.GetRequiredService<TourManager>(),
-                    _serviceProvider.GetRequiredService<NavigationStore>()
-                ));
+            INavigationService<TourOverViewModel> navigation = _serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             navigation.Navigate();
 
             MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
@@ -65,20 +73,61 @@ namespace TourPlanner {
 
 
         private INavigationService<TourOverViewModel>
-            createOverViewNavigationService(IServiceProvider serviceProvider) {
+            CreateOverViewNavigationService(IServiceProvider serviceProvider) {
             return new NavigationService<TourOverViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                CreateOverViewModel(serviceProvider)
-                );
+                CreateOverViewModel,
+                serviceProvider
+            );
         }
-
         
-
         private TourOverViewModel CreateOverViewModel(IServiceProvider serviceProvider) {
-            return new TourOverViewModel(
-                serviceProvider.GetRequiredService<TourManager>(),
-                serviceProvider.GetRequiredService<NavigationStore>()
-                );
+            return new TourOverViewModel(serviceProvider);
         }
+
+        private INavigationService<TourEditorViewModel>
+            CreateEditorViewNavigationService(IServiceProvider serviceProvider) {
+            return new NavigationService<TourEditorViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                CreateEditorViewModel,
+                serviceProvider
+            );
+        }
+
+        private TourEditorViewModel CreateEditorViewModel(IServiceProvider serviceProvider) {
+            return new TourEditorViewModel(serviceProvider);
+        }
+        private TourEditorViewModel CreateEditorIdViewModel(IServiceProvider serviceProvider, Guid id) {
+            return new TourEditorViewModel(serviceProvider, id);
+        }
+
+        //private INavigationService<LogEditorViewModel>
+        //    createEditorViewNavigationService(IServiceProvider serviceProvider) {
+        //    return new NavigationService<LogEditorViewModel>(
+        //        serviceProvider.GetRequiredService<NavigationStore>(),
+        //        CreateLogEditorViewModel,
+        //        serviceProvider
+        //    );
+        //}
+
+        //private LogEditorViewModel CreateLogEditorViewModel(IServiceProvider serviceProvider) {
+        //    return new LogEditorViewModel(serviceProvider);
+        //}
+
+        //private LogEditorViewModel CreateLogEditorIdViewModel(IServiceProvider serviceProvider, Guid id) {
+        //    return new LogEditorViewModel(serviceProvider, id);
+        //}
+
+        private IParameterNavigationService<Guid, TourEditorViewModel> CreateEditorParameterNavigationService(IServiceProvider serviceProvider) {
+            return new ParameterNavigationService<Guid, TourEditorViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                (parameter) => CreateEditorIdViewModel(serviceProvider, parameter));
+        }
+
+        //private IParameterNavigationService<Guid, LogEditorViewModel> CreateLogEditorParameterNavigationService(IServiceProvider serviceProvider) {
+        //    return new ParameterNavigationService<Guid, LogEditorIdViewModel>(
+        //        serviceProvider.GetRequiredService<NavigationStore>(),
+        //        (parameter) => CreateLogEditorIdViewModel(serviceProvider, parameter));
+        //}
     }
 }

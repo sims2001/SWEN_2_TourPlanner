@@ -10,19 +10,17 @@ namespace TourPlanner.Services {
     public class NavigationService<TViewModel> : INavigationService<TViewModel> where TViewModel : ViewModelBase{
 
         private readonly NavigationStore _navigationStore;
-        private readonly Func<TViewModel> _createViewModel;
+        private readonly Func<IServiceProvider, TViewModel> _createViewModel;
+        private readonly IServiceProvider _serviceProvider;
 
-        public NavigationService(NavigationStore navigation, Func<TViewModel> createViewModel) {
+        public NavigationService(NavigationStore navigation, Func<IServiceProvider, TViewModel> createViewModel, IServiceProvider provider ) {
             _navigationStore = navigation;
             _createViewModel = createViewModel;
+            _serviceProvider = provider;
         }
-
-        //public NavigationService(NavigationStore navigationStore, Func<TViewModel, IServiceProvider> makeViewModel) {
-        //    _navigationStore = navigationStore;
-        //}
-
+        
         public void Navigate() {
-            _navigationStore.CurrentViewModel = _createViewModel();
+            _navigationStore.CurrentViewModel = _createViewModel.Invoke(_serviceProvider);
         }
 
     

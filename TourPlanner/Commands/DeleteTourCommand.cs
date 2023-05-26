@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.ViewModels;
@@ -14,9 +15,9 @@ namespace TourPlanner.Commands {
         private readonly TourManager _manager;
         private readonly INavigationService<TourOverViewModel> _navigationService;
 
-        public DeleteTourCommand(TourManager tourManager, INavigationService<TourOverViewModel> navigationService) { 
-            _manager = tourManager;
-            _navigationService = navigationService;
+        public DeleteTourCommand(IServiceProvider serviceProvider){//TourManager tourManager, INavigationService<TourOverViewModel> navigationService) { 
+            _manager = serviceProvider.GetService<TourManager>();
+            _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
         }
 
         public override void Execute(object? parameter) {

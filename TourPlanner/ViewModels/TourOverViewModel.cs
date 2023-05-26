@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.Commands;
 using TourPlanner.Models;
 using TourPlanner.Services;
@@ -19,37 +20,31 @@ namespace TourPlanner.ViewModels
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour;
         private ViewModelBase _model;
-        //private readonly NavigationService _myOwnNavigationService;
 
         private TourManager _manager;
 
-        public TourOverViewModel(TourManager tourManager, NavigationStore store, IServiceProvider? serviceProvider = null) {
+        public TourOverViewModel(IServiceProvider serviceProvider) {
             _allTours = new ObservableCollection<TourViewModel>();
-            _manager = tourManager;
+            _manager = serviceProvider.GetRequiredService<TourManager>();
 
             foreach(var t in _manager.GetAllTours()) {
                 _allTours.Add(new TourViewModel(t));
             }
 
             _model = this;
+
             NewTourCommand = new NavigateCommand<TourEditorViewModel>(
-                new NavigationService<TourEditorViewModel>(
-                    store, 
-                    () => new TourEditorViewModel(_manager, store)));
+                    serviceProvider.GetService<INavigationService<TourEditorViewModel>>()
+                );
 
-            DeleteTourCommand = new DeleteTourCommand(_manager, 
-                new NavigationService<TourOverViewModel>(
-                    store, 
-                    () => new TourOverViewModel(tourManager, store)));
+            DeleteTourCommand = new DeleteTourCommand(serviceProvider);
 
-            // Pass Id To Edit Tour Command
-            ParameterNavigationService<Guid, TourEditorViewModel> parameterNavigationService =
-                new ParameterNavigationService<Guid, TourEditorViewModel>(
-                    store, 
-                    (parameter) => new TourEditorViewModel(tourManager, store, parameter) );
-            
+
+            IParameterNavigationService<Guid, TourEditorViewModel> parameterNavigationService =
+                serviceProvider.GetService<IParameterNavigationService<Guid, TourEditorViewModel>>();
+
             EditTourCommand =
-                new ToEditTourCommand(_manager, parameterNavigationService); 
+                new ToEditTourCommand(serviceProvider); 
         }
 
         public IEnumerable<TourViewModel> AllTours => _allTours;

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ using TourPlanner.Stores;
 
 namespace TourPlanner.ViewModels
 {
-    class TourEditorViewModel : ViewModelBase
+    public class TourEditorViewModel : ViewModelBase
     {
         private ObservableCollection<TransportType> _transportTypes;
         private TransportType _selectedTransportType;
@@ -23,8 +24,10 @@ namespace TourPlanner.ViewModels
             get { return _tour; }
         }
 
-        public TourEditorViewModel(TourManager tourManager, NavigationStore store, Guid? id = null) {
-            
+        private readonly TourManager _tourManager;
+        public TourEditorViewModel(IServiceProvider serviceProvider, Guid? id = null) {
+            _tourManager = serviceProvider.GetRequiredService<TourManager>();
+
             //Initialize Transport Types
             _transportTypes = new ObservableCollection<TransportType>();
             foreach (var transportType in Enum.GetValues(typeof(TransportType)).Cast<TransportType>()) {
@@ -33,7 +36,7 @@ namespace TourPlanner.ViewModels
             _selectedTransportType = _transportTypes.FirstOrDefault();
 
             if(id.HasValue) {
-                _tour = new TourViewModel(tourManager.GetTour(id.Value));
+                _tour = new TourViewModel(_tourManager.GetTour(id.Value));
                 _tourName = _tour.Name;
                 _tourDescription = _tour.Description;
                 _tourFrom = _tour.From;
@@ -42,24 +45,14 @@ namespace TourPlanner.ViewModels
             }
 
             ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
-                new NavigationService<TourOverViewModel>(
-                    store, 
-                    () => new TourOverViewModel(tourManager, store)
-                ));
+                    serviceProvider.GetService<INavigationService<TourOverViewModel>>()
+                );
 
-            SaveTourCommand = new SaveTourCommand(
-                this, tourManager,
-                new NavigationService<TourOverViewModel>(
-                    store,
-                    () => new TourOverViewModel(tourManager, store)
-                ));
+            SaveTourCommand = new SaveTourCommand(this, serviceProvider);
 
-            UpdateTourCommand = new SaveEditedTourCommand(
-                this, tourManager,
-                new NavigationService<TourOverViewModel>(
-                    store,
-                    () => new TourOverViewModel(tourManager, store)
-                ));
+            UpdateTourCommand = new SaveEditedTourCommand(this, serviceProvider);
+
+            ImportPathCommand = new FilePickerCommand(this, serviceProvider);
         }
 
         public IEnumerable<TransportType> TransportTypes => _transportTypes;
@@ -75,6 +68,7 @@ namespace TourPlanner.ViewModels
         public ICommand ToOverViewCommand { get; }
         public ICommand SaveTourCommand { get; }
         public ICommand UpdateTourCommand { get; }
+        public ICommand ImportPathCommand { get; }
 
 
         private string? _tourName;
@@ -122,5 +116,14 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        private string _importPath;
+
+        public string ImportPath {
+            get { return _importPath; }
+            set {
+                _importPath = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
