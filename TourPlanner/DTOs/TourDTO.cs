@@ -25,5 +25,6 @@ namespace TourPlanner.DTOs {
         public int Time { get; set; }
         [Required]
         public string PicturePath { get; set; }
+        public IEnumerable<TourLog> Logs { get; set; }
     }
 }

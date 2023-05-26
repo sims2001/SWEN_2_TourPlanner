@@ -28,8 +28,12 @@ namespace TourPlanner {
         public App() {
             IServiceCollection services = new ServiceCollection();
 
+            //services.AddSingleton<TourManagerDbContext>();
+
             services.AddSingleton<NavigationStore>();
-            services.AddSingleton<TourManager>();
+            services.AddSingleton<TourManager>( s => new TourManager() {
+                    //DataBase = s.GetRequiredService<TourManagerDbContext>();
+                });
             services.AddSingleton<OpenFileDialogService>();
 
             services.AddSingleton<MainWindowViewModel>();
