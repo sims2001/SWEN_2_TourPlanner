@@ -23,10 +23,9 @@ namespace TourPlanner.ViewModels
 
         private TourManager _manager;
 
-        public TourOverViewModel(TourManager tourManager, NavigationStore store) { //, TourManager tourManager) {
+        public TourOverViewModel(TourManager tourManager, NavigationStore store, IServiceProvider? serviceProvider = null) {
             _allTours = new ObservableCollection<TourViewModel>();
             _manager = tourManager;
-            //_myOwnNavigationService = editTourNavigationService;
 
             foreach(var t in _manager.GetAllTours()) {
                 _allTours.Add(new TourViewModel(t));
@@ -43,10 +42,12 @@ namespace TourPlanner.ViewModels
                     store, 
                     () => new TourOverViewModel(tourManager, store)));
 
+            // Pass Id To Edit Tour Command
             ParameterNavigationService<Guid, TourEditorViewModel> parameterNavigationService =
                 new ParameterNavigationService<Guid, TourEditorViewModel>(
                     store, 
                     (parameter) => new TourEditorViewModel(tourManager, store, parameter) );
+            
             EditTourCommand =
                 new ToEditTourCommand(_manager, parameterNavigationService); 
         }

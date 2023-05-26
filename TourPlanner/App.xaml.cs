@@ -28,43 +28,57 @@ namespace TourPlanner {
         public IConfiguration Configuration { get; private set; }
 
         public App() {
-            //IServiceCollection services = new ServiceCollection();
+            IServiceCollection services = new ServiceCollection();
 
-            //services.AddSingleton<NavigationStore>();
-            //services.AddSingleton<TourManager>();
-            //services.AddSingleton<MyOwnNavigationService>();
+            services.AddSingleton<NavigationStore>();
+            services.AddSingleton<TourManager>();
 
+            services.AddSingleton<MainWindowViewModel>();
 
-            //services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<MainWindow>(s => new MainWindow() {
+                DataContext = s.GetRequiredService<MainWindowViewModel>()
+            });
 
-
-            _navigationStore = new NavigationStore();
-            _tourManager = new TourManager();
-
-
+            _serviceProvider = services.BuildServiceProvider();
+            
             // var options = new DbContextOptionsBuilder().UseNpgsql("postgresql://localhost:5432");
             // _context = new TourPlannerDbContext( options. );
         }
 
         protected override void OnStartup(StartupEventArgs e) {
 
-            for (int i = 0; i < 1; i++) {
-                _tourManager.AddTour( Tour.CreateExampleTour() );
-                _tourManager.AddTour( Tour.CreateExampleTour() );
-                _tourManager.AddTour( Tour.CreateExampleTour() );
-            }
 
-            _navigationStore.CurrentViewModel = new TourOverViewModel(_tourManager, _navigationStore);
-            
-            MainWindow = new MainWindow() {
-                DataContext = new MainWindowViewModel(_navigationStore)
-            };
+            INavigationService<TourOverViewModel> navigation = new NavigationService<TourOverViewModel>(
+                _serviceProvider.GetRequiredService<NavigationStore>(),
+                () => new TourOverViewModel(
+                    _serviceProvider.GetRequiredService<TourManager>(),
+                    _serviceProvider.GetRequiredService<NavigationStore>()
+                ));
+            navigation.Navigate();
+
+            MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
 
             MainWindow.Show();
 
             base.OnStartup(e);
         }
+
+
+        private INavigationService<TourOverViewModel>
+            createOverViewNavigationService(IServiceProvider serviceProvider) {
+            return new NavigationService<TourOverViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                CreateOverViewModel(serviceProvider)
+                );
+        }
+
         
 
+        private TourOverViewModel CreateOverViewModel(IServiceProvider serviceProvider) {
+            return new TourOverViewModel(
+                serviceProvider.GetRequiredService<TourManager>(),
+                serviceProvider.GetRequiredService<NavigationStore>()
+                );
+        }
     }
 }

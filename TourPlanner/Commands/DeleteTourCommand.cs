@@ -12,11 +12,11 @@ namespace TourPlanner.Commands {
     public class DeleteTourCommand : CommandBase
     {
         private readonly TourManager _manager;
-        private readonly NavigationService<TourOverViewModel> _navigationService;
+        private readonly INavigationService<TourOverViewModel> _navigationService;
 
-        public DeleteTourCommand(TourManager tourManager, NavigationService<TourOverViewModel> myOwnNavigationService) { 
+        public DeleteTourCommand(TourManager tourManager, INavigationService<TourOverViewModel> navigationService) { 
             _manager = tourManager;
-            _navigationService = myOwnNavigationService;
+            _navigationService = navigationService;
         }
 
         public override void Execute(object? parameter) {

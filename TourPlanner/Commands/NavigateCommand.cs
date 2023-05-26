@@ -12,8 +12,8 @@ namespace TourPlanner.Commands
     class NavigateCommand<TViewModel> : CommandBase
     where TViewModel : ViewModelBase
     {
-        private readonly NavigationService<TViewModel> _navigationService;
-        public NavigateCommand(NavigationService<TViewModel> navigationService) { 
+        private readonly INavigationService<TViewModel> _navigationService;
+        public NavigateCommand(INavigationService<TViewModel> navigationService) { 
             _navigationService = navigationService;
         }
 

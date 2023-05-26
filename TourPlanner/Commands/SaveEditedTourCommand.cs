@@ -16,8 +16,8 @@ namespace TourPlanner.Commands
     {
         private readonly TourManager _tourManager;
         private readonly TourEditorViewModel _tourEditorViewModel;
-        private readonly NavigationService<TourOverViewModel> _navigationService;
-        public SaveEditedTourCommand(TourEditorViewModel tourEditorViewModel, TourManager tourManager, NavigationService<TourOverViewModel> myOwnNavigationService) {
+        private readonly INavigationService<TourOverViewModel> _navigationService;
+        public SaveEditedTourCommand(TourEditorViewModel tourEditorViewModel, TourManager tourManager, INavigationService<TourOverViewModel> myOwnNavigationService) {
             _tourEditorViewModel = tourEditorViewModel;
             _tourManager = tourManager;
             _navigationService = myOwnNavigationService;

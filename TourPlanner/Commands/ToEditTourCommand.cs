@@ -15,10 +15,8 @@ namespace TourPlanner.Commands {
         private readonly NavigationStore _navigationStore;
 
         private readonly ParameterNavigationService<Guid, TourEditorViewModel> _parameterNavigationService;
-        public ToEditTourCommand(TourManager tourManager, ParameterNavigationService<Guid, TourEditorViewModel> navigationService){ 
-            //_navigationService = myOwnNavigationService;
+        public ToEditTourCommand(TourManager tourManager, ParameterNavigationService<Guid, TourEditorViewModel> navigationService){
             _tourManager = tourManager;
-            //_navigationStore = store;
             _parameterNavigationService = navigationService;
         }
 
