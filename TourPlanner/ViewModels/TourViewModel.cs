@@ -8,7 +8,7 @@ using TourPlanner.Stores;
 
 namespace TourPlanner.ViewModels
 {
-    class TourViewModel : ViewModelBase
+    public class TourViewModel : ViewModelBase
     {
         private readonly Tour _tour;
         private readonly NavigationStore? _navigationStore;

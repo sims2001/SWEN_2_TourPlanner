@@ -15,7 +15,6 @@ namespace TourPlanner.ViewModels
 {
     class TourEditorViewModel : ViewModelBase
     {
-        private readonly MyOwnNavigationService _myOwnNavigationService;
         private ObservableCollection<TransportType> _transportTypes;
         private TransportType _selectedTransportType;
         private TourViewModel? _tour;
@@ -24,16 +23,14 @@ namespace TourPlanner.ViewModels
             get { return _tour; }
         }
 
-        public TourEditorViewModel(TourManager tourManager, MyOwnNavigationService myOwnNavigationService, Guid? id = null) {
+        public TourEditorViewModel(TourManager tourManager, NavigationStore store, Guid? id = null) {
             
-
             //Initialize Transport Types
             _transportTypes = new ObservableCollection<TransportType>();
             foreach (var transportType in Enum.GetValues(typeof(TransportType)).Cast<TransportType>()) {
                 _transportTypes.Add(transportType);
             }
             _selectedTransportType = _transportTypes.FirstOrDefault();
-            _myOwnNavigationService = myOwnNavigationService;
 
             if(id.HasValue) {
                 _tour = new TourViewModel(tourManager.GetTour(id.Value));
@@ -44,9 +41,25 @@ namespace TourPlanner.ViewModels
                 _selectedTransportType = _tour.TransportType;
             }
 
-            ToOverViewCommand = new NavigateCommand("overview", _myOwnNavigationService);
-            SaveTourCommand = new SaveTourCommand(this, tourManager, _myOwnNavigationService);
-            UpdateTourCommand = new SaveEditedTourCommand(this, tourManager, _myOwnNavigationService);
+            ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
+                new NavigationService<TourOverViewModel>(
+                    store, 
+                    () => new TourOverViewModel(tourManager, store)
+                ));
+
+            SaveTourCommand = new SaveTourCommand(
+                this, tourManager,
+                new NavigationService<TourOverViewModel>(
+                    store,
+                    () => new TourOverViewModel(tourManager, store)
+                ));
+
+            UpdateTourCommand = new SaveEditedTourCommand(
+                this, tourManager,
+                new NavigationService<TourOverViewModel>(
+                    store,
+                    () => new TourOverViewModel(tourManager, store)
+                ));
         }
 
         public IEnumerable<TransportType> TransportTypes => _transportTypes;

@@ -11,7 +11,6 @@ using TourPlanner.Services;
 namespace TourPlanner.ViewModels {
     public class ViewModelBase : INotifyPropertyChanged {
         public event PropertyChangedEventHandler? PropertyChanged;
-        public MyOwnNavigationService? MyOwnNavigationService { get; set; }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

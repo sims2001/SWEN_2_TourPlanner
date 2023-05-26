@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using TourPlanner.Models;
 using TourPlanner.Services;
+using TourPlanner.ViewModels;
 
 namespace TourPlanner.Commands {
     public class DeleteTourCommand : CommandBase
     {
         private readonly TourManager _manager;
-        private readonly MyOwnNavigationService _myOwnNavigationService;
+        private readonly NavigationService<TourOverViewModel> _navigationService;
 
-        public DeleteTourCommand(TourManager tourManager, MyOwnNavigationService myOwnNavigationService) { 
+        public DeleteTourCommand(TourManager tourManager, NavigationService<TourOverViewModel> myOwnNavigationService) { 
             _manager = tourManager;
-            _myOwnNavigationService = myOwnNavigationService;
+            _navigationService = myOwnNavigationService;
         }
 
         public override void Execute(object? parameter) {
@@ -25,7 +26,7 @@ namespace TourPlanner.Commands {
                 _manager.RemoveTour(id);
             
                 MessageBox.Show("Successfully Deleted Tour", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                _myOwnNavigationService.NavigateTo("overview");
+                _navigationService.Navigate();
             }
 
         }

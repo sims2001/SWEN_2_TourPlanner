@@ -12,18 +12,20 @@ namespace TourPlanner.Commands {
     internal class ToEditTourCommand : CommandBase {
 
         private readonly TourManager _tourManager;
-        private readonly MyOwnNavigationService _navigationService;
         private readonly NavigationStore _navigationStore;
-        public ToEditTourCommand(TourManager tourManager, MyOwnNavigationService myOwnNavigationService, NavigationStore store) { 
-            _navigationService = myOwnNavigationService;
+
+        private readonly ParameterNavigationService<Guid, TourEditorViewModel> _parameterNavigationService;
+        public ToEditTourCommand(TourManager tourManager, ParameterNavigationService<Guid, TourEditorViewModel> navigationService){ 
+            //_navigationService = myOwnNavigationService;
             _tourManager = tourManager;
-            _navigationStore = store;
+            //_navigationStore = store;
+            _parameterNavigationService = navigationService;
         }
 
         public override void Execute(object? parameter) {
             var id = (Guid) parameter;
 
-            _navigationStore.CurrentViewModel = new TourEditorViewModel(_tourManager, _navigationService, id);
+            _parameterNavigationService.Navigate(id);
         }
     }
 }

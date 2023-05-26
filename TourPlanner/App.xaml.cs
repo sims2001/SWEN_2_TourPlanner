@@ -5,11 +5,15 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
+using TourPlanner.DbContexts;
 using TourPlanner.Services;
 using TourPlanner.Stores;
 using TourPlanner.ViewModels;
 using TourPlanner.Views;
 using TourPlanner.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TourPlanner {
     /// <summary>
@@ -19,17 +23,30 @@ namespace TourPlanner {
 
         private readonly NavigationStore _navigationStore;
         private readonly TourManager _tourManager;
-        private readonly MyOwnNavigationService _myOwnNavigationService;
+        private readonly TourPlannerDbContext _context;
+        private readonly IServiceProvider _serviceProvider;
+        public IConfiguration Configuration { get; private set; }
 
         public App() {
+            //IServiceCollection services = new ServiceCollection();
+
+            //services.AddSingleton<NavigationStore>();
+            //services.AddSingleton<TourManager>();
+            //services.AddSingleton<MyOwnNavigationService>();
+
+
+            //services.AddSingleton<MainWindowViewModel>();
+
+
             _navigationStore = new NavigationStore();
             _tourManager = new TourManager();
-            _myOwnNavigationService = new MyOwnNavigationService(_navigationStore);
+
+
+            // var options = new DbContextOptionsBuilder().UseNpgsql("postgresql://localhost:5432");
+            // _context = new TourPlannerDbContext( options. );
         }
 
         protected override void OnStartup(StartupEventArgs e) {
-            _myOwnNavigationService.RegisterRoute("overview", CreateOverViewModel);
-            _myOwnNavigationService.RegisterRoute("toureditor", CreateEditorViewModel);
 
             for (int i = 0; i < 1; i++) {
                 _tourManager.AddTour( Tour.CreateExampleTour() );
@@ -37,7 +54,7 @@ namespace TourPlanner {
                 _tourManager.AddTour( Tour.CreateExampleTour() );
             }
 
-            _navigationStore.CurrentViewModel = new TourOverViewModel(_tourManager, _myOwnNavigationService, _navigationStore);
+            _navigationStore.CurrentViewModel = new TourOverViewModel(_tourManager, _navigationStore);
             
             MainWindow = new MainWindow() {
                 DataContext = new MainWindowViewModel(_navigationStore)
@@ -47,15 +64,7 @@ namespace TourPlanner {
 
             base.OnStartup(e);
         }
-
-        private TourEditorViewModel CreateEditorViewModel() {
-            return new TourEditorViewModel(_tourManager, _myOwnNavigationService);
-        }
-
-
-        private TourOverViewModel CreateOverViewModel() {
-            return new TourOverViewModel(_tourManager, _myOwnNavigationService, _navigationStore);
-        }
+        
 
     }
 }

@@ -16,11 +16,11 @@ namespace TourPlanner.Commands
     {
         private readonly TourManager _tourManager;
         private readonly TourEditorViewModel _tourEditorViewModel;
-        private readonly MyOwnNavigationService _myOwnNavigationService;
-        public SaveEditedTourCommand(TourEditorViewModel tourEditorViewModel, TourManager tourManager, MyOwnNavigationService myOwnNavigationService) {
+        private readonly NavigationService<TourOverViewModel> _navigationService;
+        public SaveEditedTourCommand(TourEditorViewModel tourEditorViewModel, TourManager tourManager, NavigationService<TourOverViewModel> myOwnNavigationService) {
             _tourEditorViewModel = tourEditorViewModel;
             _tourManager = tourManager;
-            _myOwnNavigationService = myOwnNavigationService;
+            _navigationService = myOwnNavigationService;
 
             _tourEditorViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
@@ -71,7 +71,7 @@ namespace TourPlanner.Commands
 
                 _tourEditorViewModel.IsLoading = false;
                 MessageBox.Show("Successfully Updated Tour", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                _myOwnNavigationService.NavigateTo("overview");
+                _navigationService.Navigate();
 
             } catch (RouteNotFoundException ex) {
                 _tourEditorViewModel.IsLoading = false;

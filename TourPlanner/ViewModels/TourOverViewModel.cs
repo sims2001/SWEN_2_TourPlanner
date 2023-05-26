@@ -14,28 +14,41 @@ using TourPlanner.Stores;
 
 namespace TourPlanner.ViewModels
 {
-    class TourOverViewModel : ViewModelBase
+    public class TourOverViewModel : ViewModelBase
     {
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour;
         private ViewModelBase _model;
-        private readonly MyOwnNavigationService _myOwnNavigationService;
+        //private readonly NavigationService _myOwnNavigationService;
 
         private TourManager _manager;
 
-        public TourOverViewModel(TourManager tourManager, MyOwnNavigationService editTourNavigationService, NavigationStore store) { //, TourManager tourManager) {
+        public TourOverViewModel(TourManager tourManager, NavigationStore store) { //, TourManager tourManager) {
             _allTours = new ObservableCollection<TourViewModel>();
             _manager = tourManager;
-            _myOwnNavigationService = editTourNavigationService;
+            //_myOwnNavigationService = editTourNavigationService;
 
             foreach(var t in _manager.GetAllTours()) {
                 _allTours.Add(new TourViewModel(t));
             }
 
             _model = this;
-            NewTourCommand = new NavigateCommand("toureditor", _myOwnNavigationService);
-            DeleteTourCommand = new DeleteTourCommand(_manager, _myOwnNavigationService);
-            EditTourCommand = new ToEditTourCommand(_manager, _myOwnNavigationService, store);
+            NewTourCommand = new NavigateCommand<TourEditorViewModel>(
+                new NavigationService<TourEditorViewModel>(
+                    store, 
+                    () => new TourEditorViewModel(_manager, store)));
+
+            DeleteTourCommand = new DeleteTourCommand(_manager, 
+                new NavigationService<TourOverViewModel>(
+                    store, 
+                    () => new TourOverViewModel(tourManager, store)));
+
+            ParameterNavigationService<Guid, TourEditorViewModel> parameterNavigationService =
+                new ParameterNavigationService<Guid, TourEditorViewModel>(
+                    store, 
+                    (parameter) => new TourEditorViewModel(tourManager, store, parameter) );
+            EditTourCommand =
+                new ToEditTourCommand(_manager, parameterNavigationService); 
         }
 
         public IEnumerable<TourViewModel> AllTours => _allTours;
