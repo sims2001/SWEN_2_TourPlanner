@@ -13,7 +13,7 @@ using TourPlanner.ViewModels;
 
 namespace TourPlanner.Commands
 {
-    class SaveTourCommand : CommandBase
+    class SaveTourCommand : AsyncCommandBase
     {
         private readonly TourManager _tourManager;
         private readonly TourEditorViewModel _tourEditorViewModel;
@@ -43,7 +43,7 @@ namespace TourPlanner.Commands
             }
         }
 
-        public override async void Execute(object? parameter) {
+        public override async Task ExecuteAsync(object? parameter) {
             _tourEditorViewModel.IsLoading = true;
 
             try {
@@ -75,6 +75,8 @@ namespace TourPlanner.Commands
             } catch (RouteNotFoundException ex) {
                 _tourEditorViewModel.IsLoading = false;
                 MessageBox.Show($"Couldn't Find From or To!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
 

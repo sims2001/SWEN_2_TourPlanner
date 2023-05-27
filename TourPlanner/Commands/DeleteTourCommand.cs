@@ -10,21 +10,21 @@ using TourPlanner.Services;
 using TourPlanner.ViewModels;
 
 namespace TourPlanner.Commands {
-    public class DeleteTourCommand : CommandBase
+    public class DeleteTourCommand : AsyncCommandBase
     {
         private readonly TourManager _manager;
         private readonly INavigationService<TourOverViewModel> _navigationService;
 
-        public DeleteTourCommand(IServiceProvider serviceProvider){//TourManager tourManager, INavigationService<TourOverViewModel> navigationService) { 
-            _manager = serviceProvider.GetService<TourManager>();
-            _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
+        public DeleteTourCommand(IServiceProvider serviceProvider){ 
+            _manager = serviceProvider.GetRequiredService<TourManager>();
+            _navigationService = serviceProvider.GetRequiredService<INavigationService<TourOverViewModel>>();
         }
 
-        public override void Execute(object? parameter) {
+        public override async Task ExecuteAsync(object? parameter) {
 
             if(MessageBox.Show("Would you like to delete this Tour?", "Delete Tour?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes) {
                 Guid id = (Guid)parameter;
-                _manager.RemoveTour(id);
+                await _manager.RemoveTour(id);
             
                 MessageBox.Show("Successfully Deleted Tour", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _navigationService.Navigate();

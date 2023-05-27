@@ -3,39 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.DbContexts;
+using TourPlanner.Services.TourCreators;
+using TourPlanner.Services.TourProviders;
 
 namespace TourPlanner.Models {
     public class TourManager {
         private readonly Dictionary<Guid, Tour> _allTours;
-        private readonly TourPlannerDbContext _context;
 
-        public TourManager() {
+        private readonly ITourProvider _provider;
+        private readonly ITourEditor _editor;
+        private readonly IServiceProvider _serviceProvider;
+
+        public TourManager(IServiceProvider serviceProvider) {
+            _serviceProvider = serviceProvider;
+            _provider = _serviceProvider.GetRequiredService<DatabaseTourProvider>();
+            _editor = _serviceProvider.GetRequiredService<DatabaseTourEditor>();
+
             _allTours = new Dictionary<Guid, Tour>();
-            //_context = new TourPlannerDbContext();
         }
 
-        public Tour GetTour(Guid id) { 
-            return _allTours[id];
+        public async Task<IEnumerable<Tour>> GetAllTours() {  
+            return await _provider.GetAllTours();
         }
 
-        public void AddTour(Tour tour) {
-            _allTours.Add(tour.Id, tour);
+        public async Task<Tour> GetTour(Guid id) {
+            return await _provider.GetTour(id);
         }
 
-        public void RemoveTour(Guid id) {
-            _allTours.Remove(id);
+        public async Task AddTour(Tour tour) {
+            await _editor.CreateTour(tour);
         }
 
-        public void UpdateTour(Guid id,  Tour tour) {
-            _allTours[id] = tour;
-        }
-        public IEnumerable<Tour> GetAllTours() {  
-            return _allTours.Values; 
+        public async Task RemoveTour(Guid id) {
+            await _editor.DeleteTour(id);
         }
 
-        public bool TourExists(Guid id) {
-            return _allTours.ContainsKey(id);
+        public void UpdateTour(Tour tour) {
+            _editor.UpdateTour(tour);
         }
+
     }
 }

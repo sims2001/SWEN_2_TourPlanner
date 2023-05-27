@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using TourPlanner.Models;
 
 namespace TourPlanner.DTOs {
-    internal class TourDTO {
+    public class TourDTO {
         [Key]
         public Guid Id { get; set; }
         [Required]
@@ -25,6 +25,6 @@ namespace TourPlanner.DTOs {
         public int Time { get; set; }
         [Required]
         public string PicturePath { get; set; }
-        public IEnumerable<TourLog> Logs { get; set; }
+        public IEnumerable<TourLog>? Logs { get; set; }
     }
 }

@@ -13,7 +13,7 @@ using TourPlanner.ViewModels;
 
 namespace TourPlanner.Commands
 {
-    class SaveEditedTourCommand : CommandBase
+    class SaveEditedTourCommand : AsyncCommandBase
     {
         private readonly TourManager _tourManager;
         private readonly TourEditorViewModel _tourEditorViewModel;
@@ -43,40 +43,60 @@ namespace TourPlanner.Commands
             }
         }
 
-        public override async void Execute(object? parameter) {
+        public override async Task ExecuteAsync(object? parameter) {
             _tourEditorViewModel.IsLoading = true;
 
 
-            var editedTour = _tourManager.GetTour(_tourEditorViewModel.Tour.Id);
-            //RouteManager Arbeit machen lassen???
+            var editedTour = await _tourManager.GetTour(_tourEditorViewModel.Tour.Id);
+
+            //TourManager Arbeit machen lassen???
             bool newDirections = (_tourEditorViewModel.TourFrom != editedTour.From ||
                                        _tourEditorViewModel.TourTo != editedTour.To ||
                                        _tourEditorViewModel.SelectedTransportType != editedTour.TransportType);
 
             try {
                 if (newDirections) {
-                    var routeInfo = await OnlineRoute.GetOnlineRoute(_tourEditorViewModel.TourFrom, _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString());
+                    var routeInfo = await OnlineRoute.GetOnlineRoute(_tourEditorViewModel.TourFrom,
+                        _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString());
                     editedTour.Time = routeInfo.Time;
                     editedTour.Distance = routeInfo.Distance;
-                    editedTour.PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png";// routeInfo.PicPath;
+                    editedTour.PicturePath =
+                        "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png"; // routeInfo.PicPath;
                 }
 
 
-                editedTour.Name = _tourEditorViewModel.TourName != editedTour.Name ? _tourEditorViewModel.TourName : editedTour.Name;
-                editedTour.Description = _tourEditorViewModel.TourDescription != editedTour.Description ? _tourEditorViewModel.TourDescription : editedTour.Description;
-                editedTour.From = _tourEditorViewModel.TourFrom != editedTour.From ? _tourEditorViewModel.TourFrom : editedTour.From;
-                editedTour.To = _tourEditorViewModel.TourTo != editedTour.To ? _tourEditorViewModel.TourTo : editedTour.To;
-                editedTour.TransportType = _tourEditorViewModel.SelectedTransportType != editedTour.TransportType ? _tourEditorViewModel.SelectedTransportType : editedTour.TransportType;
+                editedTour.Name = _tourEditorViewModel.TourName != editedTour.Name
+                    ? _tourEditorViewModel.TourName
+                    : editedTour.Name;
+                editedTour.Description = _tourEditorViewModel.TourDescription != editedTour.Description
+                    ? _tourEditorViewModel.TourDescription
+                    : editedTour.Description;
+                editedTour.From = _tourEditorViewModel.TourFrom != editedTour.From
+                    ? _tourEditorViewModel.TourFrom
+                    : editedTour.From;
+                editedTour.To = _tourEditorViewModel.TourTo != editedTour.To
+                    ? _tourEditorViewModel.TourTo
+                    : editedTour.To;
+                editedTour.TransportType = _tourEditorViewModel.SelectedTransportType != editedTour.TransportType
+                    ? _tourEditorViewModel.SelectedTransportType
+                    : editedTour.TransportType;
 
-                _tourManager.UpdateTour(editedTour.Id, editedTour);
+                _tourManager.UpdateTour(editedTour);
 
                 _tourEditorViewModel.IsLoading = false;
-                MessageBox.Show("Successfully Updated Tour", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                MessageBox.Show("Successfully Updated Tour", "Success", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
                 _navigationService.Navigate();
 
-            } catch (RouteNotFoundException ex) {
+            }
+            catch (RouteNotFoundException ex) {
                 _tourEditorViewModel.IsLoading = false;
                 MessageBox.Show($"Couldn't Find Locations!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
 

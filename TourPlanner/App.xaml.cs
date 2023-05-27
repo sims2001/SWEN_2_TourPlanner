@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,8 @@ using TourPlanner.Views;
 using TourPlanner.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TourPlanner.Services.TourCreators;
+using TourPlanner.Services.TourProviders;
 
 namespace TourPlanner {
     /// <summary>
@@ -23,17 +26,27 @@ namespace TourPlanner {
 
         private readonly TourPlannerDbContext _context;
         private readonly IServiceProvider _serviceProvider;
-        public IConfiguration Configuration { get; private set; }
+        private readonly IConfiguration _configuration;
 
         public App() {
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            _configuration = builder.Build();
+
+
+
             IServiceCollection services = new ServiceCollection();
 
-            //services.AddSingleton<TourManagerDbContext>();
+            services.AddSingleton<TourPlannerDbContextFactory>(s => new TourPlannerDbContextFactory(_configuration.GetConnectionString("LocalPostgreSQL")));
+            services.AddTransient<DatabaseTourProvider>(s => new DatabaseTourProvider(s));
+            services.AddTransient<DatabaseTourEditor>(s => new DatabaseTourEditor(s));
+
 
             services.AddSingleton<NavigationStore>();
-            services.AddSingleton<TourManager>( s => new TourManager() {
-                    //DataBase = s.GetRequiredService<TourManagerDbContext>();
-                });
+            services.AddSingleton<TourManager>(s => new TourManager(s));
             services.AddSingleton<OpenFileDialogService>();
 
             services.AddSingleton<MainWindowViewModel>();
@@ -50,20 +63,16 @@ namespace TourPlanner {
             });
 
             
-            // var options = new DbContextOptionsBuilder().UseNpgsql("postgresql://localhost:5432");
-            // _context = new TourPlannerDbContext( options. );
-
             _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e) {
 
-            TourManager manager = _serviceProvider.GetRequiredService<TourManager>();
-            for (int i = 0; i < 1; i++) {
-                manager.AddTour( Tour.CreateExampleTour() );
-                manager.AddTour( Tour.CreateExampleTour() );
-                manager.AddTour( Tour.CreateExampleTour() );
+            using (var dbContext = _serviceProvider.GetRequiredService<TourPlannerDbContextFactory>()
+                       .CreateTourPlannerDbContext()) {
+                dbContext.Database.Migrate();
             }
+
 
             INavigationService<TourOverViewModel> navigation = _serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             navigation.Navigate();
@@ -86,7 +95,7 @@ namespace TourPlanner {
         }
         
         private TourOverViewModel CreateOverViewModel(IServiceProvider serviceProvider) {
-            return new TourOverViewModel(serviceProvider);
+            return TourOverViewModel.LoadViewModel(serviceProvider);
         }
 
         private INavigationService<TourEditorViewModel>
@@ -102,7 +111,7 @@ namespace TourPlanner {
             return new TourEditorViewModel(serviceProvider);
         }
         private TourEditorViewModel CreateEditorIdViewModel(IServiceProvider serviceProvider, Guid id) {
-            return new TourEditorViewModel(serviceProvider, id);
+            return TourEditorViewModel.LoadWithId(serviceProvider, id);
         }
 
         //private INavigationService<LogEditorViewModel>

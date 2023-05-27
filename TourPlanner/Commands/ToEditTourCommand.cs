@@ -22,7 +22,7 @@ namespace TourPlanner.Commands {
 
         public override void Execute(object? parameter) {
             var id = (Guid) parameter;
-
+            Console.WriteLine(id);
             _parameterNavigationService.Navigate(id);
         }
     }

@@ -22,6 +22,10 @@ namespace TourPlanner.ViewModels
 
         public TourViewModel? Tour {
             get { return _tour; }
+            set {
+                _tour = value; 
+                OnPropertyChanged();
+            }
         }
 
         private readonly TourManager _tourManager;
@@ -35,14 +39,6 @@ namespace TourPlanner.ViewModels
             }
             _selectedTransportType = _transportTypes.FirstOrDefault();
 
-            if(id.HasValue) {
-                _tour = new TourViewModel(_tourManager.GetTour(id.Value));
-                _tourName = _tour.Name;
-                _tourDescription = _tour.Description;
-                _tourFrom = _tour.From;
-                _tourTo = _tour.To;
-                _selectedTransportType = _tour.TransportType;
-            }
 
             ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
                     serviceProvider.GetService<INavigationService<TourOverViewModel>>()
@@ -53,6 +49,16 @@ namespace TourPlanner.ViewModels
             UpdateTourCommand = new SaveEditedTourCommand(this, serviceProvider);
 
             ImportPathCommand = new FilePickerCommand(this, serviceProvider);
+
+            if (id.HasValue) {
+                LoadTourCommand = new LoadTourCommand(this, serviceProvider, id.Value);
+            }
+        }
+
+        public static TourEditorViewModel LoadWithId(IServiceProvider serviceProvider, Guid id) {
+            TourEditorViewModel viewModel = new TourEditorViewModel(serviceProvider, id);
+            viewModel.LoadTourCommand.Execute(null);
+            return viewModel;
         }
 
         public IEnumerable<TransportType> TransportTypes => _transportTypes;
@@ -69,6 +75,7 @@ namespace TourPlanner.ViewModels
         public ICommand SaveTourCommand { get; }
         public ICommand UpdateTourCommand { get; }
         public ICommand ImportPathCommand { get; }
+        public ICommand LoadTourCommand { get;  }
 
 
         private string? _tourName;
@@ -124,6 +131,17 @@ namespace TourPlanner.ViewModels
                 _importPath = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void LoadTourModel(Tour t) {
+            IsLoading = true;
+            Tour = new TourViewModel(t);
+            TourName = _tour.Name;
+            TourDescription = _tour.Description;
+            TourFrom = _tour.From;
+            TourTo = _tour.To;
+            SelectedTransportType = _tour.TransportType;
+            IsLoading = false;
         }
     }
 }

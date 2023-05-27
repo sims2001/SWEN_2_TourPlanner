@@ -19,19 +19,11 @@ namespace TourPlanner.ViewModels
     {
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour;
-        private ViewModelBase _model;
-
-        private TourManager _manager;
+        
 
         public TourOverViewModel(IServiceProvider serviceProvider) {
             _allTours = new ObservableCollection<TourViewModel>();
-            _manager = serviceProvider.GetRequiredService<TourManager>();
-
-            foreach(var t in _manager.GetAllTours()) {
-                _allTours.Add(new TourViewModel(t));
-            }
-
-            _model = this;
+            
 
             NewTourCommand = new NavigateCommand<TourEditorViewModel>(
                     serviceProvider.GetService<INavigationService<TourEditorViewModel>>()
@@ -40,12 +32,18 @@ namespace TourPlanner.ViewModels
             DeleteTourCommand = new DeleteTourCommand(serviceProvider);
 
 
-            IParameterNavigationService<Guid, TourEditorViewModel> parameterNavigationService =
-                serviceProvider.GetService<IParameterNavigationService<Guid, TourEditorViewModel>>();
-
             EditTourCommand =
-                new ToEditTourCommand(serviceProvider); 
+                new ToEditTourCommand(serviceProvider);
+
+            LoadToursCommand = new LoadToursCommand(serviceProvider, this);
         }
+
+        public static TourOverViewModel LoadViewModel(IServiceProvider serviceProvider) {
+            TourOverViewModel viewModel = new TourOverViewModel(serviceProvider);
+            viewModel.LoadToursCommand.Execute(null);
+            return viewModel;
+        }
+
 
         public IEnumerable<TourViewModel> AllTours => _allTours;
 
@@ -62,16 +60,15 @@ namespace TourPlanner.ViewModels
         public ICommand DeleteTourCommand { get; }
 
         public ICommand NewTourCommand { get; }
+        public ICommand LoadToursCommand { get; }
 
-        public ViewModelBase CurrentViewModel => _model;
+        public ViewModelBase CurrentViewModel => this;
 
-        public void GenerateTestTours(int anz) {
-            ObservableCollection<TourViewModel> touren = new ObservableCollection<TourViewModel>();
-
-            for(int i = 0; i< anz; i++) {
-                touren.Add(new TourViewModel(Tour.CreateExampleTour()));
+        public void UpdateTours(IEnumerable<Tour> tours) {
+            _allTours.Clear();
+            foreach (var t in tours) {
+                _allTours.Add(new TourViewModel(t));
             }
-            _allTours = touren;
         }
     }
 }
