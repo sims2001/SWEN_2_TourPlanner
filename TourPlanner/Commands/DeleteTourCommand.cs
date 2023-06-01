@@ -24,7 +24,7 @@ namespace TourPlanner.Commands {
 
             if(MessageBox.Show("Would you like to delete this Tour?", "Delete Tour?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes) {
                 Guid id = (Guid)parameter;
-                await _manager.RemoveTour(id);
+                await _manager.DeleteTour(id);
             
                 MessageBox.Show("Successfully Deleted Tour", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 _navigationService.Navigate();

@@ -27,20 +27,8 @@ namespace TourPlanner.Services.TourCreators {
 
         public async Task UpdateTour(Tour tour) {
             using (TourPlannerDbContext context = _contextFactory.CreateTourPlannerDbContext()) {
-                //TourDTO currentTour = await context.Tours.FindAsync(tour.Id);
 
-                //currentTour = createTourDto(tour);
-                //Console.WriteLine(currentTour);
                 context.Tours.Update( createTourDto(tour) );
-
-                //currentTour.Name = tour.Name;
-                //currentTour.Description = tour.Description;
-                //currentTour.From = tour.From;
-                //currentTour.To = tour.To;
-                //currentTour.Distance = tour.Distance;
-                //currentTour.Time = tour.Time;
-                //currentTour.TransportType = tour.TransportType;
-                //currentTour.PicturePath = tour.PicturePath;
 
                 await context.SaveChangesAsync();
             }

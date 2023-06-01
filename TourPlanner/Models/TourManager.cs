@@ -36,7 +36,7 @@ namespace TourPlanner.Models {
             await _editor.CreateTour(tour);
         }
 
-        public async Task RemoveTour(Guid id) {
+        public async Task DeleteTour(Guid id) {
             await _editor.DeleteTour(id);
         }
 
