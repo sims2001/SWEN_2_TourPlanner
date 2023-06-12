@@ -24,7 +24,6 @@ namespace TourPlanner.Models {
         public string FormatedAverageTime { get => FormatTime(AverageTime); }
         public Popularity Popularity { get => AverageLogPopularity(); }
         public IEnumerable<TourLog>? TourLogs { get; set; } = Enumerable.Empty<TourLog>();
-        //public IEnumerable<String?> ErrorMessages { get; set; }
 
 
         private int _logCount => TourLogs?.Count<TourLog>() ?? 0;

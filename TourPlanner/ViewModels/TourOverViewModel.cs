@@ -17,13 +17,15 @@ namespace TourPlanner.ViewModels
 {
     public class TourOverViewModel : ViewModelBase
     {
+        private readonly TourStore _tourStore;
         private ObservableCollection<TourViewModel> _allTours;
-        private TourViewModel? _currentTour;
-        
+        private TourViewModel? _currentTour => _tourStore.CurrentTour;
+        private ObservableCollection<TourLog>? _currentTourLogs => (ObservableCollection<TourLog>?)_currentTour?.Logs;
 
         public TourOverViewModel(IServiceProvider serviceProvider) {
             _allTours = new ObservableCollection<TourViewModel>();
-            
+            _tourStore = serviceProvider.GetRequiredService<TourStore>();
+            _tourStore.CurrentTour = null;
 
             NewTourCommand = new NavigateCommand<TourEditorViewModel>(
                     serviceProvider.GetService<INavigationService<TourEditorViewModel>>()
@@ -36,6 +38,10 @@ namespace TourPlanner.ViewModels
                 new ToEditTourCommand(serviceProvider);
 
             LoadToursCommand = new LoadToursCommand(serviceProvider, this);
+
+            NewLogCommand = new NavigateCommand<LogEditorViewModel>(
+                    serviceProvider.GetService<INavigationService<LogEditorViewModel>>()
+                );
         }
 
         public static TourOverViewModel LoadViewModel(IServiceProvider serviceProvider) {
@@ -50,18 +56,19 @@ namespace TourPlanner.ViewModels
         public TourViewModel? CurrentTour {
             get { return _currentTour; }
             set {
-                _currentTour = value;
+                _tourStore.CurrentTour = value;
                 OnPropertyChanged();
             }
         }
 
+        public IEnumerable<TourLog> AllTourLogs => _currentTourLogs;
 
         public ICommand EditTourCommand { get; }
         public ICommand DeleteTourCommand { get; }
 
         public ICommand NewTourCommand { get; }
         public ICommand LoadToursCommand { get; }
-
+        public ICommand NewLogCommand { get; }
         public ViewModelBase CurrentViewModel => this;
 
         public void UpdateTours(IEnumerable<Tour> tours) {

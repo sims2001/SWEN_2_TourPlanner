@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="TourPlanner.Views.LogEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TourPlanner.Views"
+             xmlns:cnvs="clr-namespace:TourPlanner.Converter"
+             xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <cnvs:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <cnvs:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
+        <cnvs:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Margin="20" Padding="5" Background="#FFEDB66B" FontWeight="Bold" Command="{Binding ToOverViewCommand}">CANCEL</Button>
+
+        <Grid Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.ColumnSpan="2" TextAlignment="Center" FontSize="24" Text="{Binding CurrentTour.Name}" Grid.Row="0" />
+
+                <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="Date" />
+                <DatePicker  Margin="0 10 0 0" Grid.Row="1" Grid.Column="1"  Text="{Binding LogDate, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="Comment:" />
+                <TextBox Margin="0 10 0 0" Grid.Row="2" Grid.Column="1" Text="{Binding LogComment, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Margin="0 10 0 0" Grid.Row="3" Grid.Column="0" Content="Difficulty:" />
+                <ComboBox Margin="0 10 0 0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}"  />
+
+                <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="Rating:" />
+                <ComboBox Margin="0 10 0 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Popularities}" SelectedItem="{Binding SelectePopularity}" />
+
+                <Button Visibility="{Binding Tour, Converter={StaticResource NotNullToVisibilityConverter}}" Content="Save Log" Margin="20" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding SaveLogCommand}"/>
+                <Button Visibility="{Binding Tour, Converter={StaticResource NullToVisibilityConverter}}" Content="Save Edited Log" Margin="20" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding UpdateLogCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -28,4 +28,10 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\LogEditorView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

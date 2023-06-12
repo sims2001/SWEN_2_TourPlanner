@@ -4,17 +4,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:53645",
-      "sslPort": 44311
+      "applicationUrl": "http://localhost:11822",
+      "sslPort": 44356
     }
   },
   "profiles": {
-    "TourPlannerBackend": {
+    "TourPlannerAPI": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7044;http://localhost:5293",
+      "applicationUrl": "https://localhost:7211;http://localhost:5011",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

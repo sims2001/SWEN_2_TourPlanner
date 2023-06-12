@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
+using TourPlanner.Services.LogProviders;
 
 namespace TourPlanner {
     /// <summary>
@@ -42,10 +43,12 @@ namespace TourPlanner {
 
             services.AddSingleton<TourPlannerDbContextFactory>(s => new TourPlannerDbContextFactory(_configuration.GetConnectionString("LocalPostgreSQL")));
             services.AddTransient<DatabaseTourProvider>(s => new DatabaseTourProvider(s));
+            services.AddTransient<DatabaseLogProvider>(s => new DatabaseLogProvider(s));
             services.AddTransient<DatabaseTourEditor>(s => new DatabaseTourEditor(s));
 
 
             services.AddSingleton<NavigationStore>();
+            services.AddSingleton<TourStore>();
             services.AddSingleton<TourManager>(s => new TourManager(s));
             services.AddSingleton<OpenFileDialogService>();
 
@@ -53,7 +56,7 @@ namespace TourPlanner {
 
             services.AddTransient<INavigationService<TourOverViewModel>>(s => CreateOverViewNavigationService(s));
             services.AddTransient<INavigationService<TourEditorViewModel>>(s => CreateEditorViewNavigationService(s));
-            //services.AddTransient<INavigationService<LogEditorViewModel>>(s => CreateLogEditorViewNavigationService(s));
+            services.AddTransient<INavigationService<LogEditorViewModel>>(s => CreateLogEditorViewNavigationService(s));
 
             services.AddTransient<IParameterNavigationService<Guid, TourEditorViewModel>>(s => CreateEditorParameterNavigationService(s));
             //services.AddTransient<IParameterNavigationService<Guid, LogEditorViewModel>>(s => CreateLogEditorParameterNavigationService(s));
@@ -72,7 +75,7 @@ namespace TourPlanner {
                        .CreateTourPlannerDbContext()) {
                 dbContext.Database.Migrate();
             }
-
+            
 
             INavigationService<TourOverViewModel> navigation = _serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             navigation.Navigate();
@@ -114,18 +117,17 @@ namespace TourPlanner {
             return TourEditorViewModel.LoadWithId(serviceProvider, id);
         }
 
-        //private INavigationService<LogEditorViewModel>
-        //    createEditorViewNavigationService(IServiceProvider serviceProvider) {
-        //    return new NavigationService<LogEditorViewModel>(
-        //        serviceProvider.GetRequiredService<NavigationStore>(),
-        //        CreateLogEditorViewModel,
-        //        serviceProvider
-        //    );
-        //}
+        private INavigationService<LogEditorViewModel>  CreateLogEditorViewNavigationService(IServiceProvider serviceProvider) {
+            return new NavigationService<LogEditorViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                CreateLogEditorViewModel,
+                serviceProvider
+            );
+        }
 
-        //private LogEditorViewModel CreateLogEditorViewModel(IServiceProvider serviceProvider) {
-        //    return new LogEditorViewModel(serviceProvider);
-        //}
+        private LogEditorViewModel CreateLogEditorViewModel(IServiceProvider serviceProvider) {
+            return new LogEditorViewModel(serviceProvider);
+        }
 
         //private LogEditorViewModel CreateLogEditorIdViewModel(IServiceProvider serviceProvider, Guid id) {
         //    return new LogEditorViewModel(serviceProvider, id);

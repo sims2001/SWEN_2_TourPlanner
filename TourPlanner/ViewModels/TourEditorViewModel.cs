@@ -33,10 +33,7 @@ namespace TourPlanner.ViewModels
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
 
             //Initialize Transport Types
-            _transportTypes = new ObservableCollection<TransportType>();
-            foreach (var transportType in Enum.GetValues(typeof(TransportType)).Cast<TransportType>()) {
-                _transportTypes.Add(transportType);
-            }
+            _transportTypes = new ObservableCollection<TransportType>(Enum.GetValues(typeof(TransportType)).Cast<TransportType>());
             _selectedTransportType = _transportTypes.FirstOrDefault();
 
 

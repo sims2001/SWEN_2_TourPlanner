@@ -81,7 +81,7 @@ namespace TourPlanner.Commands
                     ? _tourEditorViewModel.SelectedTransportType
                     : editedTour.TransportType;
 
-                _tourManager.UpdateTour(editedTour);
+                await _tourManager.UpdateTour(editedTour);
 
                 _tourEditorViewModel.IsLoading = false;
 

@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <cnvs:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </UserControl.Resources>
+
     <Grid Visibility="{Binding CurrentTour, Converter={StaticResource NullToVisibilityConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -68,9 +69,6 @@
                             <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.FormatedAverageTime}" FontSize="16" TextWrapping="WrapWithOverflow" />
                         </StackPanel>
 
-                        <!--<StackPanel Grid.Row="8" Orientation="Horizontal" Margin="5 10 5 10">
-                            <TextBlock TextAlignment="Center" FontFamily="Courier New" FontSize="16" Text="{Binding CurrentTour.ChildFriendly}"/>
-                        </StackPanel>-->
                         <Grid Grid.Row="9" Margin="5 20 5 10" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*" />
@@ -87,7 +85,15 @@
                 <Image Source="{Binding CurrentTour.PicturePath}" Stretch="UniformToFill" />
             </TabItem>
             <TabItem Header="Tour Logs" FontSize="16" Padding="4">
-                <local:TourLogListView />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Command="{Binding NewLogCommand}">New TourLog</Button>
+                    <local:TourLogListView Grid.Row="1" DataContext="{Binding CurrentViewModel }" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

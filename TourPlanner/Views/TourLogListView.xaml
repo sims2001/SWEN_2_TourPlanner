@@ -10,7 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" Grid.Column="0">
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" Grid.Column="0" ItemsSource="{Binding AllTourLogs}" >
             <ListView.View>
                 <GridView AllowsColumnReorder="True">
                     <GridViewColumn Header="Date" Width="auto" />

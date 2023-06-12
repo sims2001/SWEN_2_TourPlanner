@@ -4,11 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TourPlanner.Views"
+        xmlns:cnvs="clr-namespace:TourPlanner.Converter"
         xmlns:vms="clr-namespace:TourPlanner.ViewModels"
         mc:Ignorable="d"
         WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"  WindowState="Maximized"
         Title="TourPlaner" Height="720" Width="1280">
+    <Window.Resources>
+        <cnvs:TabSizeConverter x:Key="TabSizeConverter" />
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Width">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource TabSizeConverter}">
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor,
+            AncestorType={x:Type TabControl}}" />
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor,
+            AncestorType={x:Type TabControl}}" Path="ActualWidth" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid.Resources>
@@ -17,6 +33,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type vms:TourEditorViewModel}">
                 <local:TourEditorView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vms:LogEditorViewModel}">
+                <local:LogEditorView />
             </DataTemplate>
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -43,7 +62,5 @@
         </Grid>
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />
-        <!--<local:TourOverView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>-->
-        <!--<local:TourEditorView Grid.Row="1" DataContext="{Binding CurrentViewModel}"/>-->
     </Grid>
 </Window>

@@ -1,4 +1,4 @@
-namespace TourPlannerBackend {
+namespace TourPlannerAPI {
     public class WeatherForecast {
         public DateTime Date { get; set; }
 

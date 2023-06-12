@@ -29,7 +29,6 @@ namespace TourPlanner.Services.TourProviders {
             Console.WriteLine(id);
 
             using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
-                //IEnumerable<TourDTO> tourDTOs = await context.Tours.ToListAsync();
                 var t = await context.Tours.FindAsync(id);
                 
 

@@ -25,6 +25,8 @@ namespace TourPlanner.ViewModels
 
         public string ChildFriendly => _tour.ChildFriendly ? "This Tour is Child Friendly" : "This Tour is not Child Friendly";
 
+        public IEnumerable<TourLog>? Logs => _tour.TourLogs;
+
         public TourViewModel(Tour tour, NavigationStore? store = null) {
             _tour = tour;
             _navigationStore = store;
