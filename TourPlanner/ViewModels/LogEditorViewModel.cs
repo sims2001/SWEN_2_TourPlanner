@@ -12,8 +12,8 @@ using TourPlanner.Stores;
 namespace TourPlanner.ViewModels;
 
 public class LogEditorViewModel : ViewModelBase {
-    private readonly TourManager _tourManager;
     private readonly TourStore _tourStore;
+    private readonly LogStore _logStore;
     public TourViewModel? CurrentTour => _tourStore.CurrentTour;
 
     private ObservableCollection<Difficulty> _difficulties;
@@ -23,8 +23,8 @@ public class LogEditorViewModel : ViewModelBase {
     private Popularity _selectedPopularity;
 
     public LogEditorViewModel(IServiceProvider serviceProvider, TourLog? log = null) {
-        //_tourManager = serviceProvider.GetRequiredService<TourManager>();
         _tourStore = serviceProvider.GetRequiredService<TourStore>();
+        _logStore = serviceProvider.GetRequiredService<LogStore>();
 
         _difficulties = new ObservableCollection<Difficulty>(Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>());
         _selectedDifficulty = _difficulties.FirstOrDefault();
@@ -32,9 +32,17 @@ public class LogEditorViewModel : ViewModelBase {
         _popularities = new ObservableCollection<Popularity>(Enum.GetValues(typeof(Popularity)).Cast<Popularity>());
         _selectedPopularity = _popularities.FirstOrDefault();
 
+        _logDate = DateTime.UtcNow;
+
+        if (_logStore.CurrentLog is not null) {
+
+        }
+
+
         ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
             serviceProvider.GetService<INavigationService<TourOverViewModel>>()
         );
+        SaveLogCommand = new SaveLogCommand(serviceProvider, this);
     }
 
     public IEnumerable<Difficulty> Difficulties => _difficulties;
@@ -56,4 +64,49 @@ public class LogEditorViewModel : ViewModelBase {
     }
 
     public ICommand ToOverViewCommand { get; }
+    public ICommand SaveLogCommand { get; }
+
+    private TourLog _currentLog => _logStore.CurrentLog;
+
+    public TourLog Log => _currentLog;
+
+    private DateTime _logDate;
+
+    public DateTime LogDate {
+        get => _logDate;
+        set {
+            _logDate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _logComment;
+
+    public string LogComment {
+        get => _logComment;
+        set {
+            _logComment = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _logTime;
+
+    public string LogTime {
+        get => _logTime;
+        set {
+            _logTime = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int LogIntTime() {
+        var h = Int32.Parse(_logTime.Substring(0, 2));
+        var m = Int32.Parse(_logTime.Substring(3, 2));
+        var s = Int32.Parse(_logTime.Substring(6, 2));
+
+        var intTime = s + (m * 60) + (h * 3600);
+
+        return intTime;
+    }
 }

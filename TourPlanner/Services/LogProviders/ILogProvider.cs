@@ -7,7 +7,6 @@ using TourPlanner.Models;
 
 namespace TourPlanner.Services.TourProviders {
     public interface ILogProvider {
-        Task<IEnumerable<TourLog>?> GetTourLogs(Guid tourId);
         
     }
 }

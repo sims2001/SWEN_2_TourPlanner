@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using TourPlanner.DTOs;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace TourPlanner.Models {
@@ -23,7 +24,7 @@ namespace TourPlanner.Models {
         public int AverageTime { get => AverageLogTime(); }
         public string FormatedAverageTime { get => FormatTime(AverageTime); }
         public Popularity Popularity { get => AverageLogPopularity(); }
-        public IEnumerable<TourLog>? TourLogs { get; set; } = Enumerable.Empty<TourLog>();
+        public List<TourLog> TourLogs { get; set; } = new List<TourLog>();
 
 
         private int _logCount => TourLogs?.Count<TourLog>() ?? 0;
@@ -92,6 +93,36 @@ namespace TourPlanner.Models {
 
         public static Guid ToNotNullGuid(Guid? source) {
             return source ?? Guid.Empty;
+        }
+
+        public static Tour DtoToTour(TourDTO dto) {
+            return new Tour() {
+                Id = dto.Id,
+                Name = dto.Name,
+                Description = dto.Description,
+                From = dto.From,
+                To = dto.To,
+                TransportType = dto.TransportType,
+                Distance = dto.Distance,
+                Time = dto.Time,
+                PicturePath = dto.PicturePath,
+                TourLogs = new List<TourLog>(l => TourLog.LogFromDTO(l));
+            };
+        }
+
+        public static TourDTO createTourDto(Tour tour) {
+            return new TourDTO() {
+                Id = tour.Id,
+                Name = tour.Name,
+                Description = tour.Description,
+                From = tour.From,
+                To = tour.To,
+                TransportType = tour.TransportType,
+                Distance = tour.Distance,
+                Time = tour.Time,
+                PicturePath = tour.PicturePath,
+                Logs = tour.TourLogs,
+            };
         }
     }
 }

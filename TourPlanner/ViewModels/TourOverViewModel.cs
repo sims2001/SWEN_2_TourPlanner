@@ -18,6 +18,7 @@ namespace TourPlanner.ViewModels
     public class TourOverViewModel : ViewModelBase
     {
         private readonly TourStore _tourStore;
+        private readonly LogStore _logStore;
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour => _tourStore.CurrentTour;
         private ObservableCollection<TourLog>? _currentTourLogs => (ObservableCollection<TourLog>?)_currentTour?.Logs;
@@ -26,6 +27,9 @@ namespace TourPlanner.ViewModels
             _allTours = new ObservableCollection<TourViewModel>();
             _tourStore = serviceProvider.GetRequiredService<TourStore>();
             _tourStore.CurrentTour = null;
+
+            _logStore = serviceProvider.GetRequiredService<LogStore>();
+            _logStore.CurrentLog = null;
 
             NewTourCommand = new NavigateCommand<TourEditorViewModel>(
                     serviceProvider.GetService<INavigationService<TourEditorViewModel>>()
@@ -39,8 +43,9 @@ namespace TourPlanner.ViewModels
 
             LoadToursCommand = new LoadToursCommand(serviceProvider, this);
 
-            NewLogCommand = new NavigateCommand<LogEditorViewModel>(
-                    serviceProvider.GetService<INavigationService<LogEditorViewModel>>()
+            NewLogCommand = new ToNewLogCommand<LogEditorViewModel>(
+                    serviceProvider.GetService<INavigationService<LogEditorViewModel>>(),
+                    serviceProvider
                 );
         }
 

@@ -18,7 +18,7 @@ namespace TourPlanner.Services.TourCreators {
 
         public async Task CreateTour(Tour tour) {
             using (TourPlannerDbContext context = _contextFactory.CreateTourPlannerDbContext()) {
-                TourDTO tourDTO = createTourDto(tour);
+                TourDTO tourDTO = Tour.createTourDto(tour);
 
                 context.Tours.Add(tourDTO);
                 await context.SaveChangesAsync();
@@ -28,7 +28,7 @@ namespace TourPlanner.Services.TourCreators {
         public async Task UpdateTour(Tour tour) {
             using (TourPlannerDbContext context = _contextFactory.CreateTourPlannerDbContext()) {
 
-                context.Tours.Update( createTourDto(tour) );
+                context.Tours.Update(Tour.createTourDto(tour) );
 
                 await context.SaveChangesAsync();
             }
@@ -41,21 +41,6 @@ namespace TourPlanner.Services.TourCreators {
                 context.Tours.Remove(tourDTO);
                 await context.SaveChangesAsync();
             }
-        }
-
-        private static TourDTO createTourDto(Tour tour) {
-            return new TourDTO() {
-                Id = tour.Id,
-                Name = tour.Name,
-                Description = tour.Description,
-                From = tour.From,
-                To = tour.To,
-                TransportType = tour.TransportType,
-                Distance = tour.Distance,
-                Time = tour.Time,
-                PicturePath = tour.PicturePath,
-                Logs = tour.TourLogs,
-            };
         }
     }
 }

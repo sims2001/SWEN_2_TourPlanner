@@ -13,6 +13,7 @@ namespace TourPlanner.DbContexts {
         public TourPlannerDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TourDTO> Tours { get; set; }
+        public DbSet<TourLogDTO> Logs { get; set; }
 
     }
 }

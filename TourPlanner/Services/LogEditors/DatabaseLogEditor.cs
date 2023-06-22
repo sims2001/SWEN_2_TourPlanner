@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.DbContexts;
 using TourPlanner.DTOs;
@@ -18,11 +19,11 @@ namespace TourPlanner.Services.LogEditors
             _dbContextFactory = serviceProvider.GetRequiredService<TourPlannerDbContextFactory>();
         }
 
-        public async Task CreateLog(Guid tourId, TourLog log) {
+        public async Task CreateLog(TourDTO tour, TourLog log) {
             using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
+                context.Logs.Add(TourLog.createLogDTO(log, tour));
 
-                var toUpdate = await context.Tours.FindAsync(tourId);
-                toUpdate.Logs.Append(log);
+                //context.Tours.Update(toUpdate);
 
                 await context.SaveChangesAsync();
             }

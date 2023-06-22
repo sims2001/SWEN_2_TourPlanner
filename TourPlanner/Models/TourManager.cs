@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.DbContexts;
+using TourPlanner.Services.LogEditors;
 using TourPlanner.Services.LogProviders;
 using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
@@ -15,6 +16,7 @@ namespace TourPlanner.Models {
         private readonly ITourProvider _tourProvider;
         private readonly ILogProvider _logProvider;
         private readonly ITourEditor _tourEditor;
+        private readonly ILogEditor _logEditor;
         private readonly IServiceProvider _serviceProvider;
 
         public TourManager(IServiceProvider serviceProvider) {
@@ -22,7 +24,7 @@ namespace TourPlanner.Models {
             _tourProvider = _serviceProvider.GetRequiredService<DatabaseTourProvider>();
             _tourEditor = _serviceProvider.GetRequiredService<DatabaseTourEditor>();
             _logProvider = _serviceProvider.GetRequiredService<DatabaseLogProvider>();
-
+            _logEditor = _serviceProvider.GetRequiredService<DatabaseLogEditor>();
         }
 
         public async Task<IEnumerable<Tour>> GetAllTours() {  
@@ -45,9 +47,11 @@ namespace TourPlanner.Models {
             await _tourEditor.UpdateTour(tour);
         }
 
-        public async Task GetTourLogs(Guid tourId) {
-            await _logProvider.GetTourLogs(tourId);
-        }
 
+        public async Task AddLog(Guid tourId, TourLog log) {
+            var tour = await _tourProvider.GetTour(tourId);
+            var tourDTO = Tour.createTourDto(tour);
+            await _logEditor.CreateLog(tourDTO, log);
+        }
     }
 }

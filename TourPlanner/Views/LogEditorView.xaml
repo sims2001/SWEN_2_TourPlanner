@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:TourPlanner.Views"
              xmlns:cnvs="clr-namespace:TourPlanner.Converter"
              xmlns:custom="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+             xmlns:sync="http://schemas.syncfusion.com/wpf"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
     <UserControl.Resources>
@@ -32,6 +34,7 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -40,19 +43,22 @@
                 <TextBlock Grid.ColumnSpan="2" TextAlignment="Center" FontSize="24" Text="{Binding CurrentTour.Name}" Grid.Row="0" />
 
                 <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="Date" />
-                <DatePicker  Margin="0 10 0 0" Grid.Row="1" Grid.Column="1"  Text="{Binding LogDate, UpdateSourceTrigger=PropertyChanged}" />
+                <DatePicker Margin="0 10 20 0" Grid.Row="1" Grid.Column="1"  SelectedDate="{Binding LogDate, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="Comment:" />
-                <TextBox Margin="0 10 0 0" Grid.Row="2" Grid.Column="1" Text="{Binding LogComment, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Margin="0 10 20 0" Grid.Row="2" Grid.Column="1" Text="{Binding LogComment, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Margin="0 10 0 0" Grid.Row="3" Grid.Column="0" Content="Difficulty:" />
-                <ComboBox Margin="0 10 0 0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}"  />
+                <ComboBox Margin="0 10 20 0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}"  />
 
                 <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="Rating:" />
-                <ComboBox Margin="0 10 0 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Popularities}" SelectedItem="{Binding SelectePopularity}" />
+                <ComboBox Margin="0 10 20 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Popularities}" SelectedItem="{Binding SelectePopularity}" />
 
-                <Button Visibility="{Binding Tour, Converter={StaticResource NotNullToVisibilityConverter}}" Content="Save Log" Margin="20" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding SaveLogCommand}"/>
-                <Button Visibility="{Binding Tour, Converter={StaticResource NullToVisibilityConverter}}" Content="Save Edited Log" Margin="20" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding UpdateLogCommand}"/>
+                <Label Margin="0 10 0 0" Grid.Row="5" Grid.Column="0" Content="Time (hh:mm:ss):"  />
+                <TextBox Margin="0 10 20 0" Grid.Row="5" Grid.Column="1" Text="{Binding LogTime, UpdateSourceTrigger=PropertyChanged, StringFormat=hh:mm:ss}" />
+
+                <Button Visibility="{Binding Log, Converter={StaticResource NotNullToVisibilityConverter}}" Content="Save Log" Margin="20" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding SaveLogCommand}"/>
+                <Button Visibility="{Binding Log, Converter={StaticResource NullToVisibilityConverter}}" Content="Save Edited Log" Margin="20" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding UpdateLogCommand}"/>
             </Grid>
         </Grid>
     </Grid>

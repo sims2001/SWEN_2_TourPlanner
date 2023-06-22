@@ -17,14 +17,5 @@ namespace TourPlanner.Services.LogProviders
         public DatabaseLogProvider(IServiceProvider serviceProvider) {
             _dbContextFactory = serviceProvider.GetRequiredService<TourPlannerDbContextFactory>();
         }
-
-        public async Task<IEnumerable<TourLog>?> GetTourLogs(Guid tourId) {
-            using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
-                //IEnumerable<TourDTO> tourDTOs = await context.Tours.ToListAsync();
-                var t = await context.Tours.FindAsync(tourId);
-
-                return t?.Logs;
-            }
-        }
     }
 }

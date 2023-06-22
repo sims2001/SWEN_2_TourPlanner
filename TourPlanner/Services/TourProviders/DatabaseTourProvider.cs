@@ -21,7 +21,7 @@ namespace TourPlanner.Services.TourProviders {
             using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
                 IEnumerable<TourDTO> tourDTOs = await context.Tours.ToListAsync();
 
-                return tourDTOs.Select(r => ToTour(r));
+                return tourDTOs.Select(r => Tour.DtoToTour(r));
             }
         }
 
@@ -32,23 +32,10 @@ namespace TourPlanner.Services.TourProviders {
                 var t = await context.Tours.FindAsync(id);
                 
 
-                return ToTour(t);
+                return Tour.DtoToTour(t);
             }
         }
 
-        private static Tour ToTour(TourDTO dto) {
-            return new Tour() {
-                Id = dto.Id,
-                Name = dto.Name,
-                Description = dto.Description,
-                From = dto.From,
-                To = dto.To,
-                TransportType = dto.TransportType,
-                Distance = dto.Distance,
-                Time = dto.Time,
-                PicturePath = dto.PicturePath,
-                TourLogs = dto.Logs
-            };
-        }
+        
     }
 }
