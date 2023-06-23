@@ -48,10 +48,16 @@ namespace TourPlanner.Models {
         }
 
 
-        public async Task AddLog(Guid tourId, TourLog log) {
-            var tour = await _tourProvider.GetTour(tourId);
-            var tourDTO = Tour.createTourDto(tour);
-            await _logEditor.CreateLog(tourDTO, log);
+        public async Task AddLog(TourLog log) {
+            await _logEditor.CreateLog(log);
+        }
+
+        public async Task UpdateLog(TourLog log) {
+            await _logEditor.UpdateLog(log);
+        }
+
+        public async Task DeleteLog(TourLog log) {
+            await _logEditor.DeleteLog(log);
         }
     }
 }

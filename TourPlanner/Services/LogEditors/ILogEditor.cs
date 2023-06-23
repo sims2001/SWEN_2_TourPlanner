@@ -10,8 +10,8 @@ namespace TourPlanner.Services.LogEditors
 {
     interface ILogEditor
     {
-        Task CreateLog(TourDTO tour, TourLog log);
-        Task UpdateLog(Guid tourId, TourLog log);
-        Task DeleteLog(Guid tourId, TourLog log);
+        Task CreateLog(TourLog log);
+        Task UpdateLog(TourLog log);
+        Task DeleteLog(TourLog log);
     }
 }

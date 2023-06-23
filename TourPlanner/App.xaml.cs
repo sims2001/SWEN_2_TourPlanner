@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TourPlanner.DbContexts;
 using TourPlanner.Services;
@@ -15,10 +16,12 @@ using TourPlanner.Views;
 using TourPlanner.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TourPlanner.DTOs;
 using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
 using TourPlanner.Services.LogProviders;
 using TourPlanner.Services.LogEditors;
+using TourPlanner.Exceptions;
 
 namespace TourPlanner {
     /// <summary>
@@ -38,7 +41,30 @@ namespace TourPlanner {
 
             _configuration = builder.Build();
 
+            var autoMapperConfig = new MapperConfiguration(cfg => {
+                    cfg.AllowNullCollections = true;
+                    cfg.CreateMap<TourLog, LogDTO>()
+                        .ForMember(
+                            sel => sel.TourDTO, 
+                            act => act.MapFrom(
+                                src => src.Tour
+                                )
+                            )
+                        .ReverseMap();
 
+                    cfg.CreateMap<TourDTO, Tour>()
+                        .ForMember(
+                            sel => sel.Logs,
+                            act => act.MapFrom(
+                                src => src.LogDTOs
+                                )
+                            )
+                        .ReverseMap();
+
+                }
+            );
+
+            autoMapperConfig.AssertConfigurationIsValid();
 
             IServiceCollection services = new ServiceCollection();
 
@@ -54,6 +80,7 @@ namespace TourPlanner {
             services.AddSingleton<LogStore>();
             services.AddSingleton<TourManager>(s => new TourManager(s));
             services.AddSingleton<OpenFileDialogService>();
+            services.AddSingleton<IMapper>(new Mapper(autoMapperConfig));
 
             services.AddSingleton<MainWindowViewModel>();
 
@@ -62,8 +89,7 @@ namespace TourPlanner {
             services.AddTransient<INavigationService<LogEditorViewModel>>(s => CreateLogEditorViewNavigationService(s));
 
             services.AddTransient<IParameterNavigationService<Guid, TourEditorViewModel>>(s => CreateEditorParameterNavigationService(s));
-            //services.AddTransient<IParameterNavigationService<Guid, LogEditorViewModel>>(s => CreateLogEditorParameterNavigationService(s));
-
+            
             services.AddSingleton<MainWindow>(s => new MainWindow() {
                 DataContext = s.GetRequiredService<MainWindowViewModel>()
             });
@@ -79,7 +105,6 @@ namespace TourPlanner {
                 dbContext.Database.Migrate();
             }
             
-
             INavigationService<TourOverViewModel> navigation = _serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             navigation.Navigate();
 
@@ -132,20 +157,11 @@ namespace TourPlanner {
             return new LogEditorViewModel(serviceProvider);
         }
 
-        //private LogEditorViewModel CreateLogEditorIdViewModel(IServiceProvider serviceProvider, Guid id) {
-        //    return new LogEditorViewModel(serviceProvider, id);
-        //}
-
         private IParameterNavigationService<Guid, TourEditorViewModel> CreateEditorParameterNavigationService(IServiceProvider serviceProvider) {
             return new ParameterNavigationService<Guid, TourEditorViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 (parameter) => CreateEditorIdViewModel(serviceProvider, parameter));
         }
 
-        //private IParameterNavigationService<Guid, LogEditorViewModel> CreateLogEditorParameterNavigationService(IServiceProvider serviceProvider) {
-        //    return new ParameterNavigationService<Guid, LogEditorIdViewModel>(
-        //        serviceProvider.GetRequiredService<NavigationStore>(),
-        //        (parameter) => CreateLogEditorIdViewModel(serviceProvider, parameter));
-        //}
     }
 }

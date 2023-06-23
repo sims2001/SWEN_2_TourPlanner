@@ -9,19 +9,22 @@ using System.Threading.Tasks;
 using System.Windows;
 using TourPlanner.Models;
 using TourPlanner.Services;
+using TourPlanner.Stores;
 using TourPlanner.ViewModels;
 
 namespace TourPlanner.Commands {
-    internal class SaveLogCommand : AsyncCommandBase {
+    internal class SaveEditedLogCommand : AsyncCommandBase {
         private readonly INavigationService<TourOverViewModel> _navigationService;
         private readonly LogEditorViewModel _editor;
         private readonly TourManager _tourManager;
+        private readonly LogStore _logStore;
         private readonly Regex timeFormat = new Regex("[0-9]{2}:[0-5][0-9]:[0-5][0-9]");
 
-        public SaveLogCommand(IServiceProvider serviceProvider, LogEditorViewModel model) {
+        public SaveEditedLogCommand(IServiceProvider serviceProvider, LogEditorViewModel model) {
             _editor = model;
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
+            _logStore = serviceProvider.GetRequiredService<LogStore>();
 
             _editor.PropertyChanged += OnViewModelPropertyChanged;
         }
@@ -47,21 +50,17 @@ namespace TourPlanner.Commands {
         public async override Task ExecuteAsync(object? parameter) {
             
             try {
+                var newLog = _logStore.CurrentLog;
 
+                newLog.TotalTime = _editor.LogIntTime();
+                newLog.Comment = _editor.LogComment;
+                newLog.Date = _editor.LogDate;
+                newLog.Rating = _editor.SelectedPopularity;
+                newLog.Difficulty = _editor.SelectedDifficulty;
 
-                TourLog newLog = new TourLog() {
-                    Id = Guid.NewGuid(),
-                    Date = _editor.LogDate.ToUniversalTime(),
-                    Comment = _editor.LogComment,
-                    Difficulty = _editor.SelectedDifficulty,
-                    TotalTime = _editor.LogIntTime(),
-                    Rating = _editor.SelectedPopularity,
-                    TourId = _editor.CurrentTour.Id
-                };
+                await _tourManager.UpdateLog(newLog);
 
-                await _tourManager.AddLog(newLog);
-
-                MessageBox.Show("Successfully Saved Log", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Successfully Updated Log", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 _navigationService.Navigate();
             }

@@ -11,7 +11,6 @@ namespace TourPlanner.ViewModels
     public class TourViewModel : ViewModelBase
     {
         private readonly Tour _tour;
-        private readonly NavigationStore? _navigationStore;
         public Guid Id => _tour.Id;
         public string Name => _tour.Name;
         public string? Description => _tour.Description;
@@ -25,11 +24,10 @@ namespace TourPlanner.ViewModels
 
         public string ChildFriendly => _tour.ChildFriendly ? "This Tour is Child Friendly" : "This Tour is not Child Friendly";
 
-        public IEnumerable<TourLog> Logs => _tour.TourLogs;
+        public IEnumerable<TourLog> Logs => _tour.Logs;
 
-        public TourViewModel(Tour tour, NavigationStore? store = null) {
+        public TourViewModel(Tour tour) {
             _tour = tour;
-            _navigationStore = store;
         }
 
     }

@@ -43,7 +43,7 @@
                 <TextBlock Grid.ColumnSpan="2" TextAlignment="Center" FontSize="24" Text="{Binding CurrentTour.Name}" Grid.Row="0" />
 
                 <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="Date" />
-                <DatePicker Margin="0 10 20 0" Grid.Row="1" Grid.Column="1"  SelectedDate="{Binding LogDate, UpdateSourceTrigger=PropertyChanged}" />
+                <DatePicker Margin="0 10 20 0" Grid.Row="1" Grid.Column="1"  SelectedDate="{Binding LogDate}" />
 
                 <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="Comment:" />
                 <TextBox Margin="0 10 20 0" Grid.Row="2" Grid.Column="1" Text="{Binding LogComment, UpdateSourceTrigger=PropertyChanged}" />
@@ -52,7 +52,7 @@
                 <ComboBox Margin="0 10 20 0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}"  />
 
                 <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="Rating:" />
-                <ComboBox Margin="0 10 20 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Popularities}" SelectedItem="{Binding SelectePopularity}" />
+                <ComboBox Margin="0 10 20 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Popularities}" SelectedItem="{Binding SelectedPopularity}" />
 
                 <Label Margin="0 10 0 0" Grid.Row="5" Grid.Column="0" Content="Time (hh:mm:ss):"  />
                 <TextBox Margin="0 10 20 0" Grid.Row="5" Grid.Column="1" Text="{Binding LogTime, UpdateSourceTrigger=PropertyChanged, StringFormat=hh:mm:ss}" />

@@ -10,14 +10,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" Grid.Column="0" ItemsSource="{Binding AllTourLogs}" >
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" Grid.Column="0" ItemsSource="{Binding AllTourLogs}" SelectedItem="{Binding SelectedLog, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView AllowsColumnReorder="True">
-                    <GridViewColumn Header="Date" Width="auto" />
-                    <GridViewColumn Header="Comment" Width="auto"/>
-                    <GridViewColumn Header="Difficulty" Width="auto"/>
-                    <GridViewColumn Header="Total Time" Width="auto" />
-                    <GridViewColumn Header="Rating" Width="auto"/>
+                    <GridViewColumn Header="Date" Width="auto" DisplayMemberBinding="{Binding Date, StringFormat={}{0:d}}" />
+                    <GridViewColumn Header="Comment" Width="auto" DisplayMemberBinding="{Binding Comment}"/>
+                    <GridViewColumn Header="Difficulty" Width="auto" DisplayMemberBinding="{Binding Difficulty}"/>
+                    <GridViewColumn Header="Total Time" Width="auto" DisplayMemberBinding="{Binding FormatedTime}"/>
+                    <GridViewColumn Header="Rating" Width="auto" DisplayMemberBinding="{Binding Rating}"/>
                 </GridView>
             </ListView.View>
         </ListView>

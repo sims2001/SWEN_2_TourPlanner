@@ -34,8 +34,8 @@ public class LogEditorViewModel : ViewModelBase {
 
         _logDate = DateTime.UtcNow;
 
-        if (_logStore.CurrentLog is not null) {
-
+        if (_log is not null) {
+            setLogValues();
         }
 
 
@@ -43,7 +43,10 @@ public class LogEditorViewModel : ViewModelBase {
             serviceProvider.GetService<INavigationService<TourOverViewModel>>()
         );
         SaveLogCommand = new SaveLogCommand(serviceProvider, this);
+        UpdateLogCommand = new SaveEditedLogCommand(serviceProvider, this);
     }
+
+    private TourLog _log => _logStore.CurrentLog;
 
     public IEnumerable<Difficulty> Difficulties => _difficulties;
     public Difficulty SelectedDifficulty {
@@ -55,7 +58,7 @@ public class LogEditorViewModel : ViewModelBase {
     }
 
     public IEnumerable<Popularity> Popularities => _popularities;
-    public Popularity SelectePopularity {
+    public Popularity SelectedPopularity {
         get => _selectedPopularity;
         set {
             _selectedPopularity = value;
@@ -65,6 +68,7 @@ public class LogEditorViewModel : ViewModelBase {
 
     public ICommand ToOverViewCommand { get; }
     public ICommand SaveLogCommand { get; }
+    public ICommand UpdateLogCommand { get; }
 
     private TourLog _currentLog => _logStore.CurrentLog;
 
@@ -108,5 +112,13 @@ public class LogEditorViewModel : ViewModelBase {
         var intTime = s + (m * 60) + (h * 3600);
 
         return intTime;
+    }
+
+    private void setLogValues() {
+        LogDate = _log.Date;
+        LogComment = _log.Comment;
+        SelectedPopularity = _log.Rating;
+        SelectedDifficulty = _log.Difficulty;
+        LogTime = _log.FormatedTime;
     }
 }

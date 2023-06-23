@@ -15,29 +15,14 @@ namespace TourPlanner.Models {
         public Difficulty Difficulty { get; set; }
         public int TotalTime { get; set; }
         public Popularity Rating { get; set; }
+        public Guid TourId { get; set; }
+        public Tour Tour { get; set; }
 
-        public static TourLogDTO createLogDTO(TourLog log, TourDTO tour) {
-            return new TourLogDTO() {
-                Id = log.Id,
-                Date = log.Date,
-                Comment = log.Comment,
-                Difficulty = log.Difficulty,
-                TotalTime = log.TotalTime,
-                Rating = log.Rating,
-                TourId = tour.Id,
-                Tour = tour
-            };
-        }
+        public string FormatedTime => FormatTime(TotalTime);
 
-        public static TourLog LogFromDTO(TourLogDTO log) {
-            return new TourLog() {
-                Id = log.Id,
-                Date = log.Date,
-                Comment = log.Comment,
-                Difficulty = log.Difficulty,
-                TotalTime = log.TotalTime,
-                Rating = log.Rating
-            };
+        private string FormatTime(int time) {
+            TimeSpan t = TimeSpan.FromSeconds(time);
+            return t.ToString(@"hh\:mm\:ss");
         }
     }
 }

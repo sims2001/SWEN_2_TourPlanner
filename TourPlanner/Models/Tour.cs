@@ -24,10 +24,10 @@ namespace TourPlanner.Models {
         public int AverageTime { get => AverageLogTime(); }
         public string FormatedAverageTime { get => FormatTime(AverageTime); }
         public Popularity Popularity { get => AverageLogPopularity(); }
-        public List<TourLog> TourLogs { get; set; } = new List<TourLog>();
+        public List<TourLog> Logs { get; set; } = new List<TourLog>();
 
 
-        private int _logCount => TourLogs?.Count<TourLog>() ?? 0;
+        private int _logCount => Logs?.Count<TourLog>() ?? 0;
         private string FormatTime(int time) {
             TimeSpan t = TimeSpan.FromSeconds(time);
             return t.ToString(@"hh\:mm\:ss");
@@ -50,7 +50,7 @@ namespace TourPlanner.Models {
                 return Time;
 
             int sum = 0;
-            foreach(var item in TourLogs) {
+            foreach(var item in Logs) {
                 sum += item.TotalTime;
             }
 
@@ -62,7 +62,7 @@ namespace TourPlanner.Models {
                 return Popularity.Good;
 
             int sum = 0;
-            foreach(var item in TourLogs) {
+            foreach(var item in Logs) {
                 sum += (int) item.Rating;
             }
 
@@ -74,7 +74,7 @@ namespace TourPlanner.Models {
                 return Difficulty.Medium;
 
             int sum = 0;
-            foreach(var item in TourLogs) {
+            foreach(var item in Logs) {
                 sum += (int)item.Difficulty;
             }
 
@@ -95,34 +95,6 @@ namespace TourPlanner.Models {
             return source ?? Guid.Empty;
         }
 
-        public static Tour DtoToTour(TourDTO dto) {
-            return new Tour() {
-                Id = dto.Id,
-                Name = dto.Name,
-                Description = dto.Description,
-                From = dto.From,
-                To = dto.To,
-                TransportType = dto.TransportType,
-                Distance = dto.Distance,
-                Time = dto.Time,
-                PicturePath = dto.PicturePath,
-                TourLogs = new List<TourLog>(l => TourLog.LogFromDTO(l));
-            };
-        }
-
-        public static TourDTO createTourDto(Tour tour) {
-            return new TourDTO() {
-                Id = tour.Id,
-                Name = tour.Name,
-                Description = tour.Description,
-                From = tour.From,
-                To = tour.To,
-                TransportType = tour.TransportType,
-                Distance = tour.Distance,
-                Time = tour.Time,
-                PicturePath = tour.PicturePath,
-                Logs = tour.TourLogs,
-            };
-        }
+        
     }
 }

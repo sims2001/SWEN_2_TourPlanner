@@ -63,7 +63,7 @@ namespace TourPlanner.Commands
                     Time = routeInfo.Time,
                     Distance = routeInfo.Distance,
                     PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png", //routeInfo.PicPath, //"C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png",
-                    TourLogs = new List<TourLog>()
+                    Logs = new List<TourLog>()
                 };
 
                 //_tourManager.AddTour(_tourEditorViewModel.TourFrom, _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType)

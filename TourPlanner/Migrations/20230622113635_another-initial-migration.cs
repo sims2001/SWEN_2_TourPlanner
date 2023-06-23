@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TourPlanner.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class anotherinitialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace TourPlanner.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TourLog",
+                name: "Logs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -40,29 +40,30 @@ namespace TourPlanner.Migrations
                     Difficulty = table.Column<int>(type: "integer", nullable: false),
                     TotalTime = table.Column<int>(type: "integer", nullable: false),
                     Rating = table.Column<int>(type: "integer", nullable: false),
-                    TourDTOId = table.Column<Guid>(type: "uuid", nullable: true)
+                    TourId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TourLog", x => x.Id);
+                    table.PrimaryKey("PK_Logs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TourLog_Tours_TourDTOId",
-                        column: x => x.TourDTOId,
+                        name: "FK_Logs_Tours_TourId",
+                        column: x => x.TourId,
                         principalTable: "Tours",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TourLog_TourDTOId",
-                table: "TourLog",
-                column: "TourDTOId");
+                name: "IX_Logs_TourId",
+                table: "Logs",
+                column: "TourId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TourLog");
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Tours");

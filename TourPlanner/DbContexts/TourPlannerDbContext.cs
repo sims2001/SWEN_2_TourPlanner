@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using TourPlanner.DTOs;
+using TourPlanner.Models;
 
 namespace TourPlanner.DbContexts {
     public class TourPlannerDbContext : DbContext {
@@ -13,7 +14,18 @@ namespace TourPlanner.DbContexts {
         public TourPlannerDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TourDTO> Tours { get; set; }
-        public DbSet<TourLogDTO> Logs { get; set; }
+        public DbSet<LogDTO> Logs { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<TourDTO>()
+                .HasMany(e => e.LogDTOs)
+                .WithOne(e => e.TourDTO)
+                .HasForeignKey(e => e.TourId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LogDTO>().Property(e => e.Date).HasConversion(m => m.ToUniversalTime(), m => m.ToLocalTime());
+        }
 
     }
 }

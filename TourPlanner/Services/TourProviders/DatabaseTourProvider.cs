@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.DbContexts;
@@ -12,16 +13,18 @@ using TourPlanner.Models;
 namespace TourPlanner.Services.TourProviders {
     public class DatabaseTourProvider : ITourProvider {
         private readonly TourPlannerDbContextFactory _dbContextFactory;
+        private readonly IMapper _mapper;
 
         public DatabaseTourProvider(IServiceProvider serviceProvider) {
             _dbContextFactory = serviceProvider.GetRequiredService<TourPlannerDbContextFactory>();
+            _mapper = serviceProvider.GetRequiredService<IMapper>();
         }
 
         public async Task<IEnumerable<Tour>> GetAllTours() {
             using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
-                IEnumerable<TourDTO> tourDTOs = await context.Tours.ToListAsync();
+                IEnumerable<TourDTO> tourDTOs = await context.Tours.Include(t => t.LogDTOs).ToListAsync();
 
-                return tourDTOs.Select(r => Tour.DtoToTour(r));
+                return tourDTOs.Select(r => _mapper.Map<Tour>(r));
             }
         }
 
@@ -32,7 +35,7 @@ namespace TourPlanner.Services.TourProviders {
                 var t = await context.Tours.FindAsync(id);
                 
 
-                return Tour.DtoToTour(t);
+                return _mapper.Map<Tour>(t);
             }
         }
 

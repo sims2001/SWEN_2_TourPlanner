@@ -12,8 +12,8 @@ using TourPlanner.DbContexts;
 namespace TourPlanner.Migrations
 {
     [DbContext(typeof(TourPlannerDbContext))]
-    [Migration("20230616154040_ienumerable_to_list")]
-    partial class ienumerable_to_list
+    [Migration("20230622113635_another-initial-migration")]
+    partial class anotherinitialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,38 @@ namespace TourPlanner.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("TourPlanner.DTOs.LogDTO", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalTime")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TourId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("Logs");
+                });
 
             modelBuilder.Entity("TourPlanner.DTOs.TourDTO", b =>
                 {
@@ -64,48 +96,20 @@ namespace TourPlanner.Migrations
                     b.ToTable("Tours");
                 });
 
-            modelBuilder.Entity("TourPlanner.Models.TourLog", b =>
+            modelBuilder.Entity("TourPlanner.DTOs.LogDTO", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.HasOne("TourPlanner.DTOs.TourDTO", "TourDTO")
+                        .WithMany("LogDTOs")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Difficulty")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalTime")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("TourDTOId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourDTOId");
-
-                    b.ToTable("TourLog");
-                });
-
-            modelBuilder.Entity("TourPlanner.Models.TourLog", b =>
-                {
-                    b.HasOne("TourPlanner.DTOs.TourDTO", null)
-                        .WithMany("Logs")
-                        .HasForeignKey("TourDTOId");
+                    b.Navigation("TourDTO");
                 });
 
             modelBuilder.Entity("TourPlanner.DTOs.TourDTO", b =>
                 {
-                    b.Navigation("Logs");
+                    b.Navigation("LogDTOs");
                 });
 #pragma warning restore 612, 618
         }

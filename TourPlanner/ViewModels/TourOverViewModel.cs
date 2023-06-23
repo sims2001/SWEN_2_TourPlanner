@@ -21,10 +21,10 @@ namespace TourPlanner.ViewModels
         private readonly LogStore _logStore;
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour => _tourStore.CurrentTour;
-        private ObservableCollection<TourLog>? _currentTourLogs => (ObservableCollection<TourLog>?)_currentTour?.Logs;
 
         public TourOverViewModel(IServiceProvider serviceProvider) {
             _allTours = new ObservableCollection<TourViewModel>();
+            _allLogs = new ObservableCollection<TourLog>();
             _tourStore = serviceProvider.GetRequiredService<TourStore>();
             _tourStore.CurrentTour = null;
 
@@ -47,6 +47,9 @@ namespace TourPlanner.ViewModels
                     serviceProvider.GetService<INavigationService<LogEditorViewModel>>(),
                     serviceProvider
                 );
+
+            EditLogCommand = new ToEditLogCommand<LogEditorViewModel>(serviceProvider, this);
+            DeleteLogCommand = new DeleteLogCommand<TourOverViewModel>(serviceProvider, this);
         }
 
         public static TourOverViewModel LoadViewModel(IServiceProvider serviceProvider) {
@@ -63,17 +66,31 @@ namespace TourPlanner.ViewModels
             set {
                 _tourStore.CurrentTour = value;
                 OnPropertyChanged();
+                UpdateTourLogs();
             }
         }
 
-        public IEnumerable<TourLog> AllTourLogs => _currentTourLogs;
+        private ObservableCollection<TourLog>? _allLogs;
+        public IEnumerable<TourLog> AllTourLogs => _allLogs;
 
+        private TourLog _selectedLog => _logStore.CurrentLog;
+
+        public TourLog SelectedLog {
+            get => _selectedLog;
+            set {
+                _logStore.CurrentLog = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //Buttons/Commands
         public ICommand EditTourCommand { get; }
         public ICommand DeleteTourCommand { get; }
-
         public ICommand NewTourCommand { get; }
         public ICommand LoadToursCommand { get; }
         public ICommand NewLogCommand { get; }
+        public ICommand EditLogCommand { get; }
+        public ICommand DeleteLogCommand { get; }
         public ViewModelBase CurrentViewModel => this;
 
         public void UpdateTours(IEnumerable<Tour> tours) {
@@ -81,6 +98,17 @@ namespace TourPlanner.ViewModels
             foreach (var t in tours) {
                 _allTours.Add(new TourViewModel(t));
             }
+        }
+
+        public void UpdateTourLogs() {
+            
+            Console.WriteLine(_currentTour);
+
+            _allLogs.Clear();
+            foreach(var t in _currentTour.Logs) {
+                _allLogs.Add(t);
+            }
+
         }
     }
 }

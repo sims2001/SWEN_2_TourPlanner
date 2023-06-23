@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TourPlanner.Models;
 
 namespace TourPlanner.DTOs {
-    public class TourLogDTO {
+    public class LogDTO {
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
         public string Comment { get; set; } = string.Empty;
@@ -15,6 +15,6 @@ namespace TourPlanner.DTOs {
         public Popularity Rating { get; set; }
 
         public Guid TourId { get; set; }
-        public virtual TourDTO Tour { get; set; }
+        public virtual TourDTO TourDTO { get; set; }
     }
 }
