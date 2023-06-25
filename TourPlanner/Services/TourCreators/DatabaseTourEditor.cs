@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TourPlanner.DbContexts;
 using TourPlanner.DTOs;
 using TourPlanner.Models;
@@ -42,6 +44,16 @@ namespace TourPlanner.Services.TourCreators {
 
                 TourDTO tourDTO = await context.Tours.FindAsync(id);
                 context.Tours.Remove(tourDTO);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task ImportTour(string tour) {
+            using (TourPlannerDbContext context = _contextFactory.CreateTourPlannerDbContext()) {
+                TourDTO newTour = JsonConvert.DeserializeObject<TourDTO>(tour);
+
+                context.Tours.Add(newTour);
+
                 await context.SaveChangesAsync();
             }
         }

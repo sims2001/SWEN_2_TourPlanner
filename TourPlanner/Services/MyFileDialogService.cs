@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Win32;
 
 namespace TourPlanner.Services {
-    public class OpenFileDialogService {
+    public class MyFileDialogService {
         public string OpenFileDialog() {
             OpenFileDialog fileDialog = new OpenFileDialog {
                 Filter = "Json Files (*.json)|*.json",
@@ -15,6 +15,16 @@ namespace TourPlanner.Services {
 
             fileDialog.ShowDialog();
             
+            return fileDialog.FileName;
+        }
+
+        public string SaveFileDialog() {
+            SaveFileDialog fileDialog = new SaveFileDialog {
+                Filter = "Json Files (*.json)|*.json"
+            };
+
+            fileDialog.ShowDialog();
+
             return fileDialog.FileName;
         }
     }

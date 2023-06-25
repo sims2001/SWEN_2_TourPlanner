@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using TourPlanner.DbContexts;
 using TourPlanner.Services.LogEditors;
-using TourPlanner.Services.LogProviders;
 using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
 
@@ -14,7 +14,6 @@ namespace TourPlanner.Models {
     public class TourManager {
 
         private readonly ITourProvider _tourProvider;
-        private readonly ILogProvider _logProvider;
         private readonly ITourEditor _tourEditor;
         private readonly ILogEditor _logEditor;
         private readonly IServiceProvider _serviceProvider;
@@ -23,7 +22,6 @@ namespace TourPlanner.Models {
             _serviceProvider = serviceProvider;
             _tourProvider = _serviceProvider.GetRequiredService<DatabaseTourProvider>();
             _tourEditor = _serviceProvider.GetRequiredService<DatabaseTourEditor>();
-            _logProvider = _serviceProvider.GetRequiredService<DatabaseLogProvider>();
             _logEditor = _serviceProvider.GetRequiredService<DatabaseLogEditor>();
         }
 
@@ -58,6 +56,14 @@ namespace TourPlanner.Models {
 
         public async Task DeleteLog(TourLog log) {
             await _logEditor.DeleteLog(log);
+        }
+
+        public async Task ImportTour(string tour) {
+            await _tourEditor.ImportTour(tour);
+        }
+
+        public async Task<JObject> ExportTour(Guid exportId) {
+            return await _tourProvider.ExportTour(exportId);
         }
     }
 }

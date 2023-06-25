@@ -45,7 +45,7 @@ namespace TourPlanner.ViewModels
 
             UpdateTourCommand = new SaveEditedTourCommand(this, serviceProvider);
 
-            ImportPathCommand = new FilePickerCommand(this, serviceProvider);
+            ImportTourCommand = new ImportFileCommand(serviceProvider);
 
             if (id.HasValue) {
                 LoadTourCommand = new LoadTourCommand(this, serviceProvider, id.Value);
@@ -71,8 +71,8 @@ namespace TourPlanner.ViewModels
         public ICommand ToOverViewCommand { get; }
         public ICommand SaveTourCommand { get; }
         public ICommand UpdateTourCommand { get; }
-        public ICommand ImportPathCommand { get; }
         public ICommand LoadTourCommand { get;  }
+        public ICommand ImportTourCommand { get; }
 
 
         private string? _tourName;

@@ -19,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.DTOs;
 using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
-using TourPlanner.Services.LogProviders;
 using TourPlanner.Services.LogEditors;
 using TourPlanner.Exceptions;
 
@@ -28,8 +27,7 @@ namespace TourPlanner {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-
-        private readonly TourPlannerDbContext _context;
+        
         private readonly IServiceProvider _serviceProvider;
         private readonly IConfiguration _configuration;
 
@@ -70,7 +68,6 @@ namespace TourPlanner {
 
             services.AddSingleton<TourPlannerDbContextFactory>(s => new TourPlannerDbContextFactory(_configuration.GetConnectionString("LocalPostgreSQL")));
             services.AddTransient<DatabaseTourProvider>(s => new DatabaseTourProvider(s));
-            services.AddTransient<DatabaseLogProvider>(s => new DatabaseLogProvider(s));
             services.AddTransient<DatabaseTourEditor>(s => new DatabaseTourEditor(s));
             services.AddTransient<DatabaseLogEditor>(s => new DatabaseLogEditor(s));
 
@@ -78,8 +75,9 @@ namespace TourPlanner {
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<TourStore>();
             services.AddSingleton<LogStore>();
+
             services.AddSingleton<TourManager>(s => new TourManager(s));
-            services.AddSingleton<OpenFileDialogService>();
+            services.AddSingleton<MyFileDialogService>();
             services.AddSingleton<IMapper>(new Mapper(autoMapperConfig));
 
             services.AddSingleton<MainWindowViewModel>();

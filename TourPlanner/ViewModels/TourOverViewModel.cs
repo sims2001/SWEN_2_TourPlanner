@@ -50,6 +50,8 @@ namespace TourPlanner.ViewModels
 
             EditLogCommand = new ToEditLogCommand<LogEditorViewModel>(serviceProvider, this);
             DeleteLogCommand = new DeleteLogCommand<TourOverViewModel>(serviceProvider, this);
+
+            ExportTourCommand = new ExportFileCommand(serviceProvider);
         }
 
         public static TourOverViewModel LoadViewModel(IServiceProvider serviceProvider) {
@@ -91,6 +93,7 @@ namespace TourPlanner.ViewModels
         public ICommand NewLogCommand { get; }
         public ICommand EditLogCommand { get; }
         public ICommand DeleteLogCommand { get; }
+        public ICommand ExportTourCommand { get; }
         public ViewModelBase CurrentViewModel => this;
 
         public void UpdateTours(IEnumerable<Tour> tours) {

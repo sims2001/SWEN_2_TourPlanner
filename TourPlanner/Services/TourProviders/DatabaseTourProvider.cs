@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using TourPlanner.DbContexts;
 using TourPlanner.DTOs;
 using TourPlanner.Models;
@@ -29,8 +30,6 @@ namespace TourPlanner.Services.TourProviders {
         }
 
         public async Task<Tour> GetTour(Guid id) {
-            Console.WriteLine(id);
-
             using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
                 var t = await context.Tours.FindAsync(id);
                 
@@ -39,6 +38,12 @@ namespace TourPlanner.Services.TourProviders {
             }
         }
 
-        
+        public async Task<JObject> ExportTour(Guid exportId) {
+            using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
+                var t = await context.Tours.FindAsync(exportId);
+
+                return JObject.FromObject(t);
+            }
+        }
     }
 }
