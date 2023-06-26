@@ -13,17 +13,15 @@ using TourPlanner.ViewModels;
 namespace TourPlanner.Commands
 {
     public class ImportFileCommand : AsyncCommandBase {
-        private readonly MyFileDialogService _dialogService;
         private readonly TourManager _tourManager;
         private readonly INavigationService<TourOverViewModel> _navigationService;
         public ImportFileCommand(IServiceProvider serviceProvider) {
-            _dialogService = serviceProvider.GetService<MyFileDialogService>();
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
         }
         
         public override async Task ExecuteAsync(object? parameter) {
-            var fp = _dialogService.OpenFileDialog();
+            var fp = MyFileDialogService.OpenFileDialog();
 
             var fc = await File.ReadAllTextAsync(fp);
 

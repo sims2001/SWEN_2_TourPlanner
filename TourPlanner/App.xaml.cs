@@ -77,7 +77,6 @@ namespace TourPlanner {
             services.AddSingleton<LogStore>();
 
             services.AddSingleton<TourManager>(s => new TourManager(s));
-            services.AddSingleton<MyFileDialogService>();
             services.AddSingleton<IMapper>(new Mapper(autoMapperConfig));
 
             services.AddSingleton<MainWindowViewModel>();

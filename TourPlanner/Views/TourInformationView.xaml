@@ -81,7 +81,7 @@
                                 <ColumnDefinition Width="5*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Margin="20" Padding="10">Generate Report</Button>
+                            <Button Grid.Column="0" Margin="20" Padding="10" Command="{Binding  GenerateSingleReportCommand}" CommandParameter="{Binding CurrentTour.Id}">Generate Report</Button>
                             <Button Grid.Column="1" Margin="20" Padding="10" Command="{Binding  ExportTourCommand}" CommandParameter="{Binding CurrentTour.Id}">Export Tour</Button>
                         </Grid>
                     </Grid>

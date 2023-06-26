@@ -12,23 +12,23 @@ using TourPlanner.ViewModels;
 
 namespace TourPlanner.Commands
 {
-    public class ExportFileCommand : AsyncCommandBase {
+    public class GenerateSingleReportCommand : AsyncCommandBase {
         private readonly TourManager _tourManager;
-        public ExportFileCommand(IServiceProvider serviceProvider) {
+        public GenerateSingleReportCommand(IServiceProvider serviceProvider) {
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
         }
 
 
         public override async Task ExecuteAsync(object? parameter) {
-            Guid exportId = (Guid)parameter;
+            Guid id = (Guid)parameter;
 
-            var jData = await _tourManager.ExportTour(exportId);
+            var t = await _tourManager.GetCompleteTour(id);
 
-            var fp = MyFileDialogService.SaveJsonFileDialog();
+            var fp = MyFileDialogService.SavePdfFileDialog();
 
-            await File.WriteAllTextAsync(fp, jData.ToString());
+            ReportingService.GenerateReport(fp, t);
 
-            MessageBox.Show($"Successfully Exported Tour to: {fp}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Successfully Saved Report to: {fp}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

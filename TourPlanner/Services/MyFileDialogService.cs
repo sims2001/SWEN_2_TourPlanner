@@ -7,7 +7,7 @@ using Microsoft.Win32;
 
 namespace TourPlanner.Services {
     public class MyFileDialogService {
-        public string OpenFileDialog() {
+        public static string OpenFileDialog() {
             OpenFileDialog fileDialog = new OpenFileDialog {
                 Filter = "Json Files (*.json)|*.json",
                 Multiselect = false
@@ -18,7 +18,7 @@ namespace TourPlanner.Services {
             return fileDialog.FileName;
         }
 
-        public string SaveFileDialog() {
+        public static string SaveJsonFileDialog() {
             SaveFileDialog fileDialog = new SaveFileDialog {
                 Filter = "Json Files (*.json)|*.json"
             };
@@ -26,6 +26,16 @@ namespace TourPlanner.Services {
             fileDialog.ShowDialog();
 
             return fileDialog.FileName;
+        }
+
+        public static string SavePdfFileDialog() {
+            SaveFileDialog fDialog = new SaveFileDialog {
+                Filter = "PDF Files (*.pdf)|*.pdf|(*.PDF)|*.PDF"
+            };
+
+            fDialog.ShowDialog();
+
+            return fDialog.FileName;
         }
     }
 }

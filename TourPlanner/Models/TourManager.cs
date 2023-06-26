@@ -65,5 +65,9 @@ namespace TourPlanner.Models {
         public async Task<JObject> ExportTour(Guid exportId) {
             return await _tourProvider.ExportTour(exportId);
         }
+
+        public async Task<Tour> GetCompleteTour(Guid id) {
+            return await _tourProvider.GetCompleteTour(id);
+        }
     }
 }

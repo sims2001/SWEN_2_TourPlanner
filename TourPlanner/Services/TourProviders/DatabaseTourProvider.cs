@@ -38,6 +38,14 @@ namespace TourPlanner.Services.TourProviders {
             }
         }
 
+        public async Task<Tour> GetCompleteTour(Guid id) {
+            using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
+                var t = await context.Tours.Include(t => t.LogDTOs).FirstOrDefaultAsync(i => i.Id == id);
+
+                return _mapper.Map<Tour>(t);
+            }
+        }
+
         public async Task<JObject> ExportTour(Guid exportId) {
             using (TourPlannerDbContext context = _dbContextFactory.CreateTourPlannerDbContext()) {
                 var t = await context.Tours.FindAsync(exportId);
