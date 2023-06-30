@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TourPlanner.Models;
 using TourPlanner.Stores;
@@ -26,6 +27,18 @@ namespace TourPlanner.ViewModels
         public Popularity Popularity => _tour.Popularity;
 
         public IEnumerable<TourLog> Logs => _tour.Logs;
+
+        public string Searchstring => _tour.SearchString;
+
+        private bool _visible = true;
+
+        public bool Visible {
+            get => _visible;
+            set {
+                _visible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public TourViewModel(Tour tour) {
             _tour = tour;

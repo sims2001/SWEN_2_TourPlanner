@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TourPlanner.DTOs;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using Enum = System.Enum;
 
 namespace TourPlanner.Models {
     public record Tour {
@@ -28,6 +30,16 @@ namespace TourPlanner.Models {
 
 
         private int _logCount => Logs?.Count<TourLog>() ?? 0;
+        public string SearchString { get => CreateSearchString(); }
+
+        private string CreateSearchString() {
+            string s = string.Concat(Name, Description, From, To, FormatedTime, FormatedAverageTime, Enum.GetName(Popularity), Enum.GetName(TransportType));
+            foreach (var log in Logs) {
+                s += string.Concat(log.Date.ToString(), log.Comment, Enum.GetName(log.Rating), Enum.GetName(log.Difficulty), log.FormatedTime);
+            }
+            return s;
+        }
+
         private string FormatTime(int time) {
             TimeSpan t = TimeSpan.FromSeconds(time);
             return t.ToString(@"hh\:mm\:ss");

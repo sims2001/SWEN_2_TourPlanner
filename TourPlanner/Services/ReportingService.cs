@@ -64,6 +64,27 @@ namespace TourPlanner.Services {
                 .SetFontSize(16)
             );
 
+            document.Add(new Paragraph($"Average Time/Duration: {tour.FormatedAverageTime}")
+                .SetFont(Font)
+                .SetFontSize(16)
+            );
+
+            document.Add(new Paragraph($"Popularity: {Enum.GetName(tour.Popularity)}")
+                .SetFont(Font)
+                .SetFontSize(16)
+            );
+
+            document.Add(new Paragraph($"Difficulty: {Enum.GetName(tour.AverageLogDifficulty())}")
+                .SetFont(Font)
+                .SetFontSize(16)
+            );
+
+            var cf = tour.ChildFriendly ? "Yes" : "no";
+            document.Add(new Paragraph($"Child Friendly: {cf}")
+                .SetFont(Font)
+                .SetFontSize(16)
+            );
+
             if (tour.Logs.Count > 0) {
                 document.Add(new Paragraph("LOGS")
                     .SetFont(Bold)
@@ -91,7 +112,7 @@ namespace TourPlanner.Services {
                 document.Add(table);
             }
 
-            document.Add(new Paragraph("Tour Image")
+            document.Add(new Paragraph("Tour Image:")
                 .SetFont(Bold)
                 .SetFontSize(20)
             );
@@ -102,6 +123,76 @@ namespace TourPlanner.Services {
 
             pdf.Close();
 
+            writer.Close();
+        }
+
+        public static void GenerateSummarizeReport(string fp, IEnumerable<Tour> tours) {
+            var writer = new PdfWriter(fp);
+            var pdf = new PdfDocument(writer);
+            var document = new Document(pdf);
+
+            foreach (var tour in tours) {
+                document.Add(new Paragraph(tour.Name)
+                    .SetFont(Bold)
+                    .SetFontSize(24)
+                    .SetTextAlignment(TextAlignment.CENTER)
+                );
+
+                document.Add(new Paragraph($"Average Time/Duration: {tour.FormatedAverageTime}")
+                .SetFont(Font)
+                .SetFontSize(16)
+            );
+
+                document.Add(new Paragraph($"Popularity: {Enum.GetName(tour.Popularity)}")
+                    .SetFont(Font)
+                    .SetFontSize(16)
+                );
+
+                document.Add(new Paragraph($"Difficulty: {Enum.GetName(tour.AverageLogDifficulty())}")
+                    .SetFont(Font)
+                    .SetFontSize(16)
+                );
+
+                var cf = tour.ChildFriendly ? "Yes" : "no";
+                document.Add(new Paragraph($"Child Friendly: {cf}")
+                    .SetFont(Font)
+                    .SetFontSize(16)
+                );
+
+                if (tour.Logs.Count > 0) {
+                    document.Add(new Paragraph("LOGS")
+                        .SetFont(Bold)
+                        .SetFontSize(20)
+                    );
+
+
+                    float[] cellWidths = { 100f, 150f, 100f, 100f, 80f };
+                    var table = new Table(cellWidths);
+
+                    string[] columns = { "Date", "Comment", "Difficulty", "Rating", "Time" };
+                    foreach (var s in columns) {
+                        table.AddCell(new Cell().Add(new Paragraph(s).SetFont(Bold).SetFontSize(16).SetTextAlignment(TextAlignment.CENTER)));
+                    }
+
+
+                    foreach (var log in tour.Logs) {
+                        table.AddCell(new Cell().Add(new Paragraph(log.Date.ToShortDateString()).SetFont(Font).SetFontSize(12)));
+                        table.AddCell(new Cell().Add(new Paragraph(log.Comment).SetFont(Font).SetFontSize(12)));
+                        table.AddCell(new Cell().Add(new Paragraph(Enum.GetName(log.Difficulty)).SetFont(Font).SetFontSize(12)));
+                        table.AddCell(new Cell().Add(new Paragraph(Enum.GetName(log.Rating)).SetFont(Font).SetFontSize(12)));
+                        table.AddCell(new Cell().Add(new Paragraph(log.FormatedTime).SetFont(Font).SetFontSize(12)));
+                    }
+
+                    document.Add(table);
+                }
+
+
+
+            }
+
+
+            document.Close();
+            pdf.Close();
             writer.Close();
         }
     }

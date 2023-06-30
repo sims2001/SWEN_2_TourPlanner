@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" ItemsSource="{Binding AllTours}" SelectedItem="{Binding CurrentTour}">
+        <ListView Grid.Row="0" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" ItemsSource="{Binding AllTours, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding CurrentTour}"> 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -51,6 +51,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Grid.Row="1" Padding="10">Report for all Tours</Button>
+        <Button Grid.Row="1" Padding="10" Command="{Binding GenerateSummarizeReportCommand}">Report for all Tours</Button>
     </Grid>
 </UserControl>
