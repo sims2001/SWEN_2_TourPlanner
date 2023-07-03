@@ -18,11 +18,12 @@ namespace TourPlanner.Commands
         private readonly TourManager _tourManager;
         private readonly TourEditorViewModel _tourEditorViewModel;
         private readonly INavigationService<TourOverViewModel> _navigationService;
+        private readonly LanguageService _languageService;
         public SaveEditedTourCommand(TourEditorViewModel tourEditorViewModel, IServiceProvider serviceProvider) {
             _tourEditorViewModel = tourEditorViewModel;
             _tourManager = serviceProvider.GetService<TourManager>();
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
-
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
             _tourEditorViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -30,6 +31,7 @@ namespace TourPlanner.Commands
             bool canExecute = (!string.IsNullOrEmpty(_tourEditorViewModel.TourName) 
                 && !string.IsNullOrEmpty(_tourEditorViewModel.TourFrom)
                 && !string.IsNullOrEmpty(_tourEditorViewModel.TourTo)
+                && !string.IsNullOrEmpty(_tourEditorViewModel.TourDescription)
                 );
 
             return canExecute && base.CanExecute(parameter);
@@ -85,18 +87,15 @@ namespace TourPlanner.Commands
 
                 _tourEditorViewModel.IsLoading = false;
 
-                MessageBox.Show("Successfully Updated Tour", "Success", MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                MessageBox.Show(_languageService.getVariable("message_success_tour_update"), _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
 
                 _navigationService.Navigate();
-
-            }
-            catch (RouteNotFoundException ex) {
+            } catch (RouteNotFoundException ex) {
                 _tourEditorViewModel.IsLoading = false;
-                MessageBox.Show($"Couldn't Find Locations!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_languageService.getVariable("message_error_locations"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_languageService.getVariable("message_error_tour_update"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TourPlanner.Exceptions;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.ViewModels;
@@ -14,8 +15,10 @@ namespace TourPlanner.Commands
 {
     public class ExportFileCommand : AsyncCommandBase {
         private readonly TourManager _tourManager;
+        private readonly LanguageService _languageService;
         public ExportFileCommand(IServiceProvider serviceProvider) {
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
         }
 
 
@@ -26,9 +29,28 @@ namespace TourPlanner.Commands
 
             var fp = MyFileDialogService.SaveJsonFileDialog();
 
-            await File.WriteAllTextAsync(fp, jData.ToString());
+            if(string.IsNullOrEmpty(fp))
+                return;
 
-            MessageBox.Show($"Successfully Exported Tour to: {fp}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            try {
+                if (!fp.EndsWith(".json"))
+                    throw new InvalidFileTypeException();
+
+                await File.WriteAllTextAsync(fp, jData.ToString());
+
+                MessageBox.Show(_languageService.getVariable("message_exported"), _languageService.getVariable("caption_success"), MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+            }
+            catch (InvalidFileTypeException ex) {
+                MessageBox.Show(_languageService.getVariable("message_invalid_file"),
+                    _languageService.getVariable("message_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex) {
+                MessageBox.Show(_languageService.getVariable("message_error"),
+                    _languageService.getVariable("message_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
     }
 }

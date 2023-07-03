@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TourPlanner.Exceptions;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.ViewModels;
@@ -15,22 +16,34 @@ namespace TourPlanner.Commands
     public class ImportFileCommand : AsyncCommandBase {
         private readonly TourManager _tourManager;
         private readonly INavigationService<TourOverViewModel> _navigationService;
+        private readonly LanguageService _languageService;
+
         public ImportFileCommand(IServiceProvider serviceProvider) {
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
         }
         
         public override async Task ExecuteAsync(object? parameter) {
-            var fp = MyFileDialogService.OpenFileDialog();
 
-            var fc = await File.ReadAllTextAsync(fp);
+            try {
+                var fp = MyFileDialogService.OpenFileDialog();
 
-            await _tourManager.ImportTour(fc);
+                if (string.IsNullOrEmpty(fp))
+                    return;
 
-            MessageBox.Show($"Successfully Imported Tour from: {fp}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (!fp.EndsWith(".json"))
+                    throw new InvalidFileTypeException();
 
+                var fc = await File.ReadAllTextAsync(fp);
 
-            _navigationService.Navigate();
+                if (await _tourManager.ImportTour(fc))
+                    _navigationService.Navigate();
+            }
+            catch (InvalidFileTypeException ex) {
+                MessageBox.Show(_languageService.getVariable("message_invalid_file"),
+                    _languageService.getVariable("message_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

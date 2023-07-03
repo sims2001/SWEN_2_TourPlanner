@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TourPlanner.Exceptions;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.ViewModels;
@@ -14,8 +15,10 @@ namespace TourPlanner.Commands
 {
     public class GenerateSummarizeReportCommand : AsyncCommandBase {
         private readonly TourManager _tourManager;
+        private readonly LanguageService _languageService;
         public GenerateSummarizeReportCommand(IServiceProvider serviceProvider) {
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
         }
 
 
@@ -23,11 +26,26 @@ namespace TourPlanner.Commands
 
             var t = await _tourManager.GetAllTours();
 
-            var fp = MyFileDialogService.SavePdfFileDialog();
+            try {
+                var fp = MyFileDialogService.SavePdfFileDialog();
 
-            ReportingService.GenerateSummarizeReport(fp, t);
+                if (string.IsNullOrEmpty(fp))
+                    return;
 
-            MessageBox.Show($"Successfully Saved Summarize-Report to: {fp}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (! fp.EndsWith(".pdf"))
+                    throw new InvalidFileTypeException();
+
+
+                ReportingService.GenerateSummarizeReport(fp, t);
+
+                MessageBox.Show(_languageService.getVariable("message_success_summarize_report"), _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
+            } catch (InvalidFileTypeException ex) {
+                MessageBox.Show(_languageService.getVariable("message_invalid_file"),
+                    _languageService.getVariable("message_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            } catch (Exception ex) {
+                MessageBox.Show(_languageService.getVariable("message_error"),
+                    _languageService.getVariable("message_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

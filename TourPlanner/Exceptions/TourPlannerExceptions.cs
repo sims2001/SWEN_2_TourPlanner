@@ -18,5 +18,17 @@ namespace TourPlanner.Exceptions {
         public RouteNotFoundException(string message, Exception inner) : base(message, inner) { }
     }
 
+    [Serializable]
+    public class InvalidFileTypeException : Exception {
+        public InvalidFileTypeException() { }
+        public InvalidFileTypeException(string message) : base(message) { }
+        public InvalidFileTypeException(string message, Exception inner) : base(message, inner) { }
+    }
 
+    [Serializable]
+    public class InvalidImportException : Exception {
+        public InvalidImportException() { }
+        public InvalidImportException(string message) : base(message) { }
+        public InvalidImportException(string message, Exception inner) : base(message, inner) { }
+    }
 }

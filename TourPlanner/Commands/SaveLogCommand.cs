@@ -17,12 +17,13 @@ namespace TourPlanner.Commands {
         private readonly LogEditorViewModel _editor;
         private readonly TourManager _tourManager;
         private readonly Regex timeFormat = new Regex("[0-9]{2}:[0-5][0-9]:[0-5][0-9]");
+        private readonly LanguageService _languageService;
 
         public SaveLogCommand(IServiceProvider serviceProvider, LogEditorViewModel model) {
             _editor = model;
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
-
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
             _editor.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -61,13 +62,11 @@ namespace TourPlanner.Commands {
 
                 await _tourManager.AddLog(newLog);
 
-                MessageBox.Show("Successfully Saved Log", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(_languageService.getVariable("message_success_save_log"), _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
 
                 _navigationService.Navigate();
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.WriteLine(ex.InnerException);
+            } catch (Exception ex) {
+                MessageBox.Show(_languageService.getVariable("message_error_save_log"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

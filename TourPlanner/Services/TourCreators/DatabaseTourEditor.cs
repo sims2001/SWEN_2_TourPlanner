@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TourPlanner.DbContexts;
 using TourPlanner.DTOs;
+using TourPlanner.Exceptions;
 using TourPlanner.Models;
 
 namespace TourPlanner.Services.TourCreators {
@@ -52,6 +54,20 @@ namespace TourPlanner.Services.TourCreators {
             using (TourPlannerDbContext context = _contextFactory.CreateTourPlannerDbContext()) {
                 TourDTO newTour = JsonConvert.DeserializeObject<TourDTO>(tour);
 
+
+                //Check if All Variables are there
+                PropertyInfo[] properties = typeof(TourDTO).GetProperties();
+                foreach (PropertyInfo propertyInfo in properties) {
+                    if(propertyInfo.Name == "LogDTOs")
+                        continue;
+                    
+                    var p = propertyInfo.GetValue(newTour);
+                    if (p == null)
+                        throw new InvalidImportException();
+
+                }
+
+                
                 context.Tours.Add(newTour);
 
                 await context.SaveChangesAsync();

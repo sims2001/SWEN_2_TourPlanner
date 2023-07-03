@@ -165,6 +165,9 @@ namespace TourPlanner.ViewModels
 
         public void UpdateTourLogs() {
             _allLogs.Clear();
+            if (_currentTour is null || _currentTour.Logs is null)
+                return;
+
             foreach(var t in _currentTour.Logs) {
                 _allLogs.Add(t);
             }
