@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TourPlanner.Exceptions;
+using TourPlanner.Logging;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.ViewModels;
@@ -19,11 +21,13 @@ namespace TourPlanner.Commands
         private readonly TourEditorViewModel _tourEditorViewModel;
         private readonly INavigationService<TourOverViewModel> _navigationService;
         private readonly LanguageService _languageService;
+        private readonly ILoggerWrapper _logger;
         public SaveTourCommand(TourEditorViewModel tourEditorViewModel, IServiceProvider serviceProvider) {
             _tourEditorViewModel = tourEditorViewModel;
             _tourManager = serviceProvider.GetService<TourManager>();
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             _languageService = serviceProvider.GetRequiredService<LanguageService>();
+            _logger = LoggerFactory.GetLogger(serviceProvider.GetService<IConfiguration>());
             _tourEditorViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -74,12 +78,13 @@ namespace TourPlanner.Commands
                 _tourEditorViewModel.IsLoading = false;
                 MessageBox.Show(_languageService.getVariable("message_success_save_tour"), _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
                 _navigationService.Navigate();
-
             } catch (RouteNotFoundException ex) {
                 _tourEditorViewModel.IsLoading = false;
                 MessageBox.Show(_languageService.getVariable("message_error_locations"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                _logger.Error("Couldn't Find Route or Location! ", ex);
             } catch (Exception ex) {
                 MessageBox.Show(_languageService.getVariable("message_error_save_tour"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                _logger.Error("Couldn't Save Tour: ", ex);
             }
 
         }

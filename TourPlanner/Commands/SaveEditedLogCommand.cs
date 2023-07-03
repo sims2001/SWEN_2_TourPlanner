@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
+using TourPlanner.Logging;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.Stores;
@@ -20,6 +22,7 @@ namespace TourPlanner.Commands {
         private readonly LogStore _logStore;
         private readonly Regex timeFormat = new Regex("[0-9]{2}:[0-5][0-9]:[0-5][0-9]");
         private readonly LanguageService _languageService;
+        private readonly ILoggerWrapper _logger;
 
         public SaveEditedLogCommand(IServiceProvider serviceProvider, LogEditorViewModel model) {
             _editor = model;
@@ -27,6 +30,7 @@ namespace TourPlanner.Commands {
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
             _logStore = serviceProvider.GetRequiredService<LogStore>();
             _languageService = serviceProvider.GetRequiredService<LanguageService>();
+            _logger = LoggerFactory.GetLogger(serviceProvider.GetService<IConfiguration>());
             _editor.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -67,6 +71,7 @@ namespace TourPlanner.Commands {
             }
             catch (Exception ex) {
                 MessageBox.Show(_languageService.getVariable("message_error_log_update"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                _logger.Error("Couldn't Update Log: ", ex);
             }
 
         }

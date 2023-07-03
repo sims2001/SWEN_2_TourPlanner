@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
+using TourPlanner.Logging;
 using TourPlanner.Models;
 using TourPlanner.Services;
 using TourPlanner.ViewModels;
@@ -18,12 +20,13 @@ namespace TourPlanner.Commands {
         private readonly TourManager _tourManager;
         private readonly Regex timeFormat = new Regex("[0-9]{2}:[0-5][0-9]:[0-5][0-9]");
         private readonly LanguageService _languageService;
-
+        private readonly ILoggerWrapper _logger;
         public SaveLogCommand(IServiceProvider serviceProvider, LogEditorViewModel model) {
             _editor = model;
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             _tourManager = serviceProvider.GetRequiredService<TourManager>();
             _languageService = serviceProvider.GetRequiredService<LanguageService>();
+            _logger = LoggerFactory.GetLogger(serviceProvider.GetService<IConfiguration>());
             _editor.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -63,10 +66,12 @@ namespace TourPlanner.Commands {
                 await _tourManager.AddLog(newLog);
 
                 MessageBox.Show(_languageService.getVariable("message_success_save_log"), _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
+                _logger.Info($"Added/Saved new Log for Tour {newLog.TourId}");
 
                 _navigationService.Navigate();
             } catch (Exception ex) {
                 MessageBox.Show(_languageService.getVariable("message_error_save_log"), _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                _logger.Error("Couldn't Save Log: ", ex);
             }
 
         }

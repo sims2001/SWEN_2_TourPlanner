@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoMapper;
+using log4net;
 using Microsoft.EntityFrameworkCore;
 using TourPlanner.DbContexts;
 using TourPlanner.Services;
@@ -22,6 +23,7 @@ using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
 using TourPlanner.Services.LogEditors;
 using TourPlanner.Exceptions;
+using TourPlanner.Logging;
 
 namespace TourPlanner {
     /// <summary>
@@ -77,8 +79,9 @@ namespace TourPlanner {
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<TourStore>();
             services.AddSingleton<LogStore>();
-            services.AddSingleton<LanguageStore>();
+            services.AddSingleton<LanguageStore>(s => new LanguageStore(s));
             services.AddSingleton<LanguageService>(s => new LanguageService(s, _configuration));
+            services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddSingleton<TourManager>(s => new TourManager(s));
             services.AddSingleton<IMapper>(new Mapper(autoMapperConfig));
@@ -93,21 +96,26 @@ namespace TourPlanner {
                 DataContext = s.GetRequiredService<MainWindowViewModel>()
             });
 
-            
+            //services.AddScoped<ILog>(f => LogManager.GetLogger(GetType()));
+
             _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e) {
+            ILoggerWrapper log = LoggerFactory.GetLogger(_configuration);
+            log.Debug(" ============ STARTED PROGRAM ============ ");
 
+            //Migrate db on startup
             using (var dbContext = _serviceProvider.GetRequiredService<TourPlannerDbContextFactory>()
                        .CreateTourPlannerDbContext()) {
                 dbContext.Database.Migrate();
             }
 
+            //Set Language
             var languageStore = _serviceProvider.GetRequiredService<LanguageStore>();
             languageStore.CurrentLanguage = "English";
 
-
+            //Set initial Navigation
             INavigationService<TourOverViewModel> navigation = _serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             navigation.Navigate();
 
