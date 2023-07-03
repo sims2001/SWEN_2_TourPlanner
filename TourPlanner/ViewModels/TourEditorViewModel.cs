@@ -31,9 +31,11 @@ namespace TourPlanner.ViewModels
             }
         }
 
-        public TourEditorViewModel(IServiceProvider serviceProvider, Guid? id = null) {
+        public TourEditorViewModel(IServiceProvider serviceProvider) {
             _tourStore = serviceProvider.GetRequiredService<TourStore>();
             _languageService = serviceProvider.GetRequiredService<LanguageService>();
+
+            GoBackContext = new BackToMenuViewModel(serviceProvider);
 
             //Initialize Transport Types
             _transportTypes = new ObservableCollection<TransportType>(Enum.GetValues(typeof(TransportType)).Cast<TransportType>());
@@ -43,19 +45,15 @@ namespace TourPlanner.ViewModels
                 setTourValues();
             }
 
-
-            ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
-                    serviceProvider.GetService<INavigationService<TourOverViewModel>>(),
-                    serviceProvider
-                );
-
             SaveTourCommand = new SaveTourCommand(this, serviceProvider);
 
             UpdateTourCommand = new SaveEditedTourCommand(this, serviceProvider);
 
             ImportTourCommand = new ImportFileCommand(serviceProvider);
         }
-        
+
+        public ViewModelBase GoBackContext { get; }
+
         public IEnumerable<TransportType> TransportTypes => _transportTypes;
 
         public TransportType SelectedTransportType {
@@ -65,11 +63,9 @@ namespace TourPlanner.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public ICommand ToOverViewCommand { get; }
+        
         public ICommand SaveTourCommand { get; }
         public ICommand UpdateTourCommand { get; }
-        public ICommand LoadTourCommand { get;  }
         public ICommand ImportTourCommand { get; }
 
 

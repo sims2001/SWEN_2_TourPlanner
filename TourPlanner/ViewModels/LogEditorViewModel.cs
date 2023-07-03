@@ -41,13 +41,13 @@ public class LogEditorViewModel : ViewModelBase {
         }
 
 
-        ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
-            serviceProvider.GetService<INavigationService<TourOverViewModel>>(),
-            serviceProvider
-        );
+        GoBackContext = new BackToMenuViewModel(serviceProvider);
+
         SaveLogCommand = new SaveLogCommand(serviceProvider, this);
         UpdateLogCommand = new SaveEditedLogCommand(serviceProvider, this);
     }
+
+    public ViewModelBase GoBackContext { get; }
 
     private TourLog _log => _logStore.CurrentLog;
 
@@ -68,8 +68,7 @@ public class LogEditorViewModel : ViewModelBase {
             OnPropertyChanged();
         }
     }
-
-    public ICommand ToOverViewCommand { get; }
+    
     public ICommand SaveLogCommand { get; }
     public ICommand UpdateLogCommand { get; }
 

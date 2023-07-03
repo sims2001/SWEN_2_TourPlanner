@@ -67,7 +67,8 @@
 	  "message_success_save_tour": "Successfully saved Tour!",
 	  "message_success_save_log": "Successfully saved Log!",
 	  "message_error_save_log": "Successfully updated Log!",
-	  "message_error_load_tours": "There was a problem with loading the tours!"
+	  "message_error_load_tours": "There was a problem with loading the tours!",
+	  "button_back_to_overview": "Back to Tour Overview!"
     },
 
     "German": {
@@ -137,7 +138,8 @@
 	  "message_success_save_tour": "Tour erfolgreich gespeichert!",
 	  "message_success_save_log": "Log erfolgreich gespeichert!",
 	  "message_error_save_log": "Log erfolgreich geupdated",
-	  "message_error_load_tours": "Es gab ein problem beim laden der Touren!"
+	  "message_error_load_tours": "Es gab ein problem beim laden der Touren!",
+	  "button_back_to_overview": "Zurück zur Tour-Übersicht"
     }
   }
 }

@@ -59,7 +59,14 @@
                 </Button.Resources>
                 x
             </Button>-->
-            <ComboBox Grid.Column="1" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage}"  />
+            <ComboBox Grid.Column="1" FontSize="16" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage}" VerticalAlignment="Center" BorderBrush="{x:Null}"  >
+                <ComboBox.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#FFF6F6F6" Offset="1"/>
+                    </LinearGradientBrush>
+                </ComboBox.Background>
+            </ComboBox>
         </Grid>
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}" />

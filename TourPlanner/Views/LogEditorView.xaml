@@ -19,12 +19,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Margin="20" Padding="5" Background="#FFEDB66B" FontWeight="Bold" Command="{Binding ToOverViewCommand}">CANCEL</Button>
-
-        <Grid Grid.Row="2">
+        <!--<Button Grid.Row="0" Margin="20" Padding="5" Background="#FFEDB66B" FontWeight="Bold" Command="{Binding ToOverViewCommand}">CANCEL</Button>-->
+        <local:BackToOverviewButton  Grid.Row="0" DataContext="{Binding GoBackContext}"/>
+        <Grid Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />

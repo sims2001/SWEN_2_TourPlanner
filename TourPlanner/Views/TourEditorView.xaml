@@ -20,7 +20,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Margin="20" Padding="5" Background="#FFEDB66B" FontWeight="Bold" Command="{Binding ToOverViewCommand}">CANCEL</Button>
+        <!--<Button Grid.Row="0" Margin="20" Padding="5" Background="#FFEDB66B" FontWeight="Bold" Command="{Binding ToOverViewCommand}">CANCEL</Button>-->
+        <local:BackToOverviewButton  Grid.Row="0" DataContext="{Binding GoBackContext}"/>
 
         <custom:LoadingSpinner Grid.Row="1" IsLoading="{Binding IsLoading}" Thickness="5" Diameter="120" Color="Gray" />
 
