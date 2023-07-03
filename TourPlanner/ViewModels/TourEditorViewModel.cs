@@ -138,5 +138,14 @@ namespace TourPlanner.ViewModels
 
         //Labels
         public string NameLabel => _languageService.getVariable("input_tour_name");
+        public string DescriptionLabel => _languageService.getVariable("input_tour_description");
+        public string FromLabel => _languageService.getVariable("input_tour_from");
+        public string ToLabel => _languageService.getVariable("input_tour_to");
+        public string TransportLabel => _languageService.getVariable("input_tour_transport");
+        public string SaveButton => _languageService.getVariable("button_save_tour");
+        public string UpdateButton => _languageService.getVariable("button_update_tour");
+        public string ImportButton => _languageService.getVariable("button_import");
+        public string LabelEdit => _languageService.getVariable("label_edit_tour");
+        public string LabelImport => _languageService.getVariable("label_import_tour");
     }
 }

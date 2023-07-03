@@ -24,6 +24,7 @@ namespace TourPlanner.ViewModels
         public TransportType TransportType => _tour.TransportType;
 
         public string ChildFriendly => _tour.ChildFriendly ? "This Tour is Child Friendly" : "This Tour is not Child Friendly";
+        public bool IsChildFriendly => _tour.ChildFriendly;
         public Popularity Popularity => _tour.Popularity;
 
         public IEnumerable<TourLog> Logs => _tour.Logs;

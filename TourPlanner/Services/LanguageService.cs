@@ -37,6 +37,10 @@ namespace TourPlanner.Services {
             
         }
 
+        public string[] getLanguages() {
+            return languageDictionary.Keys.ToArray();
+        }
+
         public string getVariable(string key) {
             var v = languageDictionary[_languageStore.CurrentLanguage];
             return v[key];

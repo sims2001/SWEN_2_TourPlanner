@@ -107,8 +107,37 @@ namespace TourPlanner.ViewModels
 
         // Labels
         public string TourLabel => _languageService.getVariable("label_tours");
+        public string SearchLabel => _languageService.getVariable("label_search");
+        public string InformationLabel => _languageService.getVariable("label_information");
+        public string NewTourTooltip => _languageService.getVariable("tooltip_new_tour");
+        public string EditTooltip => _languageService.getVariable("tooltip_edit_tour");
+        public string DeleteTooltip => _languageService.getVariable("tooltip_delete_tour");
+        public string LabelSummarizeReport => _languageService.getVariable("button_summarize_report");
+        //Not working yet?
+        public string LabelChildFriendly => _currentTour is null || _currentTour.IsChildFriendly
+            ? _languageService.getVariable("label_child_friendly")
+            : _languageService.getVariable("label_not_child_friendly");
 
-
+        public string LabelTourFrom => _languageService.getVariable("label_tour_from");
+        public string LabelTourTo => _languageService.getVariable("label_tour_to");
+        public string LabelTourTransport => _languageService.getVariable("label_tour_transport");
+        public string LabelTourTime => _languageService.getVariable("label_tour_time");
+        public string LabelTourDistance => _languageService.getVariable("label_tour_distance");
+        public string LabelTourAvgTime => _languageService.getVariable("label_tour_avg_time");
+        public string LabelTourPopularity => _languageService.getVariable("label_tour_popularity");
+        public string LabelGenerateReport => _languageService.getVariable("button_tour_report");
+        public string LabelExportTour => _languageService.getVariable("button_tour_export");
+        public string TabInformation => _languageService.getVariable("tab_information");
+        public string TabImage => _languageService.getVariable("tab_image");
+        public string TabLogs => _languageService.getVariable("tab_logs");
+        public string LabelNewLog => _languageService.getVariable("button_new_log");
+        public string LabelEditLog => _languageService.getVariable("button_edit_log");
+        public string LabelDeleteLog => _languageService.getVariable("button_delete_log");
+        public string LabelLogDate => _languageService.getVariable("label_log_date");
+        public string LabelLogComment => _languageService.getVariable("label_log_comment");
+        public string LabelLogDifficulty => _languageService.getVariable("label_log_difficulty");
+        public string LabelLogTime => _languageService.getVariable("label_log_time");
+        public string LabelLogRating => _languageService.getVariable("label_log_rating");
 
         // Buttons/Commands
         public ICommand EditTourCommand { get; }

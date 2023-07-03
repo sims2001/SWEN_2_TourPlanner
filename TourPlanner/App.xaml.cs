@@ -83,7 +83,7 @@ namespace TourPlanner {
             services.AddSingleton<TourManager>(s => new TourManager(s));
             services.AddSingleton<IMapper>(new Mapper(autoMapperConfig));
 
-            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<MainWindowViewModel>(s => new MainWindowViewModel(s));
 
             services.AddTransient<INavigationService<TourOverViewModel>>(s => CreateOverViewNavigationService(s));
             services.AddTransient<INavigationService<TourEditorViewModel>>(s => CreateEditorViewNavigationService(s));
@@ -122,7 +122,6 @@ namespace TourPlanner {
         private INavigationService<TourOverViewModel>
             CreateOverViewNavigationService(IServiceProvider serviceProvider) {
             return new NavigationService<TourOverViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 CreateOverViewModel,
                 serviceProvider
             );
@@ -135,7 +134,6 @@ namespace TourPlanner {
         private INavigationService<TourEditorViewModel>
             CreateEditorViewNavigationService(IServiceProvider serviceProvider) {
             return new NavigationService<TourEditorViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 CreateEditorViewModel,
                 serviceProvider
             );
@@ -147,7 +145,6 @@ namespace TourPlanner {
 
         private INavigationService<LogEditorViewModel>  CreateLogEditorViewNavigationService(IServiceProvider serviceProvider) {
             return new NavigationService<LogEditorViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 CreateLogEditorViewModel,
                 serviceProvider
             );

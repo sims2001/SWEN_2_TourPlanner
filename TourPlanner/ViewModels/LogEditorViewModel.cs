@@ -14,6 +14,7 @@ namespace TourPlanner.ViewModels;
 public class LogEditorViewModel : ViewModelBase {
     private readonly TourStore _tourStore;
     private readonly LogStore _logStore;
+    private readonly LanguageService _languageService;
     public TourViewModel? CurrentTour => _tourStore.CurrentTour;
 
     private ObservableCollection<Difficulty> _difficulties;
@@ -25,6 +26,7 @@ public class LogEditorViewModel : ViewModelBase {
     public LogEditorViewModel(IServiceProvider serviceProvider, TourLog? log = null) {
         _tourStore = serviceProvider.GetRequiredService<TourStore>();
         _logStore = serviceProvider.GetRequiredService<LogStore>();
+        _languageService = serviceProvider.GetRequiredService<LanguageService>();
 
         _difficulties = new ObservableCollection<Difficulty>(Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>());
         _selectedDifficulty = _difficulties.FirstOrDefault();
@@ -122,4 +124,13 @@ public class LogEditorViewModel : ViewModelBase {
         SelectedDifficulty = _log.Difficulty;
         LogTime = _log.FormatedTime;
     }
+
+    //Labels
+    public string InputDate => _languageService.getVariable("input_log_date");
+    public string InputComment => _languageService.getVariable("input_log_comment");
+    public string InputDifficulty => _languageService.getVariable("input_log_difficulty");
+    public string InputRating => _languageService.getVariable("input_log_rating");
+    public string InputTime => _languageService.getVariable("input_log_time");
+    public string LabelSaveLog => _languageService.getVariable("button_save_log");
+    public string LabelUpdateLog => _languageService.getVariable("button_update_log");
 }

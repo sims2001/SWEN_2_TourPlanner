@@ -29,9 +29,9 @@
                 <ColumnDefinition Width="7*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            
-            
-            <GroupBox Header="Edit Tour" Grid.Column="0" Padding="5">
+
+
+            <GroupBox Header="{Binding LabelEdit}" Grid.Column="0" Padding="5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -47,26 +47,26 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     
-                    <Label Margin="0 10 0 0" Grid.Row="0" Grid.Column="0" Content="Tour Name" />
+                    <Label Margin="0 10 0 0" Grid.Row="0" Grid.Column="0" Content="{Binding NameLabel}" />
                     <TextBox Margin="0 10 0 0" Grid.Row="0" Grid.Column="1" MaxLength="28" Text="{Binding TourName, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="Tour Description" />
+                    <Label Margin="0 10 0 0" Grid.Row="1" Grid.Column="0" Content="{Binding DescriptionLabel}" />
                     <TextBox Margin="0 10 0 0" Grid.Row="1" Grid.Column="1" Text="{Binding TourDescription}" />
 
-                    <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="Tour Start:" />
+                    <Label Margin="0 10 0 0" Grid.Row="2" Grid.Column="0" Content="{Binding FromLabel}" />
                     <TextBox Margin="0 10 0 0" Grid.Row="2" Grid.Column="1" Text="{Binding TourFrom, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Label Margin="0 10 0 0" Grid.Row="3" Grid.Column="0" Content="Tour End:" />
+                    <Label Margin="0 10 0 0" Grid.Row="3" Grid.Column="0" Content="{Binding ToLabel}" />
                     <TextBox Margin="0 10 0 0" Grid.Row="3" Grid.Column="1" Text="{Binding TourTo, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="Transport Type:" />
+                    <Label Margin="0 10 0 0" Grid.Row="4" Grid.Column="0" Content="{Binding TransportLabel}" />
                     <ComboBox Margin="0 10 0 0" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding TransportTypes}" SelectedItem="{Binding SelectedTransportType}" />
 
-                    <Button Visibility="{Binding Tour, Converter={StaticResource NotNullToVisibilityConverter}}" Content="Save Tour" Margin="20" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding SaveTourCommand}"/>
-                    <Button Visibility="{Binding Tour, Converter={StaticResource NullToVisibilityConverter}}" Content="Save Edited Tour" Margin="20" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding UpdateTourCommand}"/>
+                    <Button Visibility="{Binding Tour, Converter={StaticResource NotNullToVisibilityConverter}}" Content="{Binding SaveButton}" Margin="20" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding SaveTourCommand}"/>
+                    <Button Visibility="{Binding Tour, Converter={StaticResource NullToVisibilityConverter}}" Content="{Binding UpdateButton}" Margin="20" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Command="{Binding UpdateTourCommand}"/>
                 </Grid>
             </GroupBox>
-            <GroupBox Header="Import Tour" Grid.Column="1">
+            <GroupBox Header="{Binding LabelImport}" Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -75,9 +75,7 @@
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Row="0">
                         <!--<Label Content="Import Path:" FontSize="18" />-->
                         <!--<TextBox Margin="5" MaxLength="256" FontSize="18" FontFamily="Courier New"/>-->
-                        <Button Padding="12" Margin="18 0 18 0" Command="{Binding ImportTourCommand}" >
-                            Import Tour
-                        </Button>
+                        <Button Padding="12" Margin="18 0 18 0" Command="{Binding ImportTourCommand}" Content="{Binding ImportButton}" />
                     </StackPanel>
                     
                 </Grid>

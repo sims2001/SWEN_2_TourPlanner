@@ -13,11 +13,11 @@
         <ListView ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" Grid.Column="0" ItemsSource="{Binding AllTourLogs}" SelectedItem="{Binding SelectedLog, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Date" Width="auto" DisplayMemberBinding="{Binding Date, StringFormat={}{0:d}}" />
-                    <GridViewColumn Header="Comment" Width="auto" DisplayMemberBinding="{Binding Comment}"/>
-                    <GridViewColumn Header="Difficulty" Width="auto" DisplayMemberBinding="{Binding Difficulty}"/>
-                    <GridViewColumn Header="Total Time" Width="auto" DisplayMemberBinding="{Binding FormatedTime}"/>
-                    <GridViewColumn Header="Rating" Width="auto" DisplayMemberBinding="{Binding Rating}"/>
+                    <GridViewColumn Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LabelLogDate}" Width="auto" DisplayMemberBinding="{Binding Date, StringFormat={}{0:d}}" />
+                    <GridViewColumn Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LabelLogComment}" Width="auto" DisplayMemberBinding="{Binding Comment}"/>
+                    <GridViewColumn Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LabelLogDifficulty}" Width="auto" DisplayMemberBinding="{Binding Difficulty}"/>
+                    <GridViewColumn Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LabelLogTime}" Width="auto" DisplayMemberBinding="{Binding FormatedTime}"/>
+                    <GridViewColumn Header="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}, Path=DataContext.LabelLogRating}" Width="auto" DisplayMemberBinding="{Binding Rating}"/>
                 </GridView>
             </ListView.View>
         </ListView>

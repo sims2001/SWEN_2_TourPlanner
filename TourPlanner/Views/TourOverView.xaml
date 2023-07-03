@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Search:" Grid.Column="0" FontSize="16"/>
+            <Label Content="{Binding SearchLabel}" Grid.Column="0" FontSize="16"/>
             <TextBox Grid.Column="1" FontSize="16" BorderBrush="{x:Null}" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
@@ -32,7 +32,7 @@
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="32" Width="auto">
                         <TextBlock FontSize="24" Text="{Binding TourLabel}" />
-                        <Button FontSize="16" Padding="0 -4 0 0" Width="26" Margin="12 6 4 0" ToolTip="Add Route" Background="#FF90CDF0" FontWeight="Bold" Command="{Binding NewTourCommand}">
+                        <Button FontSize="16" Padding="0 -4 0 0" Width="26" Margin="12 6 4 0" ToolTip="{Binding NewTourTooltip}" Background="#FF90CDF0" FontWeight="Bold" Command="{Binding NewTourCommand}">
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="16"/>
@@ -46,7 +46,7 @@
                 <local:TourListView x:Name="TourListView" DataContext="{Binding CurrentViewModel }"/>
             </GroupBox>
 
-            <GroupBox Grid.Column="1" Header="Tour Information" FontSize="24" Padding="4">
+            <GroupBox Grid.Column="1" Header="{Binding InformationLabel}" FontSize="24" Padding="4">
                 <local:TourInformationView x:Name="TourInformation" DataContext="{Binding CurrentViewModel}" />
             </GroupBox>
         </Grid>
