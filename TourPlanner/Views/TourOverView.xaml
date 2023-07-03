@@ -31,8 +31,7 @@
             <GroupBox Grid.Column="0" Padding="4">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="32" Width="auto">
-                        <TextBlock FontSize="24">Tours</TextBlock>
-
+                        <TextBlock FontSize="24" Text="{Binding TourLabel}" />
                         <Button FontSize="16" Padding="0 -4 0 0" Width="26" Margin="12 6 4 0" ToolTip="Add Route" Background="#FF90CDF0" FontWeight="Bold" Command="{Binding NewTourCommand}">
                             <Button.Resources>
                                 <Style TargetType="Border">

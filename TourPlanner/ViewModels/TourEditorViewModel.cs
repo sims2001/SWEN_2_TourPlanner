@@ -16,29 +16,37 @@ namespace TourPlanner.ViewModels
 {
     public class TourEditorViewModel : ViewModelBase
     {
+        private readonly TourStore _tourStore;
+        private readonly LanguageService _languageService;
+
         private ObservableCollection<TransportType> _transportTypes;
         private TransportType _selectedTransportType;
-        private TourViewModel? _tour;
+        private TourViewModel? _tour => _tourStore.CurrentTour;
 
         public TourViewModel? Tour {
             get { return _tour; }
             set {
-                _tour = value; 
+                _tourStore.CurrentTour = value; 
                 OnPropertyChanged();
             }
         }
 
-        private readonly TourManager _tourManager;
         public TourEditorViewModel(IServiceProvider serviceProvider, Guid? id = null) {
-            _tourManager = serviceProvider.GetRequiredService<TourManager>();
+            _tourStore = serviceProvider.GetRequiredService<TourStore>();
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
 
             //Initialize Transport Types
             _transportTypes = new ObservableCollection<TransportType>(Enum.GetValues(typeof(TransportType)).Cast<TransportType>());
             _selectedTransportType = _transportTypes.FirstOrDefault();
 
+            if (_tour is not null) {
+                setTourValues();
+            }
+
 
             ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
-                    serviceProvider.GetService<INavigationService<TourOverViewModel>>()
+                    serviceProvider.GetService<INavigationService<TourOverViewModel>>(),
+                    serviceProvider
                 );
 
             SaveTourCommand = new SaveTourCommand(this, serviceProvider);
@@ -46,18 +54,8 @@ namespace TourPlanner.ViewModels
             UpdateTourCommand = new SaveEditedTourCommand(this, serviceProvider);
 
             ImportTourCommand = new ImportFileCommand(serviceProvider);
-
-            if (id.HasValue) {
-                LoadTourCommand = new LoadTourCommand(this, serviceProvider, id.Value);
-            }
         }
-
-        public static TourEditorViewModel LoadWithId(IServiceProvider serviceProvider, Guid id) {
-            TourEditorViewModel viewModel = new TourEditorViewModel(serviceProvider, id);
-            viewModel.LoadTourCommand.Execute(null);
-            return viewModel;
-        }
-
+        
         public IEnumerable<TransportType> TransportTypes => _transportTypes;
 
         public TransportType SelectedTransportType {
@@ -129,16 +127,16 @@ namespace TourPlanner.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public void LoadTourModel(Tour t) {
-            IsLoading = true;
-            Tour = new TourViewModel(t);
+        
+        private void setTourValues() {
             TourName = _tour.Name;
             TourDescription = _tour.Description;
             TourFrom = _tour.From;
             TourTo = _tour.To;
             SelectedTransportType = _tour.TransportType;
-            IsLoading = false;
         }
+
+        //Labels
+        public string NameLabel => _languageService.getVariable("input_tour_name");
     }
 }

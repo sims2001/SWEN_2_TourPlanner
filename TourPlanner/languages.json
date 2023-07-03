@@ -1,0 +1,53 @@
+{
+  "Languages": {
+    "English": {
+      "input_tour_name": "Tourname:",
+      "input_tour_descripiton": "Tour Description:",
+      "input_tour_from": "Tour Start:",
+      "input_tour_to": "Tour End:",
+      "input_tour_transport": "Transport Type",
+      "label_tour_from": "Start Location:",
+      "label_tour_to": "End Location",
+      "label_tour_transport": "Type of Transportation:",
+      "label_tour_time": "Estimated Time:",
+      "label_tour_distance": "Distance:",
+      "label_tour_avg_time": "Average Time:",
+      "label_tour_popularity": "Tour Popularity",
+      "button_save_tour": "Save new Tour",
+      "button_update_tour": "Update Tour",
+      "button_import": "Import Tour",
+      "label_tours": "Tour List",
+      "label_information": "Tour Information",
+      "tooltip_edit_tour": "Edit Tour",
+      "tooltip_delete_tour": "Delete Tour",
+      "tooltip_new_tour": "New Tour",
+      "button_summarize_report": "Generate Summarize Report",
+      "button_tour_report": "Generate Report",
+      "button_export_Tour": "Export Tour",
+      "tab_information": "Tour Information",
+      "tab_image": "Tour Image",
+      "tab_logs": "Tour Logs",
+      "label_search": "Search",
+      "button_new_log": "New Tour-Log",
+      "button_edit_log": "Edit Tour-Log",
+      "button_delete_log": "Delete Tour-Log",
+      "label_log_date": "Tour taken on",
+      "label_log_comment": "Comment",
+      "label_log_difficulty": "Difficulty",
+      "label_log_time": "Time needed",
+      "label_log_rating": "Rating",
+      "input_log_date": "Tour taken on:",
+      "input_log_comment": "Comment:",
+      "input_log_difficulty": "Difficulty:",
+      "input_log_rating": "Rating:",
+      "input_log_time": "Time (hh:mm:ss):",
+      "button_save_log": "Save Log",
+      "button_update_log": "Update Log",
+      "button_cancel": "Back to Overview"
+    },
+
+    "German": {
+
+    }
+  }
+}

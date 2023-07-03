@@ -14,16 +14,22 @@ namespace TourPlanner.Commands {
 
 
         private readonly NavigationStore _navigationStore;
-
-        private readonly IParameterNavigationService<Guid, TourEditorViewModel> _parameterNavigationService;
-        public ToEditTourCommand(IServiceProvider serviceProvider){
-            _parameterNavigationService = serviceProvider.GetService<IParameterNavigationService<Guid, TourEditorViewModel>>();
+        
+        private readonly INavigationService<TourEditorViewModel> _navigationService;
+        private readonly TourOverViewModel _model;
+        private readonly TourStore _tourStore;
+        public ToEditTourCommand(TourOverViewModel model,IServiceProvider serviceProvider) {
+            _navigationService = serviceProvider.GetService<INavigationService<TourEditorViewModel>>();
+            _tourStore = serviceProvider.GetRequiredService<TourStore>();
+            _model = model;
         }
 
         public override void Execute(object? parameter) {
             var id = (Guid) parameter;
-            Console.WriteLine(id);
-            _parameterNavigationService.Navigate(id);
+
+            _tourStore.CurrentTour = _model.AllTours.FirstOrDefault(s => s.Id == id);
+            
+            _navigationService.Navigate();
         }
     }
 }

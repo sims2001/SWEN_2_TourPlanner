@@ -7,9 +7,9 @@
         xmlns:cnvs="clr-namespace:TourPlanner.Converter"
         xmlns:vms="clr-namespace:TourPlanner.ViewModels"
         mc:Ignorable="d"
-        WindowStyle="None" ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"  WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"  
         Title="TourPlaner" Height="720" Width="1280">
+    <!--WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized"-->
     <Window.Resources>
         <cnvs:TabSizeConverter x:Key="TabSizeConverter" />
         <Style TargetType="{x:Type TabItem}">

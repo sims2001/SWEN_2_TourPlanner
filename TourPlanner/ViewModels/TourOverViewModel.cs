@@ -24,9 +24,13 @@ namespace TourPlanner.ViewModels
         private ObservableCollection<TourViewModel> _allTours;
         private TourViewModel? _currentTour => _tourStore.CurrentTour;
 
+        private readonly LanguageService _languageService;
+
         public TourOverViewModel(IServiceProvider serviceProvider) {
             _allTours = new ObservableCollection<TourViewModel>();
             _allLogs = new ObservableCollection<TourLog>();
+            _languageService = serviceProvider.GetRequiredService<LanguageService>();
+
             _tourStore = serviceProvider.GetRequiredService<TourStore>();
             _tourStore.CurrentTour = null;
 
@@ -34,14 +38,15 @@ namespace TourPlanner.ViewModels
             _logStore.CurrentLog = null;
 
             NewTourCommand = new NavigateCommand<TourEditorViewModel>(
-                    serviceProvider.GetService<INavigationService<TourEditorViewModel>>()
+                    serviceProvider.GetService<INavigationService<TourEditorViewModel>>(),
+                    serviceProvider
                 );
 
             DeleteTourCommand = new DeleteTourCommand(serviceProvider);
 
 
             EditTourCommand =
-                new ToEditTourCommand(serviceProvider);
+                new ToEditTourCommand(this, serviceProvider);
 
             LoadToursCommand = new LoadToursCommand(serviceProvider, this);
 
@@ -100,8 +105,12 @@ namespace TourPlanner.ViewModels
             }
         }
 
+        // Labels
+        public string TourLabel => _languageService.getVariable("label_tours");
 
-        //Buttons/Commands
+
+
+        // Buttons/Commands
         public ICommand EditTourCommand { get; }
         public ICommand DeleteTourCommand { get; }
         public ICommand NewTourCommand { get; }
@@ -114,6 +123,8 @@ namespace TourPlanner.ViewModels
         public ICommand GenerateSummarizeReportCommand { get; }
         public ViewModelBase CurrentViewModel => this;
 
+
+        //Functions for Updating Tours and Logs
         public void UpdateTours(IEnumerable<Tour> tours) {
             _allTours.Clear();
             foreach (var t in tours) {

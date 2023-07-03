@@ -40,7 +40,8 @@ public class LogEditorViewModel : ViewModelBase {
 
 
         ToOverViewCommand = new NavigateCommand<TourOverViewModel>(
-            serviceProvider.GetService<INavigationService<TourOverViewModel>>()
+            serviceProvider.GetService<INavigationService<TourOverViewModel>>(),
+            serviceProvider
         );
         SaveLogCommand = new SaveLogCommand(serviceProvider, this);
         UpdateLogCommand = new SaveEditedLogCommand(serviceProvider, this);

@@ -16,6 +16,7 @@ using TourPlanner.Views;
 using TourPlanner.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using TourPlanner.DTOs;
 using TourPlanner.Services.TourCreators;
 using TourPlanner.Services.TourProviders;
@@ -35,7 +36,8 @@ namespace TourPlanner {
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("languages.json", optional: false, reloadOnChange:true);
 
             _configuration = builder.Build();
 
@@ -75,6 +77,8 @@ namespace TourPlanner {
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<TourStore>();
             services.AddSingleton<LogStore>();
+            services.AddSingleton<LanguageStore>();
+            services.AddSingleton<LanguageService>(s => new LanguageService(s, _configuration));
 
             services.AddSingleton<TourManager>(s => new TourManager(s));
             services.AddSingleton<IMapper>(new Mapper(autoMapperConfig));
@@ -84,8 +88,6 @@ namespace TourPlanner {
             services.AddTransient<INavigationService<TourOverViewModel>>(s => CreateOverViewNavigationService(s));
             services.AddTransient<INavigationService<TourEditorViewModel>>(s => CreateEditorViewNavigationService(s));
             services.AddTransient<INavigationService<LogEditorViewModel>>(s => CreateLogEditorViewNavigationService(s));
-
-            services.AddTransient<IParameterNavigationService<Guid, TourEditorViewModel>>(s => CreateEditorParameterNavigationService(s));
             
             services.AddSingleton<MainWindow>(s => new MainWindow() {
                 DataContext = s.GetRequiredService<MainWindowViewModel>()
@@ -101,7 +103,11 @@ namespace TourPlanner {
                        .CreateTourPlannerDbContext()) {
                 dbContext.Database.Migrate();
             }
-            
+
+            var languageStore = _serviceProvider.GetRequiredService<LanguageStore>();
+            languageStore.CurrentLanguage = "English";
+
+
             INavigationService<TourOverViewModel> navigation = _serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             navigation.Navigate();
 
@@ -138,9 +144,6 @@ namespace TourPlanner {
         private TourEditorViewModel CreateEditorViewModel(IServiceProvider serviceProvider) {
             return new TourEditorViewModel(serviceProvider);
         }
-        private TourEditorViewModel CreateEditorIdViewModel(IServiceProvider serviceProvider, Guid id) {
-            return TourEditorViewModel.LoadWithId(serviceProvider, id);
-        }
 
         private INavigationService<LogEditorViewModel>  CreateLogEditorViewNavigationService(IServiceProvider serviceProvider) {
             return new NavigationService<LogEditorViewModel>(
@@ -154,11 +157,8 @@ namespace TourPlanner {
             return new LogEditorViewModel(serviceProvider);
         }
 
-        private IParameterNavigationService<Guid, TourEditorViewModel> CreateEditorParameterNavigationService(IServiceProvider serviceProvider) {
-            return new ParameterNavigationService<Guid, TourEditorViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
-                (parameter) => CreateEditorIdViewModel(serviceProvider, parameter));
-        }
+
+
 
     }
 }
