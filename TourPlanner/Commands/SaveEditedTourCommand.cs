@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,14 @@ namespace TourPlanner.Commands
         private readonly INavigationService<TourOverViewModel> _navigationService;
         private readonly LanguageService _languageService;
         private readonly ILoggerWrapper _logger;
+        private readonly IServiceProvider _serviceProvider;
         public SaveEditedTourCommand(TourEditorViewModel tourEditorViewModel, IServiceProvider serviceProvider) {
             _tourEditorViewModel = tourEditorViewModel;
             _tourManager = serviceProvider.GetService<TourManager>();
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             _languageService = serviceProvider.GetRequiredService<LanguageService>();
             _logger = LoggerFactory.GetLogger(serviceProvider.GetService<IConfiguration>());
+            _serviceProvider = serviceProvider;
             _tourEditorViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -54,6 +57,7 @@ namespace TourPlanner.Commands
 
 
             var editedTour = await _tourManager.GetTour(_tourEditorViewModel.Tour.Id);
+            var oldPic = editedTour.PicturePath;
 
             //TourManager Arbeit machen lassen???
             bool newDirections = (_tourEditorViewModel.TourFrom != editedTour.From ||
@@ -63,11 +67,12 @@ namespace TourPlanner.Commands
             try {
                 if (newDirections) {
                     var routeInfo = await OnlineRoute.GetOnlineRoute(_tourEditorViewModel.TourFrom,
-                        _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString());
+                        _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString(), _serviceProvider);
                     editedTour.Time = routeInfo.Time;
                     editedTour.Distance = routeInfo.Distance;
-                    editedTour.PicturePath =
-                        "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png"; // routeInfo.PicPath;
+                    editedTour.PicturePath = routeInfo.PicPath;
+
+                    File.Delete(oldPic);
                 }
 
 

@@ -22,12 +22,15 @@ namespace TourPlanner.Commands
         private readonly INavigationService<TourOverViewModel> _navigationService;
         private readonly LanguageService _languageService;
         private readonly ILoggerWrapper _logger;
+        private readonly IServiceProvider _serviceProvider;
+
         public SaveTourCommand(TourEditorViewModel tourEditorViewModel, IServiceProvider serviceProvider) {
             _tourEditorViewModel = tourEditorViewModel;
             _tourManager = serviceProvider.GetService<TourManager>();
             _navigationService = serviceProvider.GetService<INavigationService<TourOverViewModel>>();
             _languageService = serviceProvider.GetRequiredService<LanguageService>();
             _logger = LoggerFactory.GetLogger(serviceProvider.GetService<IConfiguration>());
+            _serviceProvider = serviceProvider;
             _tourEditorViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
@@ -54,9 +57,7 @@ namespace TourPlanner.Commands
 
             try {
                 
-                //RouteManager Arbeit machen lassen???
-
-                var routeInfo = await OnlineRoute.GetOnlineRoute(_tourEditorViewModel.TourFrom, _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString());
+                var routeInfo = await OnlineRoute.GetOnlineRoute(_tourEditorViewModel.TourFrom, _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString(), _serviceProvider);
 
 
                 var NewTour = new Tour {
@@ -68,11 +69,10 @@ namespace TourPlanner.Commands
                     TransportType = _tourEditorViewModel.SelectedTransportType,
                     Time = routeInfo.Time,
                     Distance = routeInfo.Distance,
-                    PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png", //routeInfo.PicPath, //"C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png",
+                    PicturePath = routeInfo.PicPath, //"C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png",  //"C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png",
                     Logs = new List<TourLog>()
                 };
 
-                //_tourManager.AddTour(_tourEditorViewModel.TourFrom, _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType)
                 _tourManager.AddTour(NewTour);
 
                 _tourEditorViewModel.IsLoading = false;

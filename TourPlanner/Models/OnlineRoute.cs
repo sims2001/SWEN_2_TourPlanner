@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using System.Web;
 using TourPlanner.Exceptions;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TourPlanner.Models {
     internal class OnlineRoute {
-
+        private readonly IConfiguration _configuration;
         public string From { get; protected set; }
         public string To { get; protected set; }
         public string Transport { get; protected set; }
@@ -21,10 +23,11 @@ namespace TourPlanner.Models {
         public string PicPath { get; protected set; } = string.Empty;
         public byte[]? mapArray { get; protected set; }
 
-        public OnlineRoute(string from, string to, string tt) {
+        public OnlineRoute(string from, string to, string tt, IServiceProvider serviceProvider) {
             From = from;
             To = to;
             Transport = tt;
+            _configuration = serviceProvider.GetService<IConfiguration>();
         }
 
         private async Task getData() {
@@ -32,7 +35,7 @@ namespace TourPlanner.Models {
             var builder = new UriBuilder("https://www.mapquestapi.com/directions/v2/route");
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
-            query["key"] = "By1wHXsGAwuUXAsjCqHgg5yTAxAq1KfW";
+            query["key"] = _configuration["MapQuestAPI:key"];
             query["from"] = From;
             query["to"] = To;
             query["outFormat"] = "json";
@@ -60,7 +63,7 @@ namespace TourPlanner.Models {
             Distance = route.Value<double>("distance");
             Time = route.Value<int>("time");
 
-            //await setMap();
+            await setMap();
         }
 
         private async Task setMap() {
@@ -71,7 +74,7 @@ namespace TourPlanner.Models {
             query["end"] = To;
             query["size"] = "1600,900";
             query["format"] = "png";
-            query["key"] = "By1wHXsGAwuUXAsjCqHgg5yTAxAq1KfW";
+            query["key"] = _configuration["MapQuestAPI:key"];
             builder.Query = query.ToString();
             string url = builder.ToString();
 
@@ -79,13 +82,13 @@ namespace TourPlanner.Models {
             var map = await client.GetByteArrayAsync(url);
             mapArray = map;
 
-            SaveImage();
+            PicPath = SaveImage();
         } 
 
         private string SaveImage() {
             string picDir = "C:\\Users\\Simon\\Desktop\\WEB_PROJEKTE\\TourPlanner\\MapImages";
             Directory.CreateDirectory(picDir);
-            var path = $"{picDir}\\{DateTime.Now.Second}.png";
+            var path = $"{picDir}\\{DateTime.Now.ToString("dd'-'MM'-'yyyy'T'HH'_'mm'_'ss")}.png";
             var fs = File.Create(path);
             fs.Write(mapArray);
             fs.Close();
@@ -93,12 +96,11 @@ namespace TourPlanner.Models {
             return path;
         }
 
-        public static async Task<OnlineRoute> GetOnlineRoute(string from, string to, string tt) {
-            var newRoute = new OnlineRoute(from, to, tt);
+        public static async Task<OnlineRoute> GetOnlineRoute(string from, string to, string tt, IServiceProvider serviceProvider) {
+            var newRoute = new OnlineRoute(from, to, tt, serviceProvider);
             await newRoute.getData();
             return newRoute;
         }
-
-
+        
     }
 }
