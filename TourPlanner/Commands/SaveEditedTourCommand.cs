@@ -55,16 +55,17 @@ namespace TourPlanner.Commands
         public override async Task ExecuteAsync(object? parameter) {
             _tourEditorViewModel.IsLoading = true;
 
-
-            var editedTour = await _tourManager.GetTour(_tourEditorViewModel.Tour.Id);
-            var oldPic = editedTour.PicturePath;
-
-            //TourManager Arbeit machen lassen???
-            bool newDirections = (_tourEditorViewModel.TourFrom != editedTour.From ||
-                                       _tourEditorViewModel.TourTo != editedTour.To ||
-                                       _tourEditorViewModel.SelectedTransportType != editedTour.TransportType);
-
             try {
+                var editedTour = await _tourManager.GetTour(_tourEditorViewModel.Tour.Id);
+                
+                
+                var oldPic = editedTour.PicturePath;
+
+                //TourManager Arbeit machen lassen???
+                bool newDirections = (_tourEditorViewModel.TourFrom != editedTour.From ||
+                                           _tourEditorViewModel.TourTo != editedTour.To ||
+                                           _tourEditorViewModel.SelectedTransportType != editedTour.TransportType);
+
                 if (newDirections) {
                     var routeInfo = await OnlineRoute.GetOnlineRoute(_tourEditorViewModel.TourFrom,
                         _tourEditorViewModel.TourTo, _tourEditorViewModel.SelectedTransportType.ToString(), _serviceProvider);

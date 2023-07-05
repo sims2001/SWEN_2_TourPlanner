@@ -31,11 +31,12 @@ namespace TourPlanner.Models {
             _tourProvider = _serviceProvider.GetRequiredService<DatabaseTourProvider>();
             _tourEditor = _serviceProvider.GetRequiredService<DatabaseTourEditor>();
             _logEditor = _serviceProvider.GetRequiredService<DatabaseLogEditor>();
-            _languageService = serviceProvider.GetRequiredService<LanguageService>();
-            _logger = LoggerFactory.GetLogger(serviceProvider.GetRequiredService<IConfiguration>());
+            _languageService = _serviceProvider.GetRequiredService<LanguageService>();
+            _logger = LoggerFactory.GetLogger(_serviceProvider.GetRequiredService<IConfiguration>());
         }
 
-        public async Task<IEnumerable<Tour>> GetAllTours() {  
+        public async Task<IEnumerable<Tour>> GetAllTours() { 
+            _logger.Info("Loading All Tours!");
             return await _tourProvider.GetAllTours();
         }
 
@@ -79,12 +80,19 @@ namespace TourPlanner.Models {
             try {
                 await _tourEditor.ImportTour(tour);
 
-                MessageBox.Show(_languageService.getVariable("message_success_import"), _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(_languageService.getVariable("message_success_import"),
+                    _languageService.getVariable("caption_success"), MessageBoxButton.OK, MessageBoxImage.Information);
                 return true;
-            } catch (InvalidImportException ex) {
+            }
+            catch (InvalidImportException ex) {
                 MessageBox.Show(_languageService.getVariable("message_error_importfile"),
                     _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 _logger.Error("Error with importing tour");
+            }
+            catch (TourAlreadyExistsException ex) {
+                MessageBox.Show(_languageService.getVariable("message_error_already_imported"),
+                    _languageService.getVariable("caption_error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                _logger.Warn("Error with importing tour: It already Exists");
             }
             return false;
         }

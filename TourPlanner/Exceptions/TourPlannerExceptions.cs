@@ -31,4 +31,11 @@ namespace TourPlanner.Exceptions {
         public InvalidImportException(string message) : base(message) { }
         public InvalidImportException(string message, Exception inner) : base(message, inner) { }
     }
+
+    [Serializable]
+    public class TourAlreadyExistsException : Exception {
+        public TourAlreadyExistsException() { }
+        public TourAlreadyExistsException(string message) : base(message) { }
+        public TourAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
+    }
 }

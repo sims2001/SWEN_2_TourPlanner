@@ -27,10 +27,9 @@ namespace TourPlanner.Commands
 
 
         public override async Task ExecuteAsync(object? parameter) {
-
-            var t = await _tourManager.GetAllTours();
-
             try {
+                var t = await _tourManager.GetAllTours();
+
                 var fp = MyFileDialogService.SavePdfFileDialog();
 
                 if (string.IsNullOrEmpty(fp))

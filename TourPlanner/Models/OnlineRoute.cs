@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TourPlanner.Models {
-    internal class OnlineRoute {
+    public class OnlineRoute {
         private readonly IConfiguration _configuration;
         public string From { get; protected set; }
         public string To { get; protected set; }
@@ -35,7 +35,8 @@ namespace TourPlanner.Models {
             var builder = new UriBuilder("https://www.mapquestapi.com/directions/v2/route");
             builder.Port = -1;
             var query = HttpUtility.ParseQueryString(builder.Query);
-            query["key"] = _configuration["MapQuestAPI:key"];
+            //query["key"] = _configuration["MapQuestAPI:key"];
+            query["key"] = _configuration.GetSection("MapQuestAPI:key").Value;
             query["from"] = From;
             query["to"] = To;
             query["outFormat"] = "json";
@@ -74,7 +75,8 @@ namespace TourPlanner.Models {
             query["end"] = To;
             query["size"] = "1600,900";
             query["format"] = "png";
-            query["key"] = _configuration["MapQuestAPI:key"];
+            //query["key"] = _configuration["MapQuestAPI:key"];
+            query["key"] = _configuration.GetSection("MapQuestAPI:key").Value;
             builder.Query = query.ToString();
             string url = builder.ToString();
 

@@ -1,5 +1,4 @@
-﻿using Faker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -26,6 +25,7 @@ namespace TourPlanner.Models {
         public int AverageTime { get => AverageLogTime(); }
         public string FormatedAverageTime { get => FormatTime(AverageTime); }
         public Popularity Popularity { get => AverageLogPopularity(); }
+        public Difficulty Difficulty { get => AverageLogDifficulty(); }
         public List<TourLog> Logs { get; set; } = new List<TourLog>();
 
 
@@ -91,20 +91,6 @@ namespace TourPlanner.Models {
             }
 
             return (Difficulty)(sum / _logCount);
-        }
-
-        public static Tour CreateExampleTour() {
-            Random rnd = new Random();
-            int num = rnd.Next(0, 100);
-            string desc = string.Join(",", Faker.Lorem.Paragraphs(3) );
-            string from = $"{Faker.Address.StreetAddress()}, {Faker.Address.City()}, {Faker.Address.Country()}"; 
-            string to = $"{Faker.Address.StreetAddress()}, {Faker.Address.City()}, {Faker.Address.Country()}";
-            TransportType trt = (TransportType) rnd.Next(0, System.Enum.GetNames(typeof(TransportType)).Length);
-            return new Tour { Id = Guid.NewGuid(), Name = $"Example Tour {num}", Description = desc, From = from, To = to, TransportType = trt, Distance = rnd.NextDouble() * rnd.Next(1, 100), Time = rnd.Next(0, 5000), PicturePath = "C:\\Users\\Simon\\Desktop\\Meme Shit\\alex_zaun.png" };
-        }
-
-        public static Guid ToNotNullGuid(Guid? source) {
-            return source ?? Guid.Empty;
         }
 
         

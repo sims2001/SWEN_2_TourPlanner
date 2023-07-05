@@ -13,8 +13,8 @@ namespace TourPlanner.DbContexts {
 
         public TourPlannerDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<TourDTO> Tours { get; set; }
-        public DbSet<LogDTO> Logs { get; set; }
+        public virtual DbSet<TourDTO> Tours { get; set; }
+        public virtual DbSet<LogDTO> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<TourDTO>()

@@ -13,6 +13,7 @@
       "label_tour_distance": 	"Distance:                  ",
       "label_tour_avg_time": 	"Average Time:              ",
       "label_tour_popularity": 	"Tour Popularity:           ",
+	  "label_tour_difficulty":  "Tour Difficulty:           ",
       "button_save_tour": "Save new Tour",
       "button_update_tour": "Update Tour",
       "button_import": "Import Tour",
@@ -68,7 +69,13 @@
 	  "message_success_save_log": "Successfully saved Log!",
 	  "message_error_save_log": "Successfully updated Log!",
 	  "message_error_load_tours": "There was a problem with loading the tours!",
-	  "button_back_to_overview": "Back to Tour Overview!"
+	  "button_back_to_overview": "Back to Tour Overview!",
+	  "message_error_already_imported": "Tour already exists!",
+	  "message_error_database": "There was an Error with the Database! Try again later!",
+	  "message_delete_tour": "Would you like to delete this Tour?",
+	  "message_success_delete": "Successfully Deleted Tour!",
+	  "message_error_delete": "The Tour couldn't be deleted! Please try again!",
+	  "caption_delete_tour": "Delete Tour?"
     },
 
     "German": {
@@ -84,6 +91,7 @@
       "label_tour_distance": 	"Distanz:                   ",
       "label_tour_avg_time": 	"Durchschnittliche Zeit:    ",
       "label_tour_popularity": 	"Tour Popularität:          ",
+	  "label_tour_difficulty":  "Schwierigkeitsgrad:        ",
       "button_save_tour": "Neue Tour speichern",
       "button_update_tour": "Tour updaten",
       "button_import": "Tour importieren",
@@ -139,7 +147,13 @@
 	  "message_success_save_log": "Log erfolgreich gespeichert!",
 	  "message_error_save_log": "Log erfolgreich geupdated",
 	  "message_error_load_tours": "Es gab ein problem beim laden der Touren!",
-	  "button_back_to_overview": "Zurück zur Tour-Übersicht"
+	  "button_back_to_overview": "Zurück zur Tour-Übersicht",
+	  "message_error_already_imported": "Tour existiert bereits!",
+	  "message_error_database": "There was an Error with the Database! Try again later!",
+	  "message_delete_tour": "Möchten Sie diese Tour Löschen?",
+	  "message_success_delete": "Tour erfolgreich gelöscht",
+	  "message_error_delete": "Die Tour konnte nicht gelöscht werden! Probieren Sie es erneut!",
+	  "caption_delete_tour": "Tour löschen?"
     }
   }
 }

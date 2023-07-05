@@ -70,7 +70,7 @@ namespace TourPlanner {
 
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<TourPlannerDbContextFactory>(s => new TourPlannerDbContextFactory(_configuration.GetConnectionString("LocalPostgreSQL")));
+            services.AddSingleton<TourPlannerDbContextFactory>(s => new TourPlannerDbContextFactory(s));
             services.AddTransient<DatabaseTourProvider>(s => new DatabaseTourProvider(s));
             services.AddTransient<DatabaseTourEditor>(s => new DatabaseTourEditor(s));
             services.AddTransient<DatabaseLogEditor>(s => new DatabaseLogEditor(s));
@@ -95,10 +95,9 @@ namespace TourPlanner {
             services.AddSingleton<MainWindow>(s => new MainWindow() {
                 DataContext = s.GetRequiredService<MainWindowViewModel>()
             });
-
-            //services.AddScoped<ILog>(f => LogManager.GetLogger(GetType()));
-
+            
             _serviceProvider = services.BuildServiceProvider();
+            
         }
 
         protected override void OnStartup(StartupEventArgs e) {

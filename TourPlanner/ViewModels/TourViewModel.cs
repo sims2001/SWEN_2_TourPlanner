@@ -26,7 +26,7 @@ namespace TourPlanner.ViewModels
         public string ChildFriendly => _tour.ChildFriendly ? "This Tour is Child Friendly" : "This Tour is not Child Friendly";
         public bool IsChildFriendly => _tour.ChildFriendly;
         public Popularity Popularity => _tour.Popularity;
-
+        public Difficulty Difficulty => _tour.Difficulty;
         public IEnumerable<TourLog> Logs => _tour.Logs;
 
         public string Searchstring => _tour.SearchString;

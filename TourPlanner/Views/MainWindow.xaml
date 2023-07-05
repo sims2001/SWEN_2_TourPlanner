@@ -8,8 +8,9 @@
         xmlns:vms="clr-namespace:TourPlanner.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"  
+        ResizeMode="NoResize" WindowState="Maximized"
         Title="TourPlaner" Height="720" Width="1280">
-    <!--WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized"-->
+    <!--WindowStyle="None" -->
     <Window.Resources>
         <cnvs:TabSizeConverter x:Key="TabSizeConverter" />
         <Style TargetType="{x:Type TabItem}">
@@ -50,15 +51,7 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Text="Tour Planer" FontSize="36" Grid.Column="0" Padding="20"/>
-            
-            <!--<Button x:Name="CloseButton" Grid.Column="1" FontSize="16" Padding="0 -4 0 0" Height="26" Width="26" Background="Red" FontWeight="Bold" Click="CloseButton_Click">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="16"/>
-                    </Style>
-                </Button.Resources>
-                x
-            </Button>-->
+
             <ComboBox Grid.Column="1" FontSize="16" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage}" VerticalAlignment="Center" BorderBrush="{x:Null}"  >
                 <ComboBox.Background>
                     <LinearGradientBrush EndPoint="0,1">

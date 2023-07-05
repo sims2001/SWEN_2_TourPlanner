@@ -30,6 +30,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
                         <TextBlock Margin="5 10 5 10" Text="{Binding CurrentTour.Name}" FontSize="28" FontWeight="Bold" TextAlignment="Center" Grid.Row="0" />
@@ -75,7 +76,12 @@
                             <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.Popularity}" FontSize="16" TextWrapping="WrapWithOverflow" />
                         </StackPanel>
 
-                        <Grid Grid.Row="10" Margin="5 20 5 10" >
+                        <StackPanel Grid.Row="10" Orientation="Horizontal" Margin="5 10 5 10">
+                            <TextBlock FontFamily="Courier New" FontSize="16" Text="{Binding LabelTourDifficulty}" />
+                            <TextBlock FontFamily="Courier New" Text="{Binding CurrentTour.Difficulty}" FontSize="16" TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+
+                        <Grid Grid.Row="11" Margin="5 20 5 10" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*" />
                                 <ColumnDefinition Width="5*" />

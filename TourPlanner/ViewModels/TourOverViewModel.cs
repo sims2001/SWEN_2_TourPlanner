@@ -125,6 +125,7 @@ namespace TourPlanner.ViewModels
         public string LabelTourDistance => _languageService.getVariable("label_tour_distance");
         public string LabelTourAvgTime => _languageService.getVariable("label_tour_avg_time");
         public string LabelTourPopularity => _languageService.getVariable("label_tour_popularity");
+        public string LabelTourDifficulty => _languageService.getVariable("label_tour_difficulty");
         public string LabelGenerateReport => _languageService.getVariable("button_tour_report");
         public string LabelExportTour => _languageService.getVariable("button_tour_export");
         public string TabInformation => _languageService.getVariable("tab_information");

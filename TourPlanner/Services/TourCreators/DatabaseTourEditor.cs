@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -67,6 +68,8 @@ namespace TourPlanner.Services.TourCreators {
 
                 }
 
+                if (await context.Tours.FindAsync(newTour.Id) is not null)
+                    throw new TourAlreadyExistsException();
                 
                 context.Tours.Add(newTour);
 
